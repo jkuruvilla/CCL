@@ -73,5 +73,27 @@ CCL_ClTracer *ccl_cl_tracer_lensing_simple_new(ccl_cosmology *cosmo,
 					       int nz_n,double *z_n,double *n, int * status);
 //CCL_ClTracer destructor
 void ccl_cl_tracer_free(CCL_ClTracer *clt);
+
+
+//Workspace for C_ell computations
+typedef struct {
+  double dchi; //Spacing in comoving distance to use for the LOS integrals
+  int lmax; //Maximum multipole
+  int l_limber; //All power spectra for l>l_limber will be computed using Limber's approximation
+  double l_logstep; //Logarithmic step factor used at low l
+  int l_linstep; //Linear step used at high l
+  int n_ls; //Number of multipoles that result from the previous combination of parameters
+  double *l_arr; //Array of multipole values resulting from the previous parameters
+} CCL_ClWorkspace;
+
+//CCL_ClWorkspace constructor
+CCL_ClWorkspace *ccl_cl_workspace_new(int lmax,int l_limber,double l_logstep,int l_linstep,double dchi,int *status);
+//CCL_ClWorkspace simplified constructor
+CCL_ClWorkspace *ccl_cl_workspace_new_default(int lmax,int l_limber,int *status);
+//CCL_ClWorkspace destructor
+void ccl_cl_workspace_free(CCL_ClWorkspace *w);
+
 //Computes limber power spectrum for two different tracers
-double ccl_angular_cl(ccl_cosmology *cosmo,int l,CCL_ClTracer *clt1,CCL_ClTracer *clt2, int * status);
+void ccl_angular_cls(ccl_cosmology *cosmo,CCL_ClWorkspace *w,
+		     CCL_ClTracer *clt1,CCL_ClTracer *clt2,
+		     int nl_out,int *l,double *cl,int *status);

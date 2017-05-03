@@ -243,7 +243,7 @@ def _check_array_params(z, f_arg, f_name):
     return z_f, f
 
 
-def angular_cl(cosmo, cltracer1, cltracer2, ell):
+def angular_cl(cosmo, cltracer1, cltracer2, ell, l_limber=-1., l_logstep=1.05, l_linstep=20.):
     """
     Calculate the angular (cross-)power spectrum for a pair of tracers.
 
@@ -269,12 +269,13 @@ def angular_cl(cosmo, cltracer1, cltracer2, ell):
     # Return Cl values, according to whether ell is an array or not
     if isinstance(ell, float) or isinstance(ell, int) :
         # Use single-value function
-        cl, status = lib.angular_cl(cosmo, ell, clt1, clt2, status)
+        cls, status = lib.angular_cl_vec(cosmo,clt1,clt2,l_limber,l_logstep,l_linstep,[ell],1,status)
+        cl=cls[0]
     elif isinstance(ell, np.ndarray):
         # Use vectorised function
-        cl, status = lib.angular_cl_vec(cosmo, clt1, clt2, ell, ell.size, status)
+        cl, status = lib.angular_cl_vec(cosmo,clt1,clt2,l_limber,l_logstep,l_linstep,ell,ell.size,status)
     else:
         # Use vectorised function
-        cl, status = lib.angular_cl_vec(cosmo, clt1, clt2, ell, len(ell), status)
+        cl, status = lib.angular_cl_vec(cosmo,clt1,clt2,l_limber,l_logstep,l_linstep,ell,len(ell),status)
     check(status)
     return cl
