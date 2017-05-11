@@ -822,8 +822,8 @@ static void get_k_interval(ccl_cosmology *cosmo,CCL_ClWorkspace *w,
   int cut_low_1=0,cut_low_2=0;
 
   //Define a minimum distance only if no lensing is needed
-  if((clt1->tracer_type==CL_TRACER_NC) && (clt1->has_magnification=0)) cut_low_1=1;
-  if((clt2->tracer_type==CL_TRACER_NC) && (clt2->has_magnification=0)) cut_low_2=1;
+  if((clt1->tracer_type==CL_TRACER_NC) && (clt1->has_magnification==0)) cut_low_1=1;
+  if((clt2->tracer_type==CL_TRACER_NC) && (clt2->has_magnification==0)) cut_low_2=1;
 
   if(l<w->l_limber) {
     chimin=2*(l+0.5)/ccl_splines->K_MAX;
