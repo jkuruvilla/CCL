@@ -5,6 +5,7 @@
 
 #define CL_TRACER_NC 1 //Tracer type 1: number counts
 #define CL_TRACER_WL 2 //Tracer type 2: weak lensing
+#define CL_TRACER_CL 3 //Tracer type 2: CMB lensing
 
 //Spline wrapper
 //Used to take care of evaluations outside the supported range
@@ -22,6 +23,7 @@ typedef struct {
   double chimin;
   double zmin; //Limits in chi where we care about this tracer
   double zmax;
+  double chi_source; //Comoving distance to the source (for CMB lensing)
   int has_rsd;
   int has_magnification;
   int has_intrinsic_alignment;
@@ -51,13 +53,14 @@ typedef struct {
 // * nz_s, z_s, s -> same as above for the magnification bias
 // * nz_ba, z_ba, ba -> same as above for the alignment bias
 // * nz_rf, z_rf, rf -> same as above for the aligned (red) fraction
+// * z_source -> source redshift for CMB lensing
 CCL_ClTracer *ccl_cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,
 				int has_rsd,int has_magnification,int has_intrinsic_alignment,
 				int nz_n,double *z_n,double *n,
 				int nz_b,double *z_b,double *b,
 				int nz_s,double *z_s,double *s,
 				int nz_ba,double *z_ba,double *ba,
-				int nz_rf,double *z_rf,double *rf, int * status);
+				int nz_rf,double *z_rf,double *rf,double z_source,int * status);
 //Simplified version of the above for number counts
 CCL_ClTracer *ccl_cl_tracer_number_counts_new(ccl_cosmology *cosmo,
 					      int has_rsd,int has_magnification,
@@ -77,6 +80,7 @@ CCL_ClTracer *ccl_cl_tracer_lensing_new(ccl_cosmology *cosmo,
 //More simplified version (no IA) of the above for shear
 CCL_ClTracer *ccl_cl_tracer_lensing_simple_new(ccl_cosmology *cosmo,
 					       int nz_n,double *z_n,double *n, int * status);
+CCL_ClTracer *ccl_cl_tracer_cmblens_new(ccl_cosmology *cosmo,double z_source,int *status);
 //CCL_ClTracer destructor
 void ccl_cl_tracer_free(CCL_ClTracer *clt);
 

@@ -18,7 +18,7 @@ from power import linear_matter_power, nonlin_matter_power, sigmaR, sigma8
 from massfunction import massfunc, massfunc_m2r, sigmaM, halo_bias
 
 # Cl's and tracers
-from cls import angular_cl, ClTracer, ClTracerNumberCounts, ClTracerLensing
+from cls import angular_cl, ClTracer, ClTracerNumberCounts, ClTracerLensing, ClTracerCMBLensing
 
 from lsst_specs import bias_clustering, sigmaz_clustering, sigmaz_sources, \
                        dNdz_tomog, PhotoZFunction

@@ -28,7 +28,7 @@ extern "C"{
 #include "Angpow/angpow_exceptions.h"  //exceptions
 #include "Angpow/angpow_integrand_base.h"
 
-//#define _DEBUG
+#define _DEBUG
 #define CCL_FRAC_RELEVANT 5E-4
 //#define CCL_FRAC_RELEVANT 1E-3
 //Gets the x-interval where the values of y are relevant
@@ -345,7 +345,8 @@ static CCL_ClTracer *cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,
 				   int nz_b,double *z_b,double *b,
 				   int nz_s,double *z_s,double *s,
 				   int nz_ba,double *z_ba,double *ba,
-				   int nz_rf,double *z_rf,double *rf, int * status)
+				   int nz_rf,double *z_rf,double *rf,
+				   double z_source,int * status)
 {
   int clstatus=0;
   CCL_ClTracer *clt=(CCL_ClTracer *)malloc(sizeof(CCL_ClTracer));
@@ -575,6 +576,13 @@ static CCL_ClTracer *cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,
       }
     }
   }
+  else if(tracer_type=CL_TRACER_CL) {
+    clt->chi_source=ccl_comoving_radial_distance(cosmo,1./(1+z_source),status);
+    clt->zmin=0;
+    clt->zmax=z_source;
+    clt->chimax=clt->chi_source;
+    clt->chimin=0;
+  }
   else {
     *status=CCL_ERROR_INCONSISTENT;
     strcpy(cosmo->status_message,"ccl_cls.c: ccl_cl_tracer_new(): unknown tracer type\n");
@@ -601,10 +609,11 @@ CCL_ClTracer *ccl_cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,
 				int nz_b,double *z_b,double *b,
 				int nz_s,double *z_s,double *s,
 				int nz_ba,double *z_ba,double *ba,
-				int nz_rf,double *z_rf,double *rf, int * status)
+				int nz_rf,double *z_rf,double *rf,
+				double z_source,int * status)
 {
   CCL_ClTracer *clt=cl_tracer_new(cosmo,tracer_type,has_rsd,has_magnification,has_intrinsic_alignment,
-				  nz_n,z_n,n,nz_b,z_b,b,nz_s,z_s,s,nz_ba,z_ba,ba,nz_rf,z_rf,rf, status);
+				  nz_n,z_n,n,nz_b,z_b,b,nz_s,z_s,s,nz_ba,z_ba,ba,nz_rf,z_rf,rf,z_source,status);
   ccl_check_status(cosmo,status);
   return clt;
 }
@@ -612,7 +621,9 @@ CCL_ClTracer *ccl_cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,
 //CCL_ClTracer destructor
 void ccl_cl_tracer_free(CCL_ClTracer *clt)
 {
-  spline_free(clt->spl_nz);
+  if((clt->tracer_type==CL_TRACER_NC) || (clt->tracer_type==CL_TRACER_WL))
+    spline_free(clt->spl_nz);
+
   if(clt->tracer_type==CL_TRACER_NC) {
     spline_free(clt->spl_bz);
     if(clt->has_magnification) {
@@ -620,13 +631,15 @@ void ccl_cl_tracer_free(CCL_ClTracer *clt)
       spline_free(clt->spl_wM);
     }
   }
-  else if(clt->tracer_type==CL_TRACER_WL) {
+
+  if(clt->tracer_type==CL_TRACER_WL) {
     spline_free(clt->spl_wL);
     if(clt->has_intrinsic_alignment) {
       spline_free(clt->spl_ba);
       spline_free(clt->spl_rf);
     }
   }
+
   if(clt->computed_transfer) {
     int il;
     free(clt->n_k);
@@ -637,6 +650,14 @@ void ccl_cl_tracer_free(CCL_ClTracer *clt)
   free(clt);
 }
 
+CCL_ClTracer *ccl_cl_tracer_cmblens_new(ccl_cosmology *cosmo,double z_source,int *status)
+{
+  return ccl_cl_tracer_new(cosmo,CL_TRACER_CL,
+			   0,0,0,
+			   0,NULL,NULL,0,NULL,NULL,0,NULL,NULL,
+			   0,NULL,NULL,0,NULL,NULL,z_source,status);
+}
+
 CCL_ClTracer *ccl_cl_tracer_number_counts_new(ccl_cosmology *cosmo,
 					      int has_rsd,int has_magnification,
 					      int nz_n,double *z_n,double *n,
@@ -645,7 +666,7 @@ CCL_ClTracer *ccl_cl_tracer_number_counts_new(ccl_cosmology *cosmo,
 {
   return ccl_cl_tracer_new(cosmo,CL_TRACER_NC,has_rsd,has_magnification,0,
 			   nz_n,z_n,n,nz_b,z_b,b,nz_s,z_s,s,
-			   -1,NULL,NULL,-1,NULL,NULL, status);
+			   -1,NULL,NULL,-1,NULL,NULL,0,status);
 }
 
 CCL_ClTracer *ccl_cl_tracer_number_counts_simple_new(ccl_cosmology *cosmo,
@@ -654,7 +675,7 @@ CCL_ClTracer *ccl_cl_tracer_number_counts_simple_new(ccl_cosmology *cosmo,
 {
   return ccl_cl_tracer_new(cosmo,CL_TRACER_NC,0,0,0,
 			   nz_n,z_n,n,nz_b,z_b,b,-1,NULL,NULL,
-			   -1,NULL,NULL,-1,NULL,NULL, status);
+			   -1,NULL,NULL,-1,NULL,NULL,0,status);
 }
 
 CCL_ClTracer *ccl_cl_tracer_lensing_new(ccl_cosmology *cosmo,
@@ -665,7 +686,7 @@ CCL_ClTracer *ccl_cl_tracer_lensing_new(ccl_cosmology *cosmo,
 {
   return ccl_cl_tracer_new(cosmo,CL_TRACER_WL,0,0,has_alignment,
 			   nz_n,z_n,n,-1,NULL,NULL,-1,NULL,NULL,
-			   nz_ba,z_ba,ba,nz_rf,z_rf,rf, status);
+			   nz_ba,z_ba,ba,nz_rf,z_rf,rf,0,status);
 }
 
 CCL_ClTracer *ccl_cl_tracer_lensing_simple_new(ccl_cosmology *cosmo,
@@ -673,7 +694,7 @@ CCL_ClTracer *ccl_cl_tracer_lensing_simple_new(ccl_cosmology *cosmo,
 {
   return ccl_cl_tracer_new(cosmo,CL_TRACER_WL,0,0,0,
 			   nz_n,z_n,n,-1,NULL,NULL,-1,NULL,NULL,
-			   -1,NULL,NULL,-1,NULL,NULL, status);
+			   -1,NULL,NULL,-1,NULL,NULL,0,status);
 }
 
 static double limits_bessel(double l,double thr,double *xmin,double *xmax)
@@ -864,6 +885,57 @@ static double transfer_wl(int l,double k,
   return (l+1.)*l*ret/(k*k);
 }
 
+
+static double f_cmblens(double a,double chi,ccl_cosmology *cosmo,CCL_ClTracer *clt, int * status)
+{
+  if(chi>=clt->chi_source)
+    return 0;
+  else {
+    double w=1-chi/clt->chi_source;
+    return clt->prefac_lensing*w/(a*chi);
+  }
+}
+
+//Transfer function for cmb lensing
+//l -> angular multipole
+//k -> wavenumber modulus
+//cosmo -> ccl_cosmology object
+//w -> CCL_ClWorskpace object
+//clt -> CCL_ClTracer object (must be of the CL_TRACER_WL type)
+static double transfer_cl(int l,double k,
+			  ccl_cosmology *cosmo,CCL_ClWorkspace *w,CCL_ClTracer *clt, int * status)
+{
+  double ret=0;
+  if(l>w->l_limber) {
+    double chi=(l+0.5)/k;
+    if(chi<=clt->chimax) {
+      double a=ccl_scale_factor_of_chi(cosmo,chi,status);
+      double pk=ccl_nonlin_matter_power(cosmo,k,a,status);
+      double jl=j_bessel_limber(l,k);
+      double f_all=f_cmblens(a,chi,cosmo,clt,status)*jl;
+
+      ret=f_all*sqrt(pk);
+    }
+  }
+  else {
+    int i,nchi=(int)((clt->chimax-clt->chimin)/w->dchi)+1;
+    for(i=0;i<nchi;i++) {
+      double chi=clt->chimin+w->dchi*(i+0.5);
+      if(chi<=clt->chimax) {
+	double a=ccl_scale_factor_of_chi(cosmo,chi,status);
+	double pk=ccl_nonlin_matter_power(cosmo,k,a,status);
+	double jl=ccl_j_bessel(l,k*chi);
+	double f_all=f_cmblens(a,chi,cosmo,clt,status)*jl;
+	
+	ret+=f_all*sqrt(pk); //TODO: is it worth splining this sqrt?
+      }
+    }
+    ret*=w->dchi;
+  }
+
+  return (l+1.)*l*ret/(k*k);
+}
+
 //Wrapper for transfer function
 //l -> angular multipole
 //k -> wavenumber modulus
@@ -879,6 +951,8 @@ static double transfer_wrap(int il,double lk,ccl_cosmology *cosmo,
     transfer_out=transfer_nc(w->l_arr[il],k,cosmo,w,clt,status);
   else if(clt->tracer_type==CL_TRACER_WL)
     transfer_out=transfer_wl(w->l_arr[il],k,cosmo,w,clt,status);
+  else if(clt->tracer_type==CL_TRACER_CL)
+    transfer_out=transfer_cl(w->l_arr[il],k,cosmo,w,clt,status);
   else
     transfer_out=-1;
   return transfer_out;
