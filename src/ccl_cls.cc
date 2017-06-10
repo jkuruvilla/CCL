@@ -28,7 +28,7 @@ extern "C"{
 #include "Angpow/angpow_exceptions.h"  //exceptions
 #include "Angpow/angpow_integrand_base.h"
 
-#define _DEBUG
+//#define _DEBUG
 #define CCL_FRAC_RELEVANT 5E-4
 //#define CCL_FRAC_RELEVANT 1E-3
 //Gets the x-interval where the values of y are relevant
@@ -1225,14 +1225,18 @@ static double ccl_angular_cl_native(ccl_cosmology *cosmo,CCL_ClWorkspace *cw,int
   F.function=&cl_integrand;
   F.params=&ipar;
   get_k_interval(cosmo,cw,clt1,clt2,cw->l_arr[il],&lkmin,&lkmax);
-  qagstatus=gsl_integration_qag(&F,lkmin,lkmax,0,1E-4,1000,GSL_INTEG_GAUSS41,w,&result,&eresult);
+  gsl_error_handler_t *eh=gsl_set_error_handler_off();
+  qagstatus=gsl_integration_qag(&F,lkmin,lkmax,0,1E-3,1000,GSL_INTEG_GAUSS41,w,&result,&eresult);
   gsl_integration_workspace_free(w);
   if(qagstatus!=GSL_SUCCESS || *ipar.status) {
-    *status=CCL_ERROR_INTEG;
-    strcpy(cosmo->status_message,"ccl_cls.c: ccl_angular_cls(): error integrating over k\n");
-    return -1;
+    printf(" - %d %d\n",il,(int)(cw->l_arr[il]));
+    if(qagstatus!=GSL_EROUND) {
+      *status=CCL_ERROR_INTEG;
+      strcpy(cosmo->status_message,"ccl_cls.c: ccl_angular_cls(): error integrating over k\n");
+    }
   }
   ccl_check_status(cosmo,status);
+  gsl_set_error_handler(eh);
 
   return result*M_LN10*2./M_PI;
 }
