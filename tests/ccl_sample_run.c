@@ -88,10 +88,10 @@ int main(int argc,char **argv){
 	}
 
 	//Galaxy clustering tracer
-	CCL_ClTracer *ct_gc=ccl_cl_tracer_number_counts_simple_new(cosmo,NZ,z_arr_gc,nz_arr_gc,NZ,z_arr_gc,bz_arr, &status);
+	CCL_ClTracer *ct_gc=ccl_cl_tracer_number_counts_simple_new(cosmo,0.,NZ,z_arr_gc,nz_arr_gc,NZ,z_arr_gc,bz_arr, &status);
 
 	//Cosmic shear tracer
-	CCL_ClTracer *ct_wl=ccl_cl_tracer_lensing_simple_new(cosmo,NZ,z_arr_sh,nz_arr_sh, &status);
+	CCL_ClTracer *ct_wl=ccl_cl_tracer_lensing_simple_new(cosmo,0.,NZ,z_arr_sh,nz_arr_sh, &status);
 	printf("ell C_ell(g,g) C_ell(g,s) C_ell(s,s) | r(g,s)\n");
 	for(int l=2;l<=NL;l*=2)
 	{

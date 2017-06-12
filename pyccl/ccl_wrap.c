@@ -3966,14 +3966,14 @@ void halo_bias_vec(ccl_cosmology * cosmo,
 
 
 
-CCL_ClTracer* cl_tracer_new_wrapper(ccl_cosmology *cosmo,int tracer_type,
-				int has_rsd, int has_magnification, int has_intrinsic_alignment,
-				int nz_n, double *z_n, int nn, double *n,
-				int nz_b, double *z_b, int nb, double *b,
-				int nz_s, double *z_s, int ns, double *s,
-				int nz_ba, double *z_ba, int nba, double *ba,
-				int nz_rf, double *z_rf, int nrf, double *rf,
-				int* status){
+CCL_ClTracer* cl_tracer_new_wrapper(ccl_cosmology *cosmo,int tracer_type,double r_sm,
+				    int has_rsd, int has_magnification, int has_intrinsic_alignment,
+				    int nz_n, double *z_n, int nn, double *n,
+				    int nz_b, double *z_b, int nb, double *b,
+				    int nz_s, double *z_s, int ns, double *s,
+				    int nz_ba, double *z_ba, int nba, double *ba,
+				    int nz_rf, double *z_rf, int nrf, double *rf,
+				    int* status){
     
     assert(nz_n == nn);
     assert(nz_b == nb);
@@ -3984,15 +3984,15 @@ CCL_ClTracer* cl_tracer_new_wrapper(ccl_cosmology *cosmo,int tracer_type,
     // Check for null arrays
     
     
-    return ccl_cl_tracer_new(cosmo, tracer_type,
-				             has_rsd, has_magnification, 
-				             has_intrinsic_alignment,
-				             nz_n, z_n, n,  
-				             nz_b, z_b, b,
-				             nz_s, z_s, s,
-				             nz_ba, z_ba, ba,
-				             nz_rf, z_rf, rf, 
-				             status);
+    return ccl_cl_tracer_new(cosmo, tracer_type,r_sm,
+			     has_rsd, has_magnification, 
+			     has_intrinsic_alignment,
+			     nz_n, z_n, n,  
+			     nz_b, z_b, b,
+			     nz_s, z_s, s,
+			     nz_ba, z_ba, ba,
+			     nz_rf, z_rf, rf, 
+			     status);
 }
 
 
@@ -13452,6 +13452,66 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_CCL_ClTracer_r_sm_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CCL_ClTracer *arg1 = (CCL_ClTracer *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:CCL_ClTracer_r_sm_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CCL_ClTracer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CCL_ClTracer_r_sm_set" "', argument " "1"" of type '" "CCL_ClTracer *""'"); 
+  }
+  arg1 = (CCL_ClTracer *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "CCL_ClTracer_r_sm_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    if (arg1) (arg1)->r_sm = arg2;
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CCL_ClTracer_r_sm_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CCL_ClTracer *arg1 = (CCL_ClTracer *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:CCL_ClTracer_r_sm_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CCL_ClTracer, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CCL_ClTracer_r_sm_get" "', argument " "1"" of type '" "CCL_ClTracer *""'"); 
+  }
+  arg1 = (CCL_ClTracer *)(argp1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (double) ((arg1)->r_sm);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
+  resultobj = SWIG_From_double((double)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_CCL_ClTracer_prefac_lensing_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   CCL_ClTracer *arg1 = (CCL_ClTracer *) 0 ;
@@ -14285,30 +14345,31 @@ SWIGINTERN PyObject *_wrap_cl_tracer_new(PyObject *SWIGUNUSEDPARM(self), PyObjec
   PyObject *resultobj = 0;
   ccl_cosmology *arg1 = (ccl_cosmology *) 0 ;
   int arg2 ;
-  int arg3 ;
+  double arg3 ;
   int arg4 ;
   int arg5 ;
   int arg6 ;
-  double *arg7 = (double *) 0 ;
+  int arg7 ;
   double *arg8 = (double *) 0 ;
-  int arg9 ;
-  double *arg10 = (double *) 0 ;
+  double *arg9 = (double *) 0 ;
+  int arg10 ;
   double *arg11 = (double *) 0 ;
-  int arg12 ;
-  double *arg13 = (double *) 0 ;
+  double *arg12 = (double *) 0 ;
+  int arg13 ;
   double *arg14 = (double *) 0 ;
-  int arg15 ;
-  double *arg16 = (double *) 0 ;
+  double *arg15 = (double *) 0 ;
+  int arg16 ;
   double *arg17 = (double *) 0 ;
-  int arg18 ;
-  double *arg19 = (double *) 0 ;
+  double *arg18 = (double *) 0 ;
+  int arg19 ;
   double *arg20 = (double *) 0 ;
-  int *arg21 = (int *) 0 ;
+  double *arg21 = (double *) 0 ;
+  int *arg22 = (int *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int val2 ;
   int ecode2 = 0 ;
-  int val3 ;
+  double val3 ;
   int ecode3 = 0 ;
   int val4 ;
   int ecode4 = 0 ;
@@ -14316,36 +14377,38 @@ SWIGINTERN PyObject *_wrap_cl_tracer_new(PyObject *SWIGUNUSEDPARM(self), PyObjec
   int ecode5 = 0 ;
   int val6 ;
   int ecode6 = 0 ;
-  void *argp7 = 0 ;
-  int res7 = 0 ;
+  int val7 ;
+  int ecode7 = 0 ;
   void *argp8 = 0 ;
   int res8 = 0 ;
-  int val9 ;
-  int ecode9 = 0 ;
-  void *argp10 = 0 ;
-  int res10 = 0 ;
+  void *argp9 = 0 ;
+  int res9 = 0 ;
+  int val10 ;
+  int ecode10 = 0 ;
   void *argp11 = 0 ;
   int res11 = 0 ;
-  int val12 ;
-  int ecode12 = 0 ;
-  void *argp13 = 0 ;
-  int res13 = 0 ;
+  void *argp12 = 0 ;
+  int res12 = 0 ;
+  int val13 ;
+  int ecode13 = 0 ;
   void *argp14 = 0 ;
   int res14 = 0 ;
-  int val15 ;
-  int ecode15 = 0 ;
-  void *argp16 = 0 ;
-  int res16 = 0 ;
+  void *argp15 = 0 ;
+  int res15 = 0 ;
+  int val16 ;
+  int ecode16 = 0 ;
   void *argp17 = 0 ;
   int res17 = 0 ;
-  int val18 ;
-  int ecode18 = 0 ;
-  void *argp19 = 0 ;
-  int res19 = 0 ;
+  void *argp18 = 0 ;
+  int res18 = 0 ;
+  int val19 ;
+  int ecode19 = 0 ;
   void *argp20 = 0 ;
   int res20 = 0 ;
-  int temp21 ;
+  void *argp21 = 0 ;
   int res21 = 0 ;
+  int temp22 ;
+  int res22 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
@@ -14367,9 +14430,10 @@ SWIGINTERN PyObject *_wrap_cl_tracer_new(PyObject *SWIGUNUSEDPARM(self), PyObjec
   PyObject * obj18 = 0 ;
   PyObject * obj19 = 0 ;
   PyObject * obj20 = 0 ;
+  PyObject * obj21 = 0 ;
   CCL_ClTracer *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOOOOOOOOOOOOOO:cl_tracer_new",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8,&obj9,&obj10,&obj11,&obj12,&obj13,&obj14,&obj15,&obj16,&obj17,&obj18,&obj19,&obj20)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOOOOOOOOOOOOOOO:cl_tracer_new",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8,&obj9,&obj10,&obj11,&obj12,&obj13,&obj14,&obj15,&obj16,&obj17,&obj18,&obj19,&obj20,&obj21)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_ccl_cosmology, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "cl_tracer_new" "', argument " "1"" of type '" "ccl_cosmology *""'"); 
@@ -14380,11 +14444,11 @@ SWIGINTERN PyObject *_wrap_cl_tracer_new(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "cl_tracer_new" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "cl_tracer_new" "', argument " "3"" of type '" "int""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "cl_tracer_new" "', argument " "3"" of type '" "double""'");
   } 
-  arg3 = (int)(val3);
+  arg3 = (double)(val3);
   ecode4 = SWIG_AsVal_int(obj3, &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "cl_tracer_new" "', argument " "4"" of type '" "int""'");
@@ -14400,97 +14464,102 @@ SWIGINTERN PyObject *_wrap_cl_tracer_new(PyObject *SWIGUNUSEDPARM(self), PyObjec
     SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "cl_tracer_new" "', argument " "6"" of type '" "int""'");
   } 
   arg6 = (int)(val6);
-  res7 = SWIG_ConvertPtr(obj6, &argp7,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res7)) {
-    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "cl_tracer_new" "', argument " "7"" of type '" "double *""'"); 
-  }
-  arg7 = (double *)(argp7);
+  ecode7 = SWIG_AsVal_int(obj6, &val7);
+  if (!SWIG_IsOK(ecode7)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "cl_tracer_new" "', argument " "7"" of type '" "int""'");
+  } 
+  arg7 = (int)(val7);
   res8 = SWIG_ConvertPtr(obj7, &argp8,SWIGTYPE_p_double, 0 |  0 );
   if (!SWIG_IsOK(res8)) {
     SWIG_exception_fail(SWIG_ArgError(res8), "in method '" "cl_tracer_new" "', argument " "8"" of type '" "double *""'"); 
   }
   arg8 = (double *)(argp8);
-  ecode9 = SWIG_AsVal_int(obj8, &val9);
-  if (!SWIG_IsOK(ecode9)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "cl_tracer_new" "', argument " "9"" of type '" "int""'");
-  } 
-  arg9 = (int)(val9);
-  res10 = SWIG_ConvertPtr(obj9, &argp10,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res10)) {
-    SWIG_exception_fail(SWIG_ArgError(res10), "in method '" "cl_tracer_new" "', argument " "10"" of type '" "double *""'"); 
+  res9 = SWIG_ConvertPtr(obj8, &argp9,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res9)) {
+    SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "cl_tracer_new" "', argument " "9"" of type '" "double *""'"); 
   }
-  arg10 = (double *)(argp10);
+  arg9 = (double *)(argp9);
+  ecode10 = SWIG_AsVal_int(obj9, &val10);
+  if (!SWIG_IsOK(ecode10)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "cl_tracer_new" "', argument " "10"" of type '" "int""'");
+  } 
+  arg10 = (int)(val10);
   res11 = SWIG_ConvertPtr(obj10, &argp11,SWIGTYPE_p_double, 0 |  0 );
   if (!SWIG_IsOK(res11)) {
     SWIG_exception_fail(SWIG_ArgError(res11), "in method '" "cl_tracer_new" "', argument " "11"" of type '" "double *""'"); 
   }
   arg11 = (double *)(argp11);
-  ecode12 = SWIG_AsVal_int(obj11, &val12);
-  if (!SWIG_IsOK(ecode12)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode12), "in method '" "cl_tracer_new" "', argument " "12"" of type '" "int""'");
-  } 
-  arg12 = (int)(val12);
-  res13 = SWIG_ConvertPtr(obj12, &argp13,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res13)) {
-    SWIG_exception_fail(SWIG_ArgError(res13), "in method '" "cl_tracer_new" "', argument " "13"" of type '" "double *""'"); 
+  res12 = SWIG_ConvertPtr(obj11, &argp12,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res12)) {
+    SWIG_exception_fail(SWIG_ArgError(res12), "in method '" "cl_tracer_new" "', argument " "12"" of type '" "double *""'"); 
   }
-  arg13 = (double *)(argp13);
+  arg12 = (double *)(argp12);
+  ecode13 = SWIG_AsVal_int(obj12, &val13);
+  if (!SWIG_IsOK(ecode13)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode13), "in method '" "cl_tracer_new" "', argument " "13"" of type '" "int""'");
+  } 
+  arg13 = (int)(val13);
   res14 = SWIG_ConvertPtr(obj13, &argp14,SWIGTYPE_p_double, 0 |  0 );
   if (!SWIG_IsOK(res14)) {
     SWIG_exception_fail(SWIG_ArgError(res14), "in method '" "cl_tracer_new" "', argument " "14"" of type '" "double *""'"); 
   }
   arg14 = (double *)(argp14);
-  ecode15 = SWIG_AsVal_int(obj14, &val15);
-  if (!SWIG_IsOK(ecode15)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode15), "in method '" "cl_tracer_new" "', argument " "15"" of type '" "int""'");
-  } 
-  arg15 = (int)(val15);
-  res16 = SWIG_ConvertPtr(obj15, &argp16,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res16)) {
-    SWIG_exception_fail(SWIG_ArgError(res16), "in method '" "cl_tracer_new" "', argument " "16"" of type '" "double *""'"); 
+  res15 = SWIG_ConvertPtr(obj14, &argp15,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res15)) {
+    SWIG_exception_fail(SWIG_ArgError(res15), "in method '" "cl_tracer_new" "', argument " "15"" of type '" "double *""'"); 
   }
-  arg16 = (double *)(argp16);
+  arg15 = (double *)(argp15);
+  ecode16 = SWIG_AsVal_int(obj15, &val16);
+  if (!SWIG_IsOK(ecode16)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode16), "in method '" "cl_tracer_new" "', argument " "16"" of type '" "int""'");
+  } 
+  arg16 = (int)(val16);
   res17 = SWIG_ConvertPtr(obj16, &argp17,SWIGTYPE_p_double, 0 |  0 );
   if (!SWIG_IsOK(res17)) {
     SWIG_exception_fail(SWIG_ArgError(res17), "in method '" "cl_tracer_new" "', argument " "17"" of type '" "double *""'"); 
   }
   arg17 = (double *)(argp17);
-  ecode18 = SWIG_AsVal_int(obj17, &val18);
-  if (!SWIG_IsOK(ecode18)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode18), "in method '" "cl_tracer_new" "', argument " "18"" of type '" "int""'");
-  } 
-  arg18 = (int)(val18);
-  res19 = SWIG_ConvertPtr(obj18, &argp19,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res19)) {
-    SWIG_exception_fail(SWIG_ArgError(res19), "in method '" "cl_tracer_new" "', argument " "19"" of type '" "double *""'"); 
+  res18 = SWIG_ConvertPtr(obj17, &argp18,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res18)) {
+    SWIG_exception_fail(SWIG_ArgError(res18), "in method '" "cl_tracer_new" "', argument " "18"" of type '" "double *""'"); 
   }
-  arg19 = (double *)(argp19);
+  arg18 = (double *)(argp18);
+  ecode19 = SWIG_AsVal_int(obj18, &val19);
+  if (!SWIG_IsOK(ecode19)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode19), "in method '" "cl_tracer_new" "', argument " "19"" of type '" "int""'");
+  } 
+  arg19 = (int)(val19);
   res20 = SWIG_ConvertPtr(obj19, &argp20,SWIGTYPE_p_double, 0 |  0 );
   if (!SWIG_IsOK(res20)) {
     SWIG_exception_fail(SWIG_ArgError(res20), "in method '" "cl_tracer_new" "', argument " "20"" of type '" "double *""'"); 
   }
   arg20 = (double *)(argp20);
-  if (!(SWIG_IsOK((res21 = SWIG_ConvertPtr(obj20,SWIG_as_voidptrptr(&arg21),SWIGTYPE_p_int,0))))) {
+  res21 = SWIG_ConvertPtr(obj20, &argp21,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res21)) {
+    SWIG_exception_fail(SWIG_ArgError(res21), "in method '" "cl_tracer_new" "', argument " "21"" of type '" "double *""'"); 
+  }
+  arg21 = (double *)(argp21);
+  if (!(SWIG_IsOK((res22 = SWIG_ConvertPtr(obj21,SWIG_as_voidptrptr(&arg22),SWIGTYPE_p_int,0))))) {
     int val; 
-    int ecode = SWIG_AsVal_int(obj20, &val);
+    int ecode = SWIG_AsVal_int(obj21, &val);
     if (!SWIG_IsOK(ecode)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode), "in method '" "cl_tracer_new" "', argument " "21"" of type '" "int""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode), "in method '" "cl_tracer_new" "', argument " "22"" of type '" "int""'");
     }
-    temp21 = (int)(val);
-    arg21 = &temp21;
-    res21 = SWIG_AddTmpMask(ecode);
+    temp22 = (int)(val);
+    arg22 = &temp22;
+    res22 = SWIG_AddTmpMask(ecode);
   }
   {
     SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (CCL_ClTracer *)ccl_cl_tracer_new(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21);
+    result = (CCL_ClTracer *)ccl_cl_tracer_new(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22);
     SWIG_PYTHON_THREAD_END_ALLOW;
   }
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CCL_ClTracer, 0 |  0 );
-  if (SWIG_IsTmpObj(res21)) {
-    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_int((*arg21)));
+  if (SWIG_IsTmpObj(res22)) {
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_int((*arg22)));
   } else {
-    int new_flags = SWIG_IsNewObj(res21) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
-    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg21), SWIGTYPE_p_int, new_flags));
+    int new_flags = SWIG_IsNewObj(res22) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg22), SWIGTYPE_p_int, new_flags));
   }
   return resultobj;
 fail:
@@ -14501,7 +14570,270 @@ fail:
 SWIGINTERN PyObject *_wrap_cl_tracer_number_counts_new(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   ccl_cosmology *arg1 = (ccl_cosmology *) 0 ;
-  int arg2 ;
+  double arg2 ;
+  int arg3 ;
+  int arg4 ;
+  int arg5 ;
+  double *arg6 = (double *) 0 ;
+  double *arg7 = (double *) 0 ;
+  int arg8 ;
+  double *arg9 = (double *) 0 ;
+  double *arg10 = (double *) 0 ;
+  int arg11 ;
+  double *arg12 = (double *) 0 ;
+  double *arg13 = (double *) 0 ;
+  int *arg14 = (int *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  int val5 ;
+  int ecode5 = 0 ;
+  void *argp6 = 0 ;
+  int res6 = 0 ;
+  void *argp7 = 0 ;
+  int res7 = 0 ;
+  int val8 ;
+  int ecode8 = 0 ;
+  void *argp9 = 0 ;
+  int res9 = 0 ;
+  void *argp10 = 0 ;
+  int res10 = 0 ;
+  int val11 ;
+  int ecode11 = 0 ;
+  void *argp12 = 0 ;
+  int res12 = 0 ;
+  void *argp13 = 0 ;
+  int res13 = 0 ;
+  int temp14 ;
+  int res14 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  PyObject * obj5 = 0 ;
+  PyObject * obj6 = 0 ;
+  PyObject * obj7 = 0 ;
+  PyObject * obj8 = 0 ;
+  PyObject * obj9 = 0 ;
+  PyObject * obj10 = 0 ;
+  PyObject * obj11 = 0 ;
+  PyObject * obj12 = 0 ;
+  PyObject * obj13 = 0 ;
+  CCL_ClTracer *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOOOOOOO:cl_tracer_number_counts_new",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8,&obj9,&obj10,&obj11,&obj12,&obj13)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_ccl_cosmology, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "cl_tracer_number_counts_new" "', argument " "1"" of type '" "ccl_cosmology *""'"); 
+  }
+  arg1 = (ccl_cosmology *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "cl_tracer_number_counts_new" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "cl_tracer_number_counts_new" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = (int)(val3);
+  ecode4 = SWIG_AsVal_int(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "cl_tracer_number_counts_new" "', argument " "4"" of type '" "int""'");
+  } 
+  arg4 = (int)(val4);
+  ecode5 = SWIG_AsVal_int(obj4, &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "cl_tracer_number_counts_new" "', argument " "5"" of type '" "int""'");
+  } 
+  arg5 = (int)(val5);
+  res6 = SWIG_ConvertPtr(obj5, &argp6,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res6)) {
+    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "cl_tracer_number_counts_new" "', argument " "6"" of type '" "double *""'"); 
+  }
+  arg6 = (double *)(argp6);
+  res7 = SWIG_ConvertPtr(obj6, &argp7,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res7)) {
+    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "cl_tracer_number_counts_new" "', argument " "7"" of type '" "double *""'"); 
+  }
+  arg7 = (double *)(argp7);
+  ecode8 = SWIG_AsVal_int(obj7, &val8);
+  if (!SWIG_IsOK(ecode8)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode8), "in method '" "cl_tracer_number_counts_new" "', argument " "8"" of type '" "int""'");
+  } 
+  arg8 = (int)(val8);
+  res9 = SWIG_ConvertPtr(obj8, &argp9,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res9)) {
+    SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "cl_tracer_number_counts_new" "', argument " "9"" of type '" "double *""'"); 
+  }
+  arg9 = (double *)(argp9);
+  res10 = SWIG_ConvertPtr(obj9, &argp10,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res10)) {
+    SWIG_exception_fail(SWIG_ArgError(res10), "in method '" "cl_tracer_number_counts_new" "', argument " "10"" of type '" "double *""'"); 
+  }
+  arg10 = (double *)(argp10);
+  ecode11 = SWIG_AsVal_int(obj10, &val11);
+  if (!SWIG_IsOK(ecode11)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode11), "in method '" "cl_tracer_number_counts_new" "', argument " "11"" of type '" "int""'");
+  } 
+  arg11 = (int)(val11);
+  res12 = SWIG_ConvertPtr(obj11, &argp12,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res12)) {
+    SWIG_exception_fail(SWIG_ArgError(res12), "in method '" "cl_tracer_number_counts_new" "', argument " "12"" of type '" "double *""'"); 
+  }
+  arg12 = (double *)(argp12);
+  res13 = SWIG_ConvertPtr(obj12, &argp13,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res13)) {
+    SWIG_exception_fail(SWIG_ArgError(res13), "in method '" "cl_tracer_number_counts_new" "', argument " "13"" of type '" "double *""'"); 
+  }
+  arg13 = (double *)(argp13);
+  if (!(SWIG_IsOK((res14 = SWIG_ConvertPtr(obj13,SWIG_as_voidptrptr(&arg14),SWIGTYPE_p_int,0))))) {
+    int val; 
+    int ecode = SWIG_AsVal_int(obj13, &val);
+    if (!SWIG_IsOK(ecode)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode), "in method '" "cl_tracer_number_counts_new" "', argument " "14"" of type '" "int""'");
+    }
+    temp14 = (int)(val);
+    arg14 = &temp14;
+    res14 = SWIG_AddTmpMask(ecode);
+  }
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (CCL_ClTracer *)ccl_cl_tracer_number_counts_new(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CCL_ClTracer, 0 |  0 );
+  if (SWIG_IsTmpObj(res14)) {
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_int((*arg14)));
+  } else {
+    int new_flags = SWIG_IsNewObj(res14) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg14), SWIGTYPE_p_int, new_flags));
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_cl_tracer_number_counts_simple_new(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  ccl_cosmology *arg1 = (ccl_cosmology *) 0 ;
+  double arg2 ;
+  int arg3 ;
+  double *arg4 = (double *) 0 ;
+  double *arg5 = (double *) 0 ;
+  int arg6 ;
+  double *arg7 = (double *) 0 ;
+  double *arg8 = (double *) 0 ;
+  int *arg9 = (int *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  void *argp4 = 0 ;
+  int res4 = 0 ;
+  void *argp5 = 0 ;
+  int res5 = 0 ;
+  int val6 ;
+  int ecode6 = 0 ;
+  void *argp7 = 0 ;
+  int res7 = 0 ;
+  void *argp8 = 0 ;
+  int res8 = 0 ;
+  int temp9 ;
+  int res9 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  PyObject * obj5 = 0 ;
+  PyObject * obj6 = 0 ;
+  PyObject * obj7 = 0 ;
+  PyObject * obj8 = 0 ;
+  CCL_ClTracer *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOO:cl_tracer_number_counts_simple_new",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_ccl_cosmology, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "1"" of type '" "ccl_cosmology *""'"); 
+  }
+  arg1 = (ccl_cosmology *)(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = (double)(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = (int)(val3);
+  res4 = SWIG_ConvertPtr(obj3, &argp4,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res4)) {
+    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "4"" of type '" "double *""'"); 
+  }
+  arg4 = (double *)(argp4);
+  res5 = SWIG_ConvertPtr(obj4, &argp5,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res5)) {
+    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "5"" of type '" "double *""'"); 
+  }
+  arg5 = (double *)(argp5);
+  ecode6 = SWIG_AsVal_int(obj5, &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "6"" of type '" "int""'");
+  } 
+  arg6 = (int)(val6);
+  res7 = SWIG_ConvertPtr(obj6, &argp7,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res7)) {
+    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "7"" of type '" "double *""'"); 
+  }
+  arg7 = (double *)(argp7);
+  res8 = SWIG_ConvertPtr(obj7, &argp8,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res8)) {
+    SWIG_exception_fail(SWIG_ArgError(res8), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "8"" of type '" "double *""'"); 
+  }
+  arg8 = (double *)(argp8);
+  if (!(SWIG_IsOK((res9 = SWIG_ConvertPtr(obj8,SWIG_as_voidptrptr(&arg9),SWIGTYPE_p_int,0))))) {
+    int val; 
+    int ecode = SWIG_AsVal_int(obj8, &val);
+    if (!SWIG_IsOK(ecode)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "9"" of type '" "int""'");
+    }
+    temp9 = (int)(val);
+    arg9 = &temp9;
+    res9 = SWIG_AddTmpMask(ecode);
+  }
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (CCL_ClTracer *)ccl_cl_tracer_number_counts_simple_new(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CCL_ClTracer, 0 |  0 );
+  if (SWIG_IsTmpObj(res9)) {
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_int((*arg9)));
+  } else {
+    int new_flags = SWIG_IsNewObj(res9) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg9), SWIGTYPE_p_int, new_flags));
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_cl_tracer_lensing_new(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  ccl_cosmology *arg1 = (ccl_cosmology *) 0 ;
+  double arg2 ;
   int arg3 ;
   int arg4 ;
   double *arg5 = (double *) 0 ;
@@ -14515,7 +14847,7 @@ SWIGINTERN PyObject *_wrap_cl_tracer_number_counts_new(PyObject *SWIGUNUSEDPARM(
   int *arg13 = (int *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  int val2 ;
+  double val2 ;
   int ecode2 = 0 ;
   int val3 ;
   int ecode3 = 0 ;
@@ -14554,72 +14886,72 @@ SWIGINTERN PyObject *_wrap_cl_tracer_number_counts_new(PyObject *SWIGUNUSEDPARM(
   PyObject * obj12 = 0 ;
   CCL_ClTracer *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOOOOOO:cl_tracer_number_counts_new",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8,&obj9,&obj10,&obj11,&obj12)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOOOOOO:cl_tracer_lensing_new",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8,&obj9,&obj10,&obj11,&obj12)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_ccl_cosmology, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "cl_tracer_number_counts_new" "', argument " "1"" of type '" "ccl_cosmology *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "cl_tracer_lensing_new" "', argument " "1"" of type '" "ccl_cosmology *""'"); 
   }
   arg1 = (ccl_cosmology *)(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "cl_tracer_number_counts_new" "', argument " "2"" of type '" "int""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "cl_tracer_lensing_new" "', argument " "2"" of type '" "double""'");
   } 
-  arg2 = (int)(val2);
+  arg2 = (double)(val2);
   ecode3 = SWIG_AsVal_int(obj2, &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "cl_tracer_number_counts_new" "', argument " "3"" of type '" "int""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "cl_tracer_lensing_new" "', argument " "3"" of type '" "int""'");
   } 
   arg3 = (int)(val3);
   ecode4 = SWIG_AsVal_int(obj3, &val4);
   if (!SWIG_IsOK(ecode4)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "cl_tracer_number_counts_new" "', argument " "4"" of type '" "int""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "cl_tracer_lensing_new" "', argument " "4"" of type '" "int""'");
   } 
   arg4 = (int)(val4);
   res5 = SWIG_ConvertPtr(obj4, &argp5,SWIGTYPE_p_double, 0 |  0 );
   if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "cl_tracer_number_counts_new" "', argument " "5"" of type '" "double *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "cl_tracer_lensing_new" "', argument " "5"" of type '" "double *""'"); 
   }
   arg5 = (double *)(argp5);
   res6 = SWIG_ConvertPtr(obj5, &argp6,SWIGTYPE_p_double, 0 |  0 );
   if (!SWIG_IsOK(res6)) {
-    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "cl_tracer_number_counts_new" "', argument " "6"" of type '" "double *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "cl_tracer_lensing_new" "', argument " "6"" of type '" "double *""'"); 
   }
   arg6 = (double *)(argp6);
   ecode7 = SWIG_AsVal_int(obj6, &val7);
   if (!SWIG_IsOK(ecode7)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "cl_tracer_number_counts_new" "', argument " "7"" of type '" "int""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode7), "in method '" "cl_tracer_lensing_new" "', argument " "7"" of type '" "int""'");
   } 
   arg7 = (int)(val7);
   res8 = SWIG_ConvertPtr(obj7, &argp8,SWIGTYPE_p_double, 0 |  0 );
   if (!SWIG_IsOK(res8)) {
-    SWIG_exception_fail(SWIG_ArgError(res8), "in method '" "cl_tracer_number_counts_new" "', argument " "8"" of type '" "double *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res8), "in method '" "cl_tracer_lensing_new" "', argument " "8"" of type '" "double *""'"); 
   }
   arg8 = (double *)(argp8);
   res9 = SWIG_ConvertPtr(obj8, &argp9,SWIGTYPE_p_double, 0 |  0 );
   if (!SWIG_IsOK(res9)) {
-    SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "cl_tracer_number_counts_new" "', argument " "9"" of type '" "double *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res9), "in method '" "cl_tracer_lensing_new" "', argument " "9"" of type '" "double *""'"); 
   }
   arg9 = (double *)(argp9);
   ecode10 = SWIG_AsVal_int(obj9, &val10);
   if (!SWIG_IsOK(ecode10)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "cl_tracer_number_counts_new" "', argument " "10"" of type '" "int""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode10), "in method '" "cl_tracer_lensing_new" "', argument " "10"" of type '" "int""'");
   } 
   arg10 = (int)(val10);
   res11 = SWIG_ConvertPtr(obj10, &argp11,SWIGTYPE_p_double, 0 |  0 );
   if (!SWIG_IsOK(res11)) {
-    SWIG_exception_fail(SWIG_ArgError(res11), "in method '" "cl_tracer_number_counts_new" "', argument " "11"" of type '" "double *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res11), "in method '" "cl_tracer_lensing_new" "', argument " "11"" of type '" "double *""'"); 
   }
   arg11 = (double *)(argp11);
   res12 = SWIG_ConvertPtr(obj11, &argp12,SWIGTYPE_p_double, 0 |  0 );
   if (!SWIG_IsOK(res12)) {
-    SWIG_exception_fail(SWIG_ArgError(res12), "in method '" "cl_tracer_number_counts_new" "', argument " "12"" of type '" "double *""'"); 
+    SWIG_exception_fail(SWIG_ArgError(res12), "in method '" "cl_tracer_lensing_new" "', argument " "12"" of type '" "double *""'"); 
   }
   arg12 = (double *)(argp12);
   if (!(SWIG_IsOK((res13 = SWIG_ConvertPtr(obj12,SWIG_as_voidptrptr(&arg13),SWIGTYPE_p_int,0))))) {
     int val; 
     int ecode = SWIG_AsVal_int(obj12, &val);
     if (!SWIG_IsOK(ecode)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode), "in method '" "cl_tracer_number_counts_new" "', argument " "13"" of type '" "int""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode), "in method '" "cl_tracer_lensing_new" "', argument " "13"" of type '" "int""'");
     }
     temp13 = (int)(val);
     arg13 = &temp13;
@@ -14627,7 +14959,7 @@ SWIGINTERN PyObject *_wrap_cl_tracer_number_counts_new(PyObject *SWIGUNUSEDPARM(
   }
   {
     SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (CCL_ClTracer *)ccl_cl_tracer_number_counts_new(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13);
+    result = (CCL_ClTracer *)ccl_cl_tracer_lensing_new(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13);
     SWIG_PYTHON_THREAD_END_ALLOW;
   }
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CCL_ClTracer, 0 |  0 );
@@ -14643,123 +14975,17 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_cl_tracer_number_counts_simple_new(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_cl_tracer_lensing_simple_new(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   ccl_cosmology *arg1 = (ccl_cosmology *) 0 ;
-  int arg2 ;
-  double *arg3 = (double *) 0 ;
-  double *arg4 = (double *) 0 ;
-  int arg5 ;
-  double *arg6 = (double *) 0 ;
-  double *arg7 = (double *) 0 ;
-  int *arg8 = (int *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  int val5 ;
-  int ecode5 = 0 ;
-  void *argp6 = 0 ;
-  int res6 = 0 ;
-  void *argp7 = 0 ;
-  int res7 = 0 ;
-  int temp8 ;
-  int res8 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  PyObject * obj3 = 0 ;
-  PyObject * obj4 = 0 ;
-  PyObject * obj5 = 0 ;
-  PyObject * obj6 = 0 ;
-  PyObject * obj7 = 0 ;
-  CCL_ClTracer *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOO:cl_tracer_number_counts_simple_new",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_ccl_cosmology, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "1"" of type '" "ccl_cosmology *""'"); 
-  }
-  arg1 = (ccl_cosmology *)(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = (int)(val2);
-  res3 = SWIG_ConvertPtr(obj2, &argp3,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "3"" of type '" "double *""'"); 
-  }
-  arg3 = (double *)(argp3);
-  res4 = SWIG_ConvertPtr(obj3, &argp4,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "4"" of type '" "double *""'"); 
-  }
-  arg4 = (double *)(argp4);
-  ecode5 = SWIG_AsVal_int(obj4, &val5);
-  if (!SWIG_IsOK(ecode5)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "5"" of type '" "int""'");
-  } 
-  arg5 = (int)(val5);
-  res6 = SWIG_ConvertPtr(obj5, &argp6,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res6)) {
-    SWIG_exception_fail(SWIG_ArgError(res6), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "6"" of type '" "double *""'"); 
-  }
-  arg6 = (double *)(argp6);
-  res7 = SWIG_ConvertPtr(obj6, &argp7,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res7)) {
-    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "7"" of type '" "double *""'"); 
-  }
-  arg7 = (double *)(argp7);
-  if (!(SWIG_IsOK((res8 = SWIG_ConvertPtr(obj7,SWIG_as_voidptrptr(&arg8),SWIGTYPE_p_int,0))))) {
-    int val; 
-    int ecode = SWIG_AsVal_int(obj7, &val);
-    if (!SWIG_IsOK(ecode)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode), "in method '" "cl_tracer_number_counts_simple_new" "', argument " "8"" of type '" "int""'");
-    }
-    temp8 = (int)(val);
-    arg8 = &temp8;
-    res8 = SWIG_AddTmpMask(ecode);
-  }
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (CCL_ClTracer *)ccl_cl_tracer_number_counts_simple_new(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
-    SWIG_PYTHON_THREAD_END_ALLOW;
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CCL_ClTracer, 0 |  0 );
-  if (SWIG_IsTmpObj(res8)) {
-    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_int((*arg8)));
-  } else {
-    int new_flags = SWIG_IsNewObj(res8) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
-    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg8), SWIGTYPE_p_int, new_flags));
-  }
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_cl_tracer_lensing_new(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  ccl_cosmology *arg1 = (ccl_cosmology *) 0 ;
-  int arg2 ;
+  double arg2 ;
   int arg3 ;
   double *arg4 = (double *) 0 ;
   double *arg5 = (double *) 0 ;
-  int arg6 ;
-  double *arg7 = (double *) 0 ;
-  double *arg8 = (double *) 0 ;
-  int arg9 ;
-  double *arg10 = (double *) 0 ;
-  double *arg11 = (double *) 0 ;
-  int *arg12 = (int *) 0 ;
+  int *arg6 = (int *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  int val2 ;
+  double val2 ;
   int ecode2 = 0 ;
   int val3 ;
   int ecode3 = 0 ;
@@ -14767,184 +14993,63 @@ SWIGINTERN PyObject *_wrap_cl_tracer_lensing_new(PyObject *SWIGUNUSEDPARM(self),
   int res4 = 0 ;
   void *argp5 = 0 ;
   int res5 = 0 ;
-  int val6 ;
-  int ecode6 = 0 ;
-  void *argp7 = 0 ;
-  int res7 = 0 ;
-  void *argp8 = 0 ;
-  int res8 = 0 ;
-  int val9 ;
-  int ecode9 = 0 ;
-  void *argp10 = 0 ;
-  int res10 = 0 ;
-  void *argp11 = 0 ;
-  int res11 = 0 ;
-  int temp12 ;
-  int res12 = 0 ;
+  int temp6 ;
+  int res6 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
   PyObject * obj3 = 0 ;
   PyObject * obj4 = 0 ;
   PyObject * obj5 = 0 ;
-  PyObject * obj6 = 0 ;
-  PyObject * obj7 = 0 ;
-  PyObject * obj8 = 0 ;
-  PyObject * obj9 = 0 ;
-  PyObject * obj10 = 0 ;
-  PyObject * obj11 = 0 ;
   CCL_ClTracer *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOOOOO:cl_tracer_lensing_new",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8,&obj9,&obj10,&obj11)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_ccl_cosmology, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "cl_tracer_lensing_new" "', argument " "1"" of type '" "ccl_cosmology *""'"); 
-  }
-  arg1 = (ccl_cosmology *)(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
-  if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "cl_tracer_lensing_new" "', argument " "2"" of type '" "int""'");
-  } 
-  arg2 = (int)(val2);
-  ecode3 = SWIG_AsVal_int(obj2, &val3);
-  if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "cl_tracer_lensing_new" "', argument " "3"" of type '" "int""'");
-  } 
-  arg3 = (int)(val3);
-  res4 = SWIG_ConvertPtr(obj3, &argp4,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res4)) {
-    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "cl_tracer_lensing_new" "', argument " "4"" of type '" "double *""'"); 
-  }
-  arg4 = (double *)(argp4);
-  res5 = SWIG_ConvertPtr(obj4, &argp5,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res5)) {
-    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "cl_tracer_lensing_new" "', argument " "5"" of type '" "double *""'"); 
-  }
-  arg5 = (double *)(argp5);
-  ecode6 = SWIG_AsVal_int(obj5, &val6);
-  if (!SWIG_IsOK(ecode6)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "cl_tracer_lensing_new" "', argument " "6"" of type '" "int""'");
-  } 
-  arg6 = (int)(val6);
-  res7 = SWIG_ConvertPtr(obj6, &argp7,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res7)) {
-    SWIG_exception_fail(SWIG_ArgError(res7), "in method '" "cl_tracer_lensing_new" "', argument " "7"" of type '" "double *""'"); 
-  }
-  arg7 = (double *)(argp7);
-  res8 = SWIG_ConvertPtr(obj7, &argp8,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res8)) {
-    SWIG_exception_fail(SWIG_ArgError(res8), "in method '" "cl_tracer_lensing_new" "', argument " "8"" of type '" "double *""'"); 
-  }
-  arg8 = (double *)(argp8);
-  ecode9 = SWIG_AsVal_int(obj8, &val9);
-  if (!SWIG_IsOK(ecode9)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode9), "in method '" "cl_tracer_lensing_new" "', argument " "9"" of type '" "int""'");
-  } 
-  arg9 = (int)(val9);
-  res10 = SWIG_ConvertPtr(obj9, &argp10,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res10)) {
-    SWIG_exception_fail(SWIG_ArgError(res10), "in method '" "cl_tracer_lensing_new" "', argument " "10"" of type '" "double *""'"); 
-  }
-  arg10 = (double *)(argp10);
-  res11 = SWIG_ConvertPtr(obj10, &argp11,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res11)) {
-    SWIG_exception_fail(SWIG_ArgError(res11), "in method '" "cl_tracer_lensing_new" "', argument " "11"" of type '" "double *""'"); 
-  }
-  arg11 = (double *)(argp11);
-  if (!(SWIG_IsOK((res12 = SWIG_ConvertPtr(obj11,SWIG_as_voidptrptr(&arg12),SWIGTYPE_p_int,0))))) {
-    int val; 
-    int ecode = SWIG_AsVal_int(obj11, &val);
-    if (!SWIG_IsOK(ecode)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode), "in method '" "cl_tracer_lensing_new" "', argument " "12"" of type '" "int""'");
-    }
-    temp12 = (int)(val);
-    arg12 = &temp12;
-    res12 = SWIG_AddTmpMask(ecode);
-  }
-  {
-    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (CCL_ClTracer *)ccl_cl_tracer_lensing_new(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12);
-    SWIG_PYTHON_THREAD_END_ALLOW;
-  }
-  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CCL_ClTracer, 0 |  0 );
-  if (SWIG_IsTmpObj(res12)) {
-    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_int((*arg12)));
-  } else {
-    int new_flags = SWIG_IsNewObj(res12) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
-    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg12), SWIGTYPE_p_int, new_flags));
-  }
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_cl_tracer_lensing_simple_new(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  ccl_cosmology *arg1 = (ccl_cosmology *) 0 ;
-  int arg2 ;
-  double *arg3 = (double *) 0 ;
-  double *arg4 = (double *) 0 ;
-  int *arg5 = (int *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  int val2 ;
-  int ecode2 = 0 ;
-  void *argp3 = 0 ;
-  int res3 = 0 ;
-  void *argp4 = 0 ;
-  int res4 = 0 ;
-  int temp5 ;
-  int res5 = 0 ;
-  PyObject * obj0 = 0 ;
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-  PyObject * obj3 = 0 ;
-  PyObject * obj4 = 0 ;
-  CCL_ClTracer *result = 0 ;
-  
-  if (!PyArg_ParseTuple(args,(char *)"OOOOO:cl_tracer_lensing_simple_new",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOO:cl_tracer_lensing_simple_new",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_ccl_cosmology, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "cl_tracer_lensing_simple_new" "', argument " "1"" of type '" "ccl_cosmology *""'"); 
   }
   arg1 = (ccl_cosmology *)(argp1);
-  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "cl_tracer_lensing_simple_new" "', argument " "2"" of type '" "int""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "cl_tracer_lensing_simple_new" "', argument " "2"" of type '" "double""'");
   } 
-  arg2 = (int)(val2);
-  res3 = SWIG_ConvertPtr(obj2, &argp3,SWIGTYPE_p_double, 0 |  0 );
-  if (!SWIG_IsOK(res3)) {
-    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "cl_tracer_lensing_simple_new" "', argument " "3"" of type '" "double *""'"); 
-  }
-  arg3 = (double *)(argp3);
+  arg2 = (double)(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "cl_tracer_lensing_simple_new" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = (int)(val3);
   res4 = SWIG_ConvertPtr(obj3, &argp4,SWIGTYPE_p_double, 0 |  0 );
   if (!SWIG_IsOK(res4)) {
     SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "cl_tracer_lensing_simple_new" "', argument " "4"" of type '" "double *""'"); 
   }
   arg4 = (double *)(argp4);
-  if (!(SWIG_IsOK((res5 = SWIG_ConvertPtr(obj4,SWIG_as_voidptrptr(&arg5),SWIGTYPE_p_int,0))))) {
+  res5 = SWIG_ConvertPtr(obj4, &argp5,SWIGTYPE_p_double, 0 |  0 );
+  if (!SWIG_IsOK(res5)) {
+    SWIG_exception_fail(SWIG_ArgError(res5), "in method '" "cl_tracer_lensing_simple_new" "', argument " "5"" of type '" "double *""'"); 
+  }
+  arg5 = (double *)(argp5);
+  if (!(SWIG_IsOK((res6 = SWIG_ConvertPtr(obj5,SWIG_as_voidptrptr(&arg6),SWIGTYPE_p_int,0))))) {
     int val; 
-    int ecode = SWIG_AsVal_int(obj4, &val);
+    int ecode = SWIG_AsVal_int(obj5, &val);
     if (!SWIG_IsOK(ecode)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode), "in method '" "cl_tracer_lensing_simple_new" "', argument " "5"" of type '" "int""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode), "in method '" "cl_tracer_lensing_simple_new" "', argument " "6"" of type '" "int""'");
     }
-    temp5 = (int)(val);
-    arg5 = &temp5;
-    res5 = SWIG_AddTmpMask(ecode);
+    temp6 = (int)(val);
+    arg6 = &temp6;
+    res6 = SWIG_AddTmpMask(ecode);
   }
   {
     SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (CCL_ClTracer *)ccl_cl_tracer_lensing_simple_new(arg1,arg2,arg3,arg4,arg5);
+    result = (CCL_ClTracer *)ccl_cl_tracer_lensing_simple_new(arg1,arg2,arg3,arg4,arg5,arg6);
     SWIG_PYTHON_THREAD_END_ALLOW;
   }
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CCL_ClTracer, 0 |  0 );
-  if (SWIG_IsTmpObj(res5)) {
-    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_int((*arg5)));
+  if (SWIG_IsTmpObj(res6)) {
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_int((*arg6)));
   } else {
-    int new_flags = SWIG_IsNewObj(res5) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
-    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg5), SWIGTYPE_p_int, new_flags));
+    int new_flags = SWIG_IsNewObj(res6) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg6), SWIGTYPE_p_int, new_flags));
   }
   return resultobj;
 fail:
@@ -15054,62 +15159,65 @@ SWIGINTERN PyObject *_wrap_cl_tracer_new_wrapper(PyObject *SWIGUNUSEDPARM(self),
   PyObject *resultobj = 0;
   ccl_cosmology *arg1 = (ccl_cosmology *) 0 ;
   int arg2 ;
-  int arg3 ;
+  double arg3 ;
   int arg4 ;
   int arg5 ;
   int arg6 ;
-  double *arg7 = (double *) 0 ;
-  int arg8 ;
-  double *arg9 = (double *) 0 ;
-  int arg10 ;
-  double *arg11 = (double *) 0 ;
-  int arg12 ;
-  double *arg13 = (double *) 0 ;
-  int arg14 ;
-  double *arg15 = (double *) 0 ;
-  int arg16 ;
-  double *arg17 = (double *) 0 ;
-  int arg18 ;
-  double *arg19 = (double *) 0 ;
-  int arg20 ;
-  double *arg21 = (double *) 0 ;
-  int arg22 ;
-  double *arg23 = (double *) 0 ;
-  int arg24 ;
-  double *arg25 = (double *) 0 ;
-  int *arg26 = (int *) 0 ;
+  int arg7 ;
+  double *arg8 = (double *) 0 ;
+  int arg9 ;
+  double *arg10 = (double *) 0 ;
+  int arg11 ;
+  double *arg12 = (double *) 0 ;
+  int arg13 ;
+  double *arg14 = (double *) 0 ;
+  int arg15 ;
+  double *arg16 = (double *) 0 ;
+  int arg17 ;
+  double *arg18 = (double *) 0 ;
+  int arg19 ;
+  double *arg20 = (double *) 0 ;
+  int arg21 ;
+  double *arg22 = (double *) 0 ;
+  int arg23 ;
+  double *arg24 = (double *) 0 ;
+  int arg25 ;
+  double *arg26 = (double *) 0 ;
+  int *arg27 = (int *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   int val2 ;
   int ecode2 = 0 ;
-  int val3 ;
+  double val3 ;
   int ecode3 = 0 ;
   int val4 ;
   int ecode4 = 0 ;
   int val5 ;
   int ecode5 = 0 ;
-  PyArrayObject *array6 = NULL ;
-  int is_new_object6 = 0 ;
-  PyArrayObject *array8 = NULL ;
-  int is_new_object8 = 0 ;
-  PyArrayObject *array10 = NULL ;
-  int is_new_object10 = 0 ;
-  PyArrayObject *array12 = NULL ;
-  int is_new_object12 = 0 ;
-  PyArrayObject *array14 = NULL ;
-  int is_new_object14 = 0 ;
-  PyArrayObject *array16 = NULL ;
-  int is_new_object16 = 0 ;
-  PyArrayObject *array18 = NULL ;
-  int is_new_object18 = 0 ;
-  PyArrayObject *array20 = NULL ;
-  int is_new_object20 = 0 ;
-  PyArrayObject *array22 = NULL ;
-  int is_new_object22 = 0 ;
-  PyArrayObject *array24 = NULL ;
-  int is_new_object24 = 0 ;
-  int temp26 ;
-  int res26 = 0 ;
+  int val6 ;
+  int ecode6 = 0 ;
+  PyArrayObject *array7 = NULL ;
+  int is_new_object7 = 0 ;
+  PyArrayObject *array9 = NULL ;
+  int is_new_object9 = 0 ;
+  PyArrayObject *array11 = NULL ;
+  int is_new_object11 = 0 ;
+  PyArrayObject *array13 = NULL ;
+  int is_new_object13 = 0 ;
+  PyArrayObject *array15 = NULL ;
+  int is_new_object15 = 0 ;
+  PyArrayObject *array17 = NULL ;
+  int is_new_object17 = 0 ;
+  PyArrayObject *array19 = NULL ;
+  int is_new_object19 = 0 ;
+  PyArrayObject *array21 = NULL ;
+  int is_new_object21 = 0 ;
+  PyArrayObject *array23 = NULL ;
+  int is_new_object23 = 0 ;
+  PyArrayObject *array25 = NULL ;
+  int is_new_object25 = 0 ;
+  int temp27 ;
+  int res27 = 0 ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   PyObject * obj2 = 0 ;
@@ -15126,9 +15234,10 @@ SWIGINTERN PyObject *_wrap_cl_tracer_new_wrapper(PyObject *SWIGUNUSEDPARM(self),
   PyObject * obj13 = 0 ;
   PyObject * obj14 = 0 ;
   PyObject * obj15 = 0 ;
+  PyObject * obj16 = 0 ;
   CCL_ClTracer *result = 0 ;
   
-  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOOOOOOOOO:cl_tracer_new_wrapper",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8,&obj9,&obj10,&obj11,&obj12,&obj13,&obj14,&obj15)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOOOOOOOOOOOOOOOO:cl_tracer_new_wrapper",&obj0,&obj1,&obj2,&obj3,&obj4,&obj5,&obj6,&obj7,&obj8,&obj9,&obj10,&obj11,&obj12,&obj13,&obj14,&obj15,&obj16)) SWIG_fail;
   res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_ccl_cosmology, 0 |  0 );
   if (!SWIG_IsOK(res1)) {
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "cl_tracer_new_wrapper" "', argument " "1"" of type '" "ccl_cosmology *""'"); 
@@ -15139,11 +15248,11 @@ SWIGINTERN PyObject *_wrap_cl_tracer_new_wrapper(PyObject *SWIGUNUSEDPARM(self),
     SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "cl_tracer_new_wrapper" "', argument " "2"" of type '" "int""'");
   } 
   arg2 = (int)(val2);
-  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  ecode3 = SWIG_AsVal_double(obj2, &val3);
   if (!SWIG_IsOK(ecode3)) {
-    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "cl_tracer_new_wrapper" "', argument " "3"" of type '" "int""'");
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "cl_tracer_new_wrapper" "', argument " "3"" of type '" "double""'");
   } 
-  arg3 = (int)(val3);
+  arg3 = (double)(val3);
   ecode4 = SWIG_AsVal_int(obj3, &val4);
   if (!SWIG_IsOK(ecode4)) {
     SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "cl_tracer_new_wrapper" "', argument " "4"" of type '" "int""'");
@@ -15154,268 +15263,273 @@ SWIGINTERN PyObject *_wrap_cl_tracer_new_wrapper(PyObject *SWIGUNUSEDPARM(self),
     SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "cl_tracer_new_wrapper" "', argument " "5"" of type '" "int""'");
   } 
   arg5 = (int)(val5);
+  ecode6 = SWIG_AsVal_int(obj5, &val6);
+  if (!SWIG_IsOK(ecode6)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode6), "in method '" "cl_tracer_new_wrapper" "', argument " "6"" of type '" "int""'");
+  } 
+  arg6 = (int)(val6);
   {
     npy_intp size[1] = {
       -1
     };
-    array6 = obj_to_array_contiguous_allow_conversion(obj5,
+    array7 = obj_to_array_contiguous_allow_conversion(obj6,
       NPY_DOUBLE,
-      &is_new_object6);
-    if (!array6 || !require_dimensions(array6, 1) ||
-      !require_size(array6, size, 1)) SWIG_fail;
-    arg6 = (int) array_size(array6,0);
-    arg7 = (double*) array_data(array6);
+      &is_new_object7);
+    if (!array7 || !require_dimensions(array7, 1) ||
+      !require_size(array7, size, 1)) SWIG_fail;
+    arg7 = (int) array_size(array7,0);
+    arg8 = (double*) array_data(array7);
   }
   {
     npy_intp size[1] = {
       -1
     };
-    array8 = obj_to_array_contiguous_allow_conversion(obj6,
+    array9 = obj_to_array_contiguous_allow_conversion(obj7,
       NPY_DOUBLE,
-      &is_new_object8);
-    if (!array8 || !require_dimensions(array8, 1) ||
-      !require_size(array8, size, 1)) SWIG_fail;
-    arg8 = (int) array_size(array8,0);
-    arg9 = (double*) array_data(array8);
+      &is_new_object9);
+    if (!array9 || !require_dimensions(array9, 1) ||
+      !require_size(array9, size, 1)) SWIG_fail;
+    arg9 = (int) array_size(array9,0);
+    arg10 = (double*) array_data(array9);
   }
   {
     npy_intp size[1] = {
       -1
     };
-    array10 = obj_to_array_contiguous_allow_conversion(obj7,
+    array11 = obj_to_array_contiguous_allow_conversion(obj8,
       NPY_DOUBLE,
-      &is_new_object10);
-    if (!array10 || !require_dimensions(array10, 1) ||
-      !require_size(array10, size, 1)) SWIG_fail;
-    arg10 = (int) array_size(array10,0);
-    arg11 = (double*) array_data(array10);
+      &is_new_object11);
+    if (!array11 || !require_dimensions(array11, 1) ||
+      !require_size(array11, size, 1)) SWIG_fail;
+    arg11 = (int) array_size(array11,0);
+    arg12 = (double*) array_data(array11);
   }
   {
     npy_intp size[1] = {
       -1
     };
-    array12 = obj_to_array_contiguous_allow_conversion(obj8,
+    array13 = obj_to_array_contiguous_allow_conversion(obj9,
       NPY_DOUBLE,
-      &is_new_object12);
-    if (!array12 || !require_dimensions(array12, 1) ||
-      !require_size(array12, size, 1)) SWIG_fail;
-    arg12 = (int) array_size(array12,0);
-    arg13 = (double*) array_data(array12);
+      &is_new_object13);
+    if (!array13 || !require_dimensions(array13, 1) ||
+      !require_size(array13, size, 1)) SWIG_fail;
+    arg13 = (int) array_size(array13,0);
+    arg14 = (double*) array_data(array13);
   }
   {
     npy_intp size[1] = {
       -1
     };
-    array14 = obj_to_array_contiguous_allow_conversion(obj9,
+    array15 = obj_to_array_contiguous_allow_conversion(obj10,
       NPY_DOUBLE,
-      &is_new_object14);
-    if (!array14 || !require_dimensions(array14, 1) ||
-      !require_size(array14, size, 1)) SWIG_fail;
-    arg14 = (int) array_size(array14,0);
-    arg15 = (double*) array_data(array14);
+      &is_new_object15);
+    if (!array15 || !require_dimensions(array15, 1) ||
+      !require_size(array15, size, 1)) SWIG_fail;
+    arg15 = (int) array_size(array15,0);
+    arg16 = (double*) array_data(array15);
   }
   {
     npy_intp size[1] = {
       -1
     };
-    array16 = obj_to_array_contiguous_allow_conversion(obj10,
+    array17 = obj_to_array_contiguous_allow_conversion(obj11,
       NPY_DOUBLE,
-      &is_new_object16);
-    if (!array16 || !require_dimensions(array16, 1) ||
-      !require_size(array16, size, 1)) SWIG_fail;
-    arg16 = (int) array_size(array16,0);
-    arg17 = (double*) array_data(array16);
+      &is_new_object17);
+    if (!array17 || !require_dimensions(array17, 1) ||
+      !require_size(array17, size, 1)) SWIG_fail;
+    arg17 = (int) array_size(array17,0);
+    arg18 = (double*) array_data(array17);
   }
   {
     npy_intp size[1] = {
       -1
     };
-    array18 = obj_to_array_contiguous_allow_conversion(obj11,
+    array19 = obj_to_array_contiguous_allow_conversion(obj12,
       NPY_DOUBLE,
-      &is_new_object18);
-    if (!array18 || !require_dimensions(array18, 1) ||
-      !require_size(array18, size, 1)) SWIG_fail;
-    arg18 = (int) array_size(array18,0);
-    arg19 = (double*) array_data(array18);
+      &is_new_object19);
+    if (!array19 || !require_dimensions(array19, 1) ||
+      !require_size(array19, size, 1)) SWIG_fail;
+    arg19 = (int) array_size(array19,0);
+    arg20 = (double*) array_data(array19);
   }
   {
     npy_intp size[1] = {
       -1
     };
-    array20 = obj_to_array_contiguous_allow_conversion(obj12,
+    array21 = obj_to_array_contiguous_allow_conversion(obj13,
       NPY_DOUBLE,
-      &is_new_object20);
-    if (!array20 || !require_dimensions(array20, 1) ||
-      !require_size(array20, size, 1)) SWIG_fail;
-    arg20 = (int) array_size(array20,0);
-    arg21 = (double*) array_data(array20);
+      &is_new_object21);
+    if (!array21 || !require_dimensions(array21, 1) ||
+      !require_size(array21, size, 1)) SWIG_fail;
+    arg21 = (int) array_size(array21,0);
+    arg22 = (double*) array_data(array21);
   }
   {
     npy_intp size[1] = {
       -1
     };
-    array22 = obj_to_array_contiguous_allow_conversion(obj13,
+    array23 = obj_to_array_contiguous_allow_conversion(obj14,
       NPY_DOUBLE,
-      &is_new_object22);
-    if (!array22 || !require_dimensions(array22, 1) ||
-      !require_size(array22, size, 1)) SWIG_fail;
-    arg22 = (int) array_size(array22,0);
-    arg23 = (double*) array_data(array22);
+      &is_new_object23);
+    if (!array23 || !require_dimensions(array23, 1) ||
+      !require_size(array23, size, 1)) SWIG_fail;
+    arg23 = (int) array_size(array23,0);
+    arg24 = (double*) array_data(array23);
   }
   {
     npy_intp size[1] = {
       -1
     };
-    array24 = obj_to_array_contiguous_allow_conversion(obj14,
+    array25 = obj_to_array_contiguous_allow_conversion(obj15,
       NPY_DOUBLE,
-      &is_new_object24);
-    if (!array24 || !require_dimensions(array24, 1) ||
-      !require_size(array24, size, 1)) SWIG_fail;
-    arg24 = (int) array_size(array24,0);
-    arg25 = (double*) array_data(array24);
+      &is_new_object25);
+    if (!array25 || !require_dimensions(array25, 1) ||
+      !require_size(array25, size, 1)) SWIG_fail;
+    arg25 = (int) array_size(array25,0);
+    arg26 = (double*) array_data(array25);
   }
-  if (!(SWIG_IsOK((res26 = SWIG_ConvertPtr(obj15,SWIG_as_voidptrptr(&arg26),SWIGTYPE_p_int,0))))) {
+  if (!(SWIG_IsOK((res27 = SWIG_ConvertPtr(obj16,SWIG_as_voidptrptr(&arg27),SWIGTYPE_p_int,0))))) {
     int val; 
-    int ecode = SWIG_AsVal_int(obj15, &val);
+    int ecode = SWIG_AsVal_int(obj16, &val);
     if (!SWIG_IsOK(ecode)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode), "in method '" "cl_tracer_new_wrapper" "', argument " "26"" of type '" "int""'");
+      SWIG_exception_fail(SWIG_ArgError(ecode), "in method '" "cl_tracer_new_wrapper" "', argument " "27"" of type '" "int""'");
     }
-    temp26 = (int)(val);
-    arg26 = &temp26;
-    res26 = SWIG_AddTmpMask(ecode);
+    temp27 = (int)(val);
+    arg27 = &temp27;
+    res27 = SWIG_AddTmpMask(ecode);
   }
   {
     SWIG_PYTHON_THREAD_BEGIN_ALLOW;
-    result = (CCL_ClTracer *)cl_tracer_new_wrapper(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26);
+    result = (CCL_ClTracer *)cl_tracer_new_wrapper(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15,arg16,arg17,arg18,arg19,arg20,arg21,arg22,arg23,arg24,arg25,arg26,arg27);
     SWIG_PYTHON_THREAD_END_ALLOW;
   }
   resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CCL_ClTracer, 0 |  0 );
-  if (SWIG_IsTmpObj(res26)) {
-    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_int((*arg26)));
+  if (SWIG_IsTmpObj(res27)) {
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_int((*arg27)));
   } else {
-    int new_flags = SWIG_IsNewObj(res26) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
-    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg26), SWIGTYPE_p_int, new_flags));
+    int new_flags = SWIG_IsNewObj(res27) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg27), SWIGTYPE_p_int, new_flags));
   }
   {
-    if (is_new_object6 && array6)
+    if (is_new_object7 && array7)
     {
-      Py_DECREF(array6); 
+      Py_DECREF(array7); 
     }
   }
   {
-    if (is_new_object8 && array8)
+    if (is_new_object9 && array9)
     {
-      Py_DECREF(array8); 
+      Py_DECREF(array9); 
     }
   }
   {
-    if (is_new_object10 && array10)
+    if (is_new_object11 && array11)
     {
-      Py_DECREF(array10); 
+      Py_DECREF(array11); 
     }
   }
   {
-    if (is_new_object12 && array12)
+    if (is_new_object13 && array13)
     {
-      Py_DECREF(array12); 
+      Py_DECREF(array13); 
     }
   }
   {
-    if (is_new_object14 && array14)
+    if (is_new_object15 && array15)
     {
-      Py_DECREF(array14); 
+      Py_DECREF(array15); 
     }
   }
   {
-    if (is_new_object16 && array16)
+    if (is_new_object17 && array17)
     {
-      Py_DECREF(array16); 
+      Py_DECREF(array17); 
     }
   }
   {
-    if (is_new_object18 && array18)
+    if (is_new_object19 && array19)
     {
-      Py_DECREF(array18); 
+      Py_DECREF(array19); 
     }
   }
   {
-    if (is_new_object20 && array20)
+    if (is_new_object21 && array21)
     {
-      Py_DECREF(array20); 
+      Py_DECREF(array21); 
     }
   }
   {
-    if (is_new_object22 && array22)
+    if (is_new_object23 && array23)
     {
-      Py_DECREF(array22); 
+      Py_DECREF(array23); 
     }
   }
   {
-    if (is_new_object24 && array24)
+    if (is_new_object25 && array25)
     {
-      Py_DECREF(array24); 
+      Py_DECREF(array25); 
     }
   }
   return resultobj;
 fail:
   {
-    if (is_new_object6 && array6)
+    if (is_new_object7 && array7)
     {
-      Py_DECREF(array6); 
+      Py_DECREF(array7); 
     }
   }
   {
-    if (is_new_object8 && array8)
+    if (is_new_object9 && array9)
     {
-      Py_DECREF(array8); 
+      Py_DECREF(array9); 
     }
   }
   {
-    if (is_new_object10 && array10)
+    if (is_new_object11 && array11)
     {
-      Py_DECREF(array10); 
+      Py_DECREF(array11); 
     }
   }
   {
-    if (is_new_object12 && array12)
+    if (is_new_object13 && array13)
     {
-      Py_DECREF(array12); 
+      Py_DECREF(array13); 
     }
   }
   {
-    if (is_new_object14 && array14)
+    if (is_new_object15 && array15)
     {
-      Py_DECREF(array14); 
+      Py_DECREF(array15); 
     }
   }
   {
-    if (is_new_object16 && array16)
+    if (is_new_object17 && array17)
     {
-      Py_DECREF(array16); 
+      Py_DECREF(array17); 
     }
   }
   {
-    if (is_new_object18 && array18)
+    if (is_new_object19 && array19)
     {
-      Py_DECREF(array18); 
+      Py_DECREF(array19); 
     }
   }
   {
-    if (is_new_object20 && array20)
+    if (is_new_object21 && array21)
     {
-      Py_DECREF(array20); 
+      Py_DECREF(array21); 
     }
   }
   {
-    if (is_new_object22 && array22)
+    if (is_new_object23 && array23)
     {
-      Py_DECREF(array22); 
+      Py_DECREF(array23); 
     }
   }
   {
-    if (is_new_object24 && array24)
+    if (is_new_object25 && array25)
     {
-      Py_DECREF(array24); 
+      Py_DECREF(array25); 
     }
   }
   return NULL;
@@ -17052,6 +17166,8 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"SplPar_swigregister", SplPar_swigregister, METH_VARARGS, NULL},
 	 { (char *)"CCL_ClTracer_tracer_type_set", _wrap_CCL_ClTracer_tracer_type_set, METH_VARARGS, (char *)"CCL_ClTracer_tracer_type_set(CCL_ClTracer self, int tracer_type)"},
 	 { (char *)"CCL_ClTracer_tracer_type_get", _wrap_CCL_ClTracer_tracer_type_get, METH_VARARGS, (char *)"CCL_ClTracer_tracer_type_get(CCL_ClTracer self) -> int"},
+	 { (char *)"CCL_ClTracer_r_sm_set", _wrap_CCL_ClTracer_r_sm_set, METH_VARARGS, (char *)"CCL_ClTracer_r_sm_set(CCL_ClTracer self, double r_sm)"},
+	 { (char *)"CCL_ClTracer_r_sm_get", _wrap_CCL_ClTracer_r_sm_get, METH_VARARGS, (char *)"CCL_ClTracer_r_sm_get(CCL_ClTracer self) -> double"},
 	 { (char *)"CCL_ClTracer_prefac_lensing_set", _wrap_CCL_ClTracer_prefac_lensing_set, METH_VARARGS, (char *)"CCL_ClTracer_prefac_lensing_set(CCL_ClTracer self, double prefac_lensing)"},
 	 { (char *)"CCL_ClTracer_prefac_lensing_get", _wrap_CCL_ClTracer_prefac_lensing_get, METH_VARARGS, (char *)"CCL_ClTracer_prefac_lensing_get(CCL_ClTracer self) -> double"},
 	 { (char *)"CCL_ClTracer_chimax_set", _wrap_CCL_ClTracer_chimax_set, METH_VARARGS, (char *)"CCL_ClTracer_chimax_set(CCL_ClTracer self, double chimax)"},
@@ -17082,31 +17198,32 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"delete_CCL_ClTracer", _wrap_delete_CCL_ClTracer, METH_VARARGS, (char *)"delete_CCL_ClTracer(CCL_ClTracer self)"},
 	 { (char *)"CCL_ClTracer_swigregister", CCL_ClTracer_swigregister, METH_VARARGS, NULL},
 	 { (char *)"cl_tracer_new", _wrap_cl_tracer_new, METH_VARARGS, (char *)"\n"
-		"cl_tracer_new(cosmology cosmo, int tracer_type, int has_rsd, int has_magnification, int has_intrinsic_alignment, \n"
-		"    int nz_n, double * z_n, double * n, int nz_b, double * z_b, \n"
-		"    double * b, int nz_s, double * z_s, double * s, int nz_ba, double * z_ba, \n"
-		"    double * ba, int nz_rf, double * z_rf, double * rf, int * status) -> CCL_ClTracer\n"
-		""},
-	 { (char *)"cl_tracer_number_counts_new", _wrap_cl_tracer_number_counts_new, METH_VARARGS, (char *)"\n"
-		"cl_tracer_number_counts_new(cosmology cosmo, int has_rsd, int has_magnification, int nz_n, double * z_n, double * n, \n"
-		"    int nz_b, double * z_b, double * b, int nz_s, double * z_s, double * s, \n"
-		"    int * status) -> CCL_ClTracer\n"
-		""},
-	 { (char *)"cl_tracer_number_counts_simple_new", _wrap_cl_tracer_number_counts_simple_new, METH_VARARGS, (char *)"\n"
-		"cl_tracer_number_counts_simple_new(cosmology cosmo, int nz_n, double * z_n, double * n, int nz_b, double * z_b, double * b, \n"
-		"    int * status) -> CCL_ClTracer\n"
-		""},
-	 { (char *)"cl_tracer_lensing_new", _wrap_cl_tracer_lensing_new, METH_VARARGS, (char *)"\n"
-		"cl_tracer_lensing_new(cosmology cosmo, int has_alignment, int nz_n, double * z_n, double * n, int nz_ba, \n"
+		"cl_tracer_new(cosmology cosmo, int tracer_type, double r_sm, int has_rsd, int has_magnification, \n"
+		"    int has_intrinsic_alignment, int nz_n, double * z_n, double * n, int nz_b, \n"
+		"    double * z_b, double * b, int nz_s, double * z_s, double * s, int nz_ba, \n"
 		"    double * z_ba, double * ba, int nz_rf, double * z_rf, double * rf, int * status) -> CCL_ClTracer\n"
 		""},
-	 { (char *)"cl_tracer_lensing_simple_new", _wrap_cl_tracer_lensing_simple_new, METH_VARARGS, (char *)"cl_tracer_lensing_simple_new(cosmology cosmo, int nz_n, double * z_n, double * n, int * status) -> CCL_ClTracer"},
+	 { (char *)"cl_tracer_number_counts_new", _wrap_cl_tracer_number_counts_new, METH_VARARGS, (char *)"\n"
+		"cl_tracer_number_counts_new(cosmology cosmo, double r_sm, int has_rsd, int has_magnification, int nz_n, double * z_n, \n"
+		"    double * n, int nz_b, double * z_b, double * b, int nz_s, double * z_s, \n"
+		"    double * s, int * status) -> CCL_ClTracer\n"
+		""},
+	 { (char *)"cl_tracer_number_counts_simple_new", _wrap_cl_tracer_number_counts_simple_new, METH_VARARGS, (char *)"\n"
+		"cl_tracer_number_counts_simple_new(cosmology cosmo, double r_sm, int nz_n, double * z_n, double * n, int nz_b, double * z_b, \n"
+		"    double * b, int * status) -> CCL_ClTracer\n"
+		""},
+	 { (char *)"cl_tracer_lensing_new", _wrap_cl_tracer_lensing_new, METH_VARARGS, (char *)"\n"
+		"cl_tracer_lensing_new(cosmology cosmo, double r_sm, int has_alignment, int nz_n, double * z_n, double * n, \n"
+		"    int nz_ba, double * z_ba, double * ba, int nz_rf, double * z_rf, double * rf, \n"
+		"    int * status) -> CCL_ClTracer\n"
+		""},
+	 { (char *)"cl_tracer_lensing_simple_new", _wrap_cl_tracer_lensing_simple_new, METH_VARARGS, (char *)"cl_tracer_lensing_simple_new(cosmology cosmo, double r_sm, int nz_n, double * z_n, double * n, int * status) -> CCL_ClTracer"},
 	 { (char *)"cl_tracer_free", _wrap_cl_tracer_free, METH_VARARGS, (char *)"cl_tracer_free(CCL_ClTracer clt)"},
 	 { (char *)"angular_cl", _wrap_angular_cl, METH_VARARGS, (char *)"angular_cl(cosmology cosmo, int l, CCL_ClTracer clt1, CCL_ClTracer clt2, int * status) -> double"},
 	 { (char *)"cl_tracer_new_wrapper", _wrap_cl_tracer_new_wrapper, METH_VARARGS, (char *)"\n"
-		"cl_tracer_new_wrapper(cosmology cosmo, int tracer_type, int has_rsd, int has_magnification, int has_intrinsic_alignment, \n"
-		"    int nz_n, int nn, int nz_b, int nb, int nz_s, int ns, int nz_ba, \n"
-		"    int nba, int nz_rf, int nrf, int * status) -> CCL_ClTracer\n"
+		"cl_tracer_new_wrapper(cosmology cosmo, int tracer_type, double r_sm, int has_rsd, int has_magnification, \n"
+		"    int has_intrinsic_alignment, int nz_n, int nn, int nz_b, int nb, int nz_s, \n"
+		"    int ns, int nz_ba, int nba, int nz_rf, int nrf, int * status) -> CCL_ClTracer\n"
 		""},
 	 { (char *)"angular_cl_vec", _wrap_angular_cl_vec, METH_VARARGS, (char *)"\n"
 		"angular_cl_vec(cosmology cosmo, CCL_ClTracer clt1, CCL_ClTracer clt2, double * ell, double * output, \n"

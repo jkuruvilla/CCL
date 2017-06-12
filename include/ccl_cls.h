@@ -17,6 +17,7 @@ typedef struct {
 
 typedef struct {
   int tracer_type; //Type (see above)
+  double r_sm; //Comoving smoothing scale
   double prefac_lensing; //3*O_M*H_0^2/2
   double chimax; //Limits in chi where we care about this tracer
   double chimin;
@@ -45,7 +46,7 @@ typedef struct {
 // * nz_s, z_s, s -> same as above for the magnification bias
 // * nz_ba, z_ba, ba -> same as above for the alignment bias
 // * nz_rf, z_rf, rf -> same as above for the aligned (red) fraction
-CCL_ClTracer *ccl_cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,
+CCL_ClTracer *ccl_cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,double r_sm,
 				int has_rsd,int has_magnification,int has_intrinsic_alignment,
 				int nz_n,double *z_n,double *n,
 				int nz_b,double *z_b,double *b,
@@ -53,23 +54,23 @@ CCL_ClTracer *ccl_cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,
 				int nz_ba,double *z_ba,double *ba,
 				int nz_rf,double *z_rf,double *rf, int * status);
 //Simplified version of the above for number counts
-CCL_ClTracer *ccl_cl_tracer_number_counts_new(ccl_cosmology *cosmo,
+CCL_ClTracer *ccl_cl_tracer_number_counts_new(ccl_cosmology *cosmo,double r_sm,
 					      int has_rsd,int has_magnification,
 					      int nz_n,double *z_n,double *n,
 					      int nz_b,double *z_b,double *b,
 					      int nz_s,double *z_s,double *s, int * status);
 //More simplified version (no RSD, no magnification) of the above for number counts
-CCL_ClTracer *ccl_cl_tracer_number_counts_simple_new(ccl_cosmology *cosmo,
+CCL_ClTracer *ccl_cl_tracer_number_counts_simple_new(ccl_cosmology *cosmo,double r_sm,
 						     int nz_n,double *z_n,double *n,
 						     int nz_b,double *z_b,double *b, int * status);
 //Simplified version of the above for shear
-CCL_ClTracer *ccl_cl_tracer_lensing_new(ccl_cosmology *cosmo,
+CCL_ClTracer *ccl_cl_tracer_lensing_new(ccl_cosmology *cosmo,double r_sm,
 					int has_alignment,
 					int nz_n,double *z_n,double *n,
 					int nz_ba,double *z_ba,double *ba,
 					int nz_rf,double *z_rf,double *rf, int * status);
 //More simplified version (no IA) of the above for shear
-CCL_ClTracer *ccl_cl_tracer_lensing_simple_new(ccl_cosmology *cosmo,
+CCL_ClTracer *ccl_cl_tracer_lensing_simple_new(ccl_cosmology *cosmo,double r_sm,
 					       int nz_n,double *z_n,double *n, int * status);
 //CCL_ClTracer destructor
 void ccl_cl_tracer_free(CCL_ClTracer *clt);

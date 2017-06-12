@@ -29,7 +29,7 @@ class ClTracer(object):
     def __init__(self, cosmo, tracer_type=None, has_rsd=False, 
                  has_magnification=False, has_intrinsic_alignment=False, 
                  z=None, n=None, bias=None, mag_bias=None, bias_ia=None,
-                 f_red=None):
+                 f_red=None,r_smooth=0.):
         """
         ClTracer is a class for handling tracers that have an angular power 
         spectrum.
@@ -64,6 +64,8 @@ class ClTracer(object):
                 alignment amplitudes b_IA(z), or a tuple of arrays (z, b_IA(z)).
             f_red (array_like or tuple, optional): Array of red galaxy 
                 fractions f_red(z), or a tuple of arrays (z, f_red(z)).
+            r_smooth (float): smoothing scale of the density field that this
+                tracer traces.
         """
         # Verify cosmo object
         cosmo = _cosmology_obj(cosmo)
@@ -82,14 +84,14 @@ class ClTracer(object):
         
         # Construct new ccl_cl_tracer
         status = 0
-        self.cltracer, status = lib.cl_tracer_new_wrapper(
-                            cosmo, 
-                            tracer_types[tracer_type],
-                            int(has_rsd), 
-                            int(has_magnification), 
-                            int(has_intrinsic_alignment),
-                            z_n, n, z_b, b, z_s, s, z_ba, ba, z_rf, rf, 
-                            status )
+        self.cltracer, status = lib.cl_tracer_new_wrapper(cosmo, 
+                                                          tracer_types[tracer_type],
+                                                          r_smooth,
+                                                          int(has_rsd), 
+                                                          int(has_magnification), 
+                                                          int(has_intrinsic_alignment),
+                                                          z_n, n, z_b, b, z_s, s, z_ba, ba, z_rf, rf, 
+                                                          status )
         
     def __del__(self):
         """Free memory associated with CCL_ClTracer object.

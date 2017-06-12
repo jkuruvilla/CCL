@@ -192,7 +192,7 @@ static int window_magnification(double chi,ccl_cosmology *cosmo,SplPar *spl_pz,S
 //z_b  -> array of z-values for b(z)
 //b    -> corresponding b(z)-values.
 //        b(z) will be assumed constant outside the range covered by z_n
-static CCL_ClTracer *cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,
+static CCL_ClTracer *cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,double r_sm,
 				   int has_rsd,int has_magnification,int has_intrinsic_alignment,
 				   int nz_n,double *z_n,double *n,
 				   int nz_b,double *z_b,double *b,
@@ -208,6 +208,7 @@ static CCL_ClTracer *cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,
     return NULL;
   }
   clt->tracer_type=tracer_type;
+  clt->r_sm=r_sm;
 
   double hub=cosmo->params.h*ccl_h_over_h0(cosmo,1.,status)/CLIGHT_HMPC;
   clt->prefac_lensing=1.5*hub*hub*cosmo->params.Omega_m;
@@ -441,7 +442,7 @@ static CCL_ClTracer *cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,
 //z_b  -> array of z-values for b(z)
 //b    -> corresponding b(z)-values.
 //        b(z) will be assumed constant outside the range covered by z_n
-CCL_ClTracer *ccl_cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,
+CCL_ClTracer *ccl_cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,double r_sm,
 				int has_rsd,int has_magnification,int has_intrinsic_alignment,
 				int nz_n,double *z_n,double *n,
 				int nz_b,double *z_b,double *b,
@@ -449,7 +450,7 @@ CCL_ClTracer *ccl_cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,
 				int nz_ba,double *z_ba,double *ba,
 				int nz_rf,double *z_rf,double *rf, int * status)
 {
-  CCL_ClTracer *clt=cl_tracer_new(cosmo,tracer_type,has_rsd,has_magnification,has_intrinsic_alignment,
+  CCL_ClTracer *clt=cl_tracer_new(cosmo,tracer_type,r_sm,has_rsd,has_magnification,has_intrinsic_alignment,
 				  nz_n,z_n,n,nz_b,z_b,b,nz_s,z_s,s,nz_ba,z_ba,ba,nz_rf,z_rf,rf, status);
   ccl_check_status(cosmo,status);
   return clt;
@@ -476,41 +477,41 @@ void ccl_cl_tracer_free(CCL_ClTracer *clt)
   free(clt);
 }
 
-CCL_ClTracer *ccl_cl_tracer_number_counts_new(ccl_cosmology *cosmo,
+CCL_ClTracer *ccl_cl_tracer_number_counts_new(ccl_cosmology *cosmo,double r_sm,
 					      int has_rsd,int has_magnification,
 					      int nz_n,double *z_n,double *n,
 					      int nz_b,double *z_b,double *b,
 					      int nz_s,double *z_s,double *s, int * status)
 {
-  return ccl_cl_tracer_new(cosmo,CL_TRACER_NC,has_rsd,has_magnification,0,
+  return ccl_cl_tracer_new(cosmo,CL_TRACER_NC,r_sm,has_rsd,has_magnification,0,
 			   nz_n,z_n,n,nz_b,z_b,b,nz_s,z_s,s,
 			   -1,NULL,NULL,-1,NULL,NULL, status);
 }
 
-CCL_ClTracer *ccl_cl_tracer_number_counts_simple_new(ccl_cosmology *cosmo,
+CCL_ClTracer *ccl_cl_tracer_number_counts_simple_new(ccl_cosmology *cosmo,double r_sm,
 						     int nz_n,double *z_n,double *n,
 						     int nz_b,double *z_b,double *b, int * status)
 {
-  return ccl_cl_tracer_new(cosmo,CL_TRACER_NC,0,0,0,
+  return ccl_cl_tracer_new(cosmo,CL_TRACER_NC,r_sm,0,0,0,
 			   nz_n,z_n,n,nz_b,z_b,b,-1,NULL,NULL,
 			   -1,NULL,NULL,-1,NULL,NULL, status);
 }
 
-CCL_ClTracer *ccl_cl_tracer_lensing_new(ccl_cosmology *cosmo,
+CCL_ClTracer *ccl_cl_tracer_lensing_new(ccl_cosmology *cosmo,double r_sm,
 					int has_alignment,
 					int nz_n,double *z_n,double *n,
 					int nz_ba,double *z_ba,double *ba,
 					int nz_rf,double *z_rf,double *rf, int * status)
 {
-  return ccl_cl_tracer_new(cosmo,CL_TRACER_WL,0,0,has_alignment,
+  return ccl_cl_tracer_new(cosmo,CL_TRACER_WL,r_sm,0,0,has_alignment,
 			   nz_n,z_n,n,-1,NULL,NULL,-1,NULL,NULL,
 			   nz_ba,z_ba,ba,nz_rf,z_rf,rf, status);
 }
 
-CCL_ClTracer *ccl_cl_tracer_lensing_simple_new(ccl_cosmology *cosmo,
+CCL_ClTracer *ccl_cl_tracer_lensing_simple_new(ccl_cosmology *cosmo,double r_sm,
 					       int nz_n,double *z_n,double *n, int * status)
 {
-  return ccl_cl_tracer_new(cosmo,CL_TRACER_WL,0,0,0,
+  return ccl_cl_tracer_new(cosmo,CL_TRACER_WL,r_sm,0,0,0,
 			   nz_n,z_n,n,-1,NULL,NULL,-1,NULL,NULL,
 			   -1,NULL,NULL,-1,NULL,NULL, status);
 }
@@ -696,7 +697,9 @@ static double cl_integrand(double lk,void *params)
   else {
     double t1,t2;
     double a=ccl_scale_factor_of_chi(p->cosmo,chi, p->status); //Limber
-    double pk=ccl_nonlin_matter_power(p->cosmo,k,a, p->status);
+    double r1=p->clt1->r_sm;
+    double r2=p->clt2->r_sm;
+    double pk=ccl_nonlin_matter_power(p->cosmo,k,a,p->status)*exp(-k*k*(r1*r1+r2*r2)*0.5);
     t1=transfer_wrap(p->l,k,p->cosmo,p->clt1, p->status);
     t2=transfer_wrap(p->l,k,p->cosmo,p->clt2, p->status);
     return k*t1*t2*pk;
