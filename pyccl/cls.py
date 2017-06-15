@@ -106,7 +106,7 @@ class ClTracerNumberCounts(ClTracer):
     """
     
     def __init__(self, cosmo, has_rsd, has_magnification, 
-                 n, bias, z=None, mag_bias=None):
+                 n, bias, z=None, mag_bias=None,r_smooth=0.):
         """
         ClTracer class for a tracer of galaxy number counts (galaxy clustering).
         
@@ -130,6 +130,8 @@ class ClTracerNumberCounts(ClTracer):
             mag_bias (array_like or tuple, optional): Array of magnification 
                 bias s(z) sampled at the redshifts given in the z array, or a 
                 tuple of arrays (z, s(z)).
+            r_smooth (float): smoothing scale of the density field that this
+                tracer traces.
         """
         
         # Sanity check on input arguments
@@ -143,7 +145,7 @@ class ClTracerNumberCounts(ClTracer):
                  has_rsd=has_rsd, has_magnification=has_magnification, 
                  has_intrinsic_alignment=False, 
                  z=z, n=n, bias=bias, mag_bias=mag_bias, 
-                 bias_ia=None, f_red=None)
+                 bias_ia=None, f_red=None,r_smooth=r_smooth)
 
 
 class ClTracerLensing(ClTracer):
@@ -152,7 +154,7 @@ class ClTracerLensing(ClTracer):
     """
     
     def __init__(self, cosmo, has_intrinsic_alignment, 
-                 n, z=None, bias_ia=None, f_red=None):
+                 n, z=None, bias_ia=None, f_red=None,r_smooth=0.):
         """
         ClTracer class for a tracer of weak lensing shear (galaxy shapes).
         
@@ -172,6 +174,8 @@ class ClTracerLensing(ClTracer):
                 alignment amplitudes b_IA(z), or a tuple of arrays (z, b_IA(z)).
             f_red (array_like or tuple, optional): Array of red galaxy 
                 fractions f_red(z), or a tuple of arrays (z, f_red(z)).
+            r_smooth (float): smoothing scale of the density field that this
+                tracer traces.
         """
         
         # Sanity check on input arguments
@@ -186,7 +190,7 @@ class ClTracerLensing(ClTracer):
                  has_rsd=False, has_magnification=False, 
                  has_intrinsic_alignment=has_intrinsic_alignment, 
                  z=z, n=n, bias=None, mag_bias=None, 
-                 bias_ia=bias_ia, f_red=f_red)
+                 bias_ia=bias_ia, f_red=f_red,r_smooth=r_smooth)
 
 
 def _cltracer_obj(cltracer):
