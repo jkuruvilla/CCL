@@ -424,7 +424,7 @@ INPUT: ccl_cosmology * cosmo, double halo mass in units of Msun, double scale fa
 TASK: returns halo mass function as dn / dlog10 m
 */
 
-double ccl_massfunc(ccl_cosmology *cosmo, double halomass, double a, double odelta, int * status)
+double ccl_massfunc(ccl_cosmology *cosmo, double halomass, double a, char *delta_str, int * statusd)
 {
   if (!cosmo->computed_sigma) {
     ccl_cosmology_compute_sigma(cosmo, status);
@@ -432,9 +432,37 @@ double ccl_massfunc(ccl_cosmology *cosmo, double halomass, double a, double odel
   }
 
   double f,deriv,rho_m,logmass;
+  int i;
+  double delta_val=0;
+  char   *m_or_c;
+  
+  i=0;
+  while(*delta_str != '\0' ) {
+	  if (i !=3){
+		  delta_val = delta_val*10 +(*delta_str - '0');
+	  }
+	  
+	  if (i==3){
+		  m_or_c=delta_str;
+		  printf("%s\n",m_or_c);
+	  }
+	  
+	  delta_str++;
+	  i++;
+  }
+  
+  if(strcmp(m_or_c,"m")==0){
+  	odelta=delta_val
+  }
+  
+  if(strcmp(m_or_c,"c")==0){
+  	odelta=delta_val*1./params.Omega_m
+  }
   
   logmass = log10(halomass);
   rho_m = RHO_CRITICAL*cosmo->params.Omega_m*cosmo->params.h*cosmo->params.h;
+    
+  
   f=massfunc_f(cosmo,halomass,a,odelta,status);
   *status |= gsl_spline_eval_e(cosmo->data.dlnsigma_dlogm, logmass, cosmo->data.accelerator_m,&deriv);
   ccl_check_status(cosmo, status);
@@ -446,12 +474,40 @@ INPUT: ccl_cosmology * cosmo, double halo mass in units of Msun, double scale fa
 TASK: returns linear halo bias
 */
 
-double ccl_halo_bias(ccl_cosmology *cosmo, double halomass, double a, double odelta, int * status)
+double ccl_halo_bias(ccl_cosmology *cosmo, double halomass, double a, char *delta_str, int * status)
 {
   if (!cosmo->computed_sigma) {
     ccl_cosmology_compute_sigma(cosmo, status);
     ccl_check_status(cosmo, status);
   }
+  
+  int i;
+  double delta_val=0;
+  char   *m_or_c;
+  
+  i=0;
+  while(*delta_str != '\0' ) {
+	  if (i !=3){
+		  delta_val = delta_val*10 +(*delta_str - '0');
+	  }
+	  
+	  if (i==3){
+		  m_or_c=delta_str;
+		  printf("%s\n",m_or_c);
+	  }
+	  
+	  delta_str++;
+	  i++;
+  }
+  
+  if(strcmp(m_or_c,"m")==0){
+  	odelta=delta_val
+  }
+  
+  if(strcmp(m_or_c,"c")==0){
+  	odelta=delta_val*1./params.Omega_m
+  }
+  
 
   double f;
   f = ccl_halo_b1(cosmo,halomass,a,odelta, status);  
