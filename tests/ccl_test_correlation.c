@@ -40,7 +40,10 @@ static int linecount(FILE *f)
 
 static void compare_corr(char *compare_type,int algorithm,struct corrs_data * data)
 {
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
   int ii,status=0;
 
   /* Set up the CCL configuration for comparing to benchmarks
@@ -157,7 +160,10 @@ static void compare_corr(char *compare_type,int algorithm,struct corrs_data * da
   double *wt_ll_11_h_pp,*wt_ll_12_h_pp,*wt_ll_22_h_pp;
   double theta_in[nofl];
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
   for(ii=0;ii<nofl;ii++) {
     int stat;
     double dum;
@@ -185,44 +191,74 @@ static void compare_corr(char *compare_type,int algorithm,struct corrs_data * da
   wt_dd_11_h=malloc(nofl*sizeof(double));
   for(il=0;il<ELL_MAX_CL;il++)
     clarr[il]=ccl_angular_cl(cosmo,il,tr_nc_1,tr_nc_1,&status);
+<<<<<<< HEAD
   ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_dd_11_h,CCL_CORR_GG,CCL_CORR_ANG,
+=======
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_dd_11_h,CCL_CORR_GG,
+>>>>>>> master
 		  0,taper_cl_limits,algorithm,&status);
   wt_dd_12_h=malloc(nofl*sizeof(double));
   for(il=0;il<ELL_MAX_CL;il++)
     clarr[il]=ccl_angular_cl(cosmo,il,tr_nc_1,tr_nc_2,&status);
+<<<<<<< HEAD
   ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_dd_12_h,CCL_CORR_GG,CCL_CORR_ANG,
+=======
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_dd_12_h,CCL_CORR_GG,
+>>>>>>> master
 		  0,taper_cl_limits,algorithm,&status);
   wt_dd_22_h=malloc(nofl*sizeof(double));
   for(il=0;il<ELL_MAX_CL;il++)
     clarr[il]=ccl_angular_cl(cosmo,il,tr_nc_2,tr_nc_2,&status);
+<<<<<<< HEAD
   ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_dd_22_h,CCL_CORR_GG,CCL_CORR_ANG,
+=======
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_dd_22_h,CCL_CORR_GG,
+>>>>>>> master
 		  0,taper_cl_limits,algorithm,&status);
 
   wt_ll_11_h_mm=malloc(nofl*sizeof(double));
   wt_ll_11_h_pp=malloc(nofl*sizeof(double));
   for(il=0;il<ELL_MAX_CL;il++)
     clarr[il]=ccl_angular_cl(cosmo,il,tr_wl_1,tr_wl_1,&status);
+<<<<<<< HEAD
   ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_11_h_pp,CCL_CORR_LP,CCL_CORR_ANG,
 		  0,taper_cl_limits,algorithm,&status);
   ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_11_h_mm,CCL_CORR_LM,CCL_CORR_ANG,
+=======
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_11_h_pp,CCL_CORR_LP,
+		  0,taper_cl_limits,algorithm,&status);
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_11_h_mm,CCL_CORR_LM,
+>>>>>>> master
 		  0,taper_cl_limits,algorithm,&status);
 
   wt_ll_12_h_mm=malloc(nofl*sizeof(double));
   wt_ll_12_h_pp=malloc(nofl*sizeof(double));
   for(il=0;il<ELL_MAX_CL;il++)
     clarr[il]=ccl_angular_cl(cosmo,il,tr_wl_1,tr_wl_2,&status);
+<<<<<<< HEAD
   ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_12_h_pp,CCL_CORR_LP,CCL_CORR_ANG,
 		  0,taper_cl_limits,algorithm,&status);
   ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_12_h_mm,CCL_CORR_LM,CCL_CORR_ANG,
+=======
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_12_h_pp,CCL_CORR_LP,
+		  0,taper_cl_limits,algorithm,&status);
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_12_h_mm,CCL_CORR_LM,
+>>>>>>> master
 		  0,taper_cl_limits,algorithm,&status);
 
   wt_ll_22_h_mm=malloc(nofl*sizeof(double));
   wt_ll_22_h_pp=malloc(nofl*sizeof(double));
   for(il=0;il<ELL_MAX_CL;il++)
     clarr[il]=ccl_angular_cl(cosmo,il,tr_wl_2,tr_wl_2,&status);
+<<<<<<< HEAD
   ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_22_h_pp,CCL_CORR_LP,CCL_CORR_ANG,
 		  0,taper_cl_limits,algorithm,&status);
   ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_22_h_mm,CCL_CORR_LM,CCL_CORR_ANG,
+=======
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_22_h_pp,CCL_CORR_LP,
+		  0,taper_cl_limits,algorithm,&status);
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_22_h_mm,CCL_CORR_LM,
+>>>>>>> master
 		  0,taper_cl_limits,algorithm,&status);
   free(clarr);
   free(larr);
@@ -282,20 +318,32 @@ static void compare_corr(char *compare_type,int algorithm,struct corrs_data * da
   /* Proceed to the comparison between benchmarks and CCL.
    * If DEBUG flag is set, then produce an output file.
    */
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> master
 #ifdef _DEBUG
   FILE *output = fopen("cc_test_corr_out.dat", "w");
 #endif //_DEBUG
   int npoints=0;
   for(ii=0;ii<nofl;ii++) {
     double tol;
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> master
     if((theta_in[ii]<sig_theta_in[0]) ||(theta_in[ii]>sig_theta_in[nsig-1]))
       continue;
     else
       npoints++;
 
+<<<<<<< HEAD
     /*First time the tolerance is set. The tolerance is equal to the
+=======
+    /*First time the tolerance is set. The tolerance is equal to the 
+>>>>>>> master
      *expected error bar times CORR_ERR_FRACTION=0.5 (default) */
     tol=gsl_spline_eval(spl_sigwt_dd_11,theta_in[ii],NULL);
     if(fabs(wt_dd_11_h[ii]-wt_dd_11[ii])>tol*CORR_ERROR_FRACTION)
@@ -358,13 +406,21 @@ static void compare_corr(char *compare_type,int algorithm,struct corrs_data * da
 #ifdef _DEBUG
   fclose(output);
 #endif //_DEBUG
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> master
   //Determine the fraction of points that failed the test
   fraction_failed/=6*npoints;
   printf("%lf %% ",fraction_failed*100);
   //Check is this fraction is larger than we allow
   ASSERT_TRUE((fraction_failed<CORR_FRACTION_PASS));
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> master
   //Free splines, cosmology and arrays
   gsl_spline_free(spl_sigwt_dd_11);
   gsl_spline_free(spl_sigwt_dd_22);
@@ -382,7 +438,11 @@ static void compare_corr(char *compare_type,int algorithm,struct corrs_data * da
 }
 
 CTEST2(corrs,analytic_fftlog) {
+<<<<<<< HEAD
   compare_corr("analytic",CCL_CORR_FFTLOG_PROJECTED,data);
+=======
+  compare_corr("analytic",CCL_CORR_FFTLOG,data);
+>>>>>>> master
 }
 
 CTEST2(corrs,analytic_bessel) {
