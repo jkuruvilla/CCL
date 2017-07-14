@@ -7,7 +7,6 @@ correlation_methods = {
     'fftlog_projected':   const.CCL_CORR_FFTLOG_PROJECTED,
     'fftlog':   const.CCL_CORR_FFTLOG_PROJECTED, #default option for fftlog
     'fftlog_3d':   const.CCL_CORR_FFTLOG_3D,
-    'fftlog':   const.CCL_CORR_FFTLOG,
     'bessel':   const.CCL_CORR_BESSEL,
     'legendre': const.CCL_CORR_LGNDRE,
 }
@@ -30,7 +29,6 @@ correlation_space = {
 }
 
 def correlation(cosmo, ell, C_ell, theta, corr_type='gg',corr_space='ang', method='fftlog'):
-def correlation(cosmo, ell, C_ell, theta, corr_type='gg', method='fftlog'):
     """
     Compute the angular correlation function.
 
@@ -52,10 +50,6 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg', method='fftlog'):
     method = method.lower()
     corr_space=corr_space.lower()
 
-    # Convert to lower case
-    corr_type = corr_type.lower()
-    method = method.lower()
-
     if corr_type not in correlation_types.keys():
         raise KeyError("'%s' is not a valid correlation type." % corr_type)
 
@@ -76,11 +70,6 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg', method='fftlog'):
     wth, status = lib.correlation_vec(cosmo, ell, C_ell, theta,
                                       correlation_types[corr_type],
                                       correlation_space[corr_space],
-                                      correlation_methods[method],
-
-    # Call correlation function
-    wth, status = lib.correlation_vec(cosmo, ell, C_ell, theta,
-                                      correlation_types[corr_type],
                                       correlation_methods[method],
                                       len(theta), status)
     check(status)
