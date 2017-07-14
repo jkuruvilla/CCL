@@ -18556,12 +18556,14 @@ SWIG_init(void) {
   SWIG_Python_SetConstant(d, "omega_ur_label",SWIG_From_int((int)(ccl_omega_ur_label)));
   SWIG_Python_SetConstant(d, "omega_nu_label",SWIG_From_int((int)(ccl_omega_nu_label)));
   SWIG_Python_SetConstant(d, "CCL_CORR_LGNDRE",SWIG_From_int((int)(1001)));
-  SWIG_Python_SetConstant(d, "CCL_CORR_FFTLOG",SWIG_From_int((int)(1002)));
+  SWIG_Python_SetConstant(d, "CCL_CORR_FFTLOG_PROJECTED",SWIG_From_int((int)(1002)));
   SWIG_Python_SetConstant(d, "CCL_CORR_BESSEL",SWIG_From_int((int)(1003)));
+  SWIG_Python_SetConstant(d, "CCL_CORR_FFTLOG_3D",SWIG_From_int((int)(1004)));
   SWIG_Python_SetConstant(d, "CCL_CORR_GG",SWIG_From_int((int)(2001)));
   SWIG_Python_SetConstant(d, "CCL_CORR_GL",SWIG_From_int((int)(2002)));
   SWIG_Python_SetConstant(d, "CCL_CORR_LP",SWIG_From_int((int)(2003)));
   SWIG_Python_SetConstant(d, "CCL_CORR_LM",SWIG_From_int((int)(2004)));
+  SWIG_Python_SetConstant(d, "CCL_CORR_GG_QUAD",SWIG_From_int((int)(2005)));
   SWIG_Python_SetConstant(d, "CCL_CORR_PHYS",SWIG_From_int((int)(3001)));
   SWIG_Python_SetConstant(d, "CCL_CORR_ANG",SWIG_From_int((int)(3002)));
   SWIG_Python_SetConstant(d, "CL_TRACER_NC",SWIG_From_int((int)(1)));

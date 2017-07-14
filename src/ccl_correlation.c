@@ -93,7 +93,7 @@ TASK: For a given tracer, get the correlation function
       By default above function will call it using ccl_angular_cl
 INPUT: type of tracer, number of theta values to evaluate = NL, theta vector
  */
-static void ccl_tracer_corr_fftlog(ccl_cosmology *cosmo,
+static void ccl_tracer_corr_fftlog_projected(ccl_cosmology *cosmo,
 				   int n_ell,double *ell,double *cls,
 				   int n_theta,double *theta,double *wtheta,
 				   int corr_type,int corr_space,
@@ -110,7 +110,7 @@ static void ccl_tracer_corr_fftlog(ccl_cosmology *cosmo,
     {
       l_arr=ccl_log_spacing(ELL_MIN_FFTLOG,ELL_MAX_FFTLOG,N_ELL_FFTLOG);
     }
-  strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_fftlog doing something\n");
+
   if(l_arr==NULL) {
     *status=CCL_ERROR_LINSPACE;
     strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_fftlog ran out of memory\n");
@@ -157,9 +157,9 @@ static void ccl_tracer_corr_fftlog(ccl_cosmology *cosmo,
   // j_n(x) = sqrt(Pi/2x)J_{n+1/2}(x)
   // J_{m}(x) = sqrt(2x/Pi) j_{m-1/2}(x)
   int i_bessel=0;
-  if(corr_type==CCL_CORR_GG) i_bessel=0;
+  //if(corr_type==CCL_CORR_GG) i_bessel=0;
   if(corr_type==CCL_CORR_GL) i_bessel=2;
-  if(corr_type==CCL_CORR_LP) i_bessel=0;
+  //if(corr_type==CCL_CORR_LP) i_bessel=0;
   if(corr_type==CCL_CORR_LM) i_bessel=4;
   fftlog_ComputeXiLM(i_bessel-0.5,1.5,N_ELL_FFTLOG,l_arr,cl_arr,th_arr,wth_arr);
   for(i=0;i<N_ELL_FFTLOG;i++)
@@ -173,6 +173,82 @@ static void ccl_tracer_corr_fftlog(ccl_cosmology *cosmo,
 
   free(l_arr); free(cl_arr);
   free(th_arr); free(wth_arr);
+
+  return;
+}
+
+
+static void ccl_tracer_corr_fftlog_3D(ccl_cosmology *cosmo,
+				   int n_k,double *k,double *pk,
+				   int n_r,double *r,double *xi,
+				   int corr_type,int corr_space,
+				   int do_taper_cl,double *taper_cl_limits,
+				   int *status)
+{
+  int i;
+  double *k_arr,*pk_arr,*r_arr,*xi_arr;
+  if (corr_space == CCL_CORR_PHYS)
+      k_arr=ccl_log_spacing(k_MIN_FFTLOG,k_MAX_FFTLOG,N_ELL_FFTLOG);
+  else
+    {
+      *status=CCL_ERROR_LINSPACE;
+      strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_fftlog_3D wrong corr_space\n");
+      return;
+    }
+  if(k_arr==NULL) {
+    *status=CCL_ERROR_LINSPACE;
+    strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_fftlog_3D ran out of memory\n");
+    return;
+  }
+  pk_arr=malloc(N_ELL_FFTLOG*sizeof(double));
+  if(pk_arr==NULL) {
+    free(k_arr);
+    *status=CCL_ERROR_MEMORY;
+    strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_fftlog_3D ran out of memory\n");
+    return;
+  }
+
+  //Interpolate input Cl into array needed for FFTLog
+  interpolate_extrapolate_cl(cosmo,k_arr,pk_arr,k,pk,n_k,status);
+//exit if status is not good
+
+  if (do_taper_cl)
+    taper_cl(N_ELL_FFTLOG,k_arr,pk_arr,taper_cl_limits);
+
+  r_arr=malloc(sizeof(double)*N_ELL_FFTLOG);
+  if(r_arr==NULL) {
+    free(k_arr);
+    free(pk_arr);
+    *status=CCL_ERROR_MEMORY;
+    strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_fftlog_3D ran out of memory\n");
+    return;
+  }
+  xi_arr=(double *)malloc(sizeof(double)*N_ELL_FFTLOG);
+  if(xi_arr==NULL) {
+    free(k_arr); free(pk_arr); free(r_arr);
+    *status=CCL_ERROR_MEMORY;
+    strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_fftlog ran out of memory\n");
+    return;
+  }
+
+  for(i=0;i<N_ELL_FFTLOG;i++)
+    r_arr[i]=0;
+  //Although set here to 0, theta is modified by FFTlog to obtain the correlation at ~1/l
+
+  int i_bessel=0;
+  //if(corr_type==CCL_CORR_GG) i_bessel=0;
+  if(corr_type==CCL_CORR_GG_QUAD) i_bessel=2;
+
+  fftlog_ComputeXiLM(i_bessel,2,N_ELL_FFTLOG,k_arr,pk_arr,r_arr,xi_arr);//check 2
+
+  // Interpolate to output values of theta
+  SplPar *wth_spl=ccl_spline_init(N_ELL_FFTLOG,r_arr,xi_arr,xi_arr[0],0);
+  for(i=0;i<n_r;i++)
+    xi[i]=ccl_spline_eval(r[i],wth_spl);
+  ccl_spline_free(wth_spl);
+
+  free(k_arr); free(pk_arr);
+  free(r_arr); free(xi_arr);
 
   return;
 }
@@ -435,9 +511,13 @@ void ccl_correlation(ccl_cosmology *cosmo,
 		     int flag_method,int *status)
 {
   //  int corr_space=CCL_CORR_ANG;
-  printf("ccl_correlation.c: ccl_tracer_corr doing something\n");
-  if(flag_method==CCL_CORR_FFTLOG) {
-    ccl_tracer_corr_fftlog(cosmo,n_ell,ell,cls,n_theta,theta,wtheta,corr_type,corr_space,
+  //printf("ccl_correlation.c: ccl_tracer_corr doing something\n");
+  if(flag_method==CCL_CORR_FFTLOG_PROJECTED) {
+    ccl_tracer_corr_fftlog_projected(cosmo,n_ell,ell,cls,n_theta,theta,wtheta,corr_type,corr_space,
+			   do_taper_cl,taper_cl_limits,status);
+  }
+  else if(flag_method==CCL_CORR_FFTLOG_3D) {
+    ccl_tracer_corr_fftlog_3D(cosmo,n_ell,ell,cls,n_theta,theta,wtheta,corr_type,corr_space,
 			   do_taper_cl,taper_cl_limits,status);
   }
   else if(flag_method==CCL_CORR_LGNDRE) {//corr_space should be 'l' or 'ell'

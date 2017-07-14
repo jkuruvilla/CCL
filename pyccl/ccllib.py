@@ -613,12 +613,14 @@ def sigmaR_vec(cosmo, R, output, status):
     """sigmaR_vec(cosmology cosmo, double * R, double * output, int * status)"""
     return _ccllib.sigmaR_vec(cosmo, R, output, status)
 CCL_CORR_LGNDRE = _ccllib.CCL_CORR_LGNDRE
-CCL_CORR_FFTLOG = _ccllib.CCL_CORR_FFTLOG
+CCL_CORR_FFTLOG_PROJECTED = _ccllib.CCL_CORR_FFTLOG_PROJECTED
 CCL_CORR_BESSEL = _ccllib.CCL_CORR_BESSEL
+CCL_CORR_FFTLOG_3D = _ccllib.CCL_CORR_FFTLOG_3D
 CCL_CORR_GG = _ccllib.CCL_CORR_GG
 CCL_CORR_GL = _ccllib.CCL_CORR_GL
 CCL_CORR_LP = _ccllib.CCL_CORR_LP
 CCL_CORR_LM = _ccllib.CCL_CORR_LM
+CCL_CORR_GG_QUAD = _ccllib.CCL_CORR_GG_QUAD
 CCL_CORR_PHYS = _ccllib.CCL_CORR_PHYS
 CCL_CORR_ANG = _ccllib.CCL_CORR_ANG
 
