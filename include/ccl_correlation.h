@@ -9,6 +9,9 @@
 #define CCL_CORR_GL 2002
 #define CCL_CORR_LP 2003
 #define CCL_CORR_LM 2004
+#define CCL_CORR_PHYS 3001
+#define CCL_CORR_ANG 3002
+
 
 /**
  * Computes the correlation function (wrapper)
@@ -34,5 +37,6 @@
 void ccl_correlation(ccl_cosmology *cosmo,
 		     int n_ell,double *ell,double *cls,
 		     int n_theta,double *theta,double *wtheta,
-		     int corr_type,int do_taper_cl,double *taper_cl_limits,int flag_method,
+		     int corr_type,int corr_space,
+		     int do_taper_cl,double *taper_cl_limits,int flag_method,
 		     int *status);
