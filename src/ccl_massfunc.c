@@ -431,7 +431,7 @@ double ccl_massfunc(ccl_cosmology *cosmo, double halomass, double a, char *delta
     ccl_check_status(cosmo, status);
   }
 
-  double f,deriv,rho_m,logmass;
+  double f,deriv,rho_m,logmass,odelta;
   int i;
   double delta_val=0;
   char   *m_or_c;
@@ -452,11 +452,11 @@ double ccl_massfunc(ccl_cosmology *cosmo, double halomass, double a, char *delta
   }
   
   if(strcmp(m_or_c,"m")==0){
-  	odelta=delta_val
+  	odelta=delta_val;
   }
   
   if(strcmp(m_or_c,"c")==0){
-  	odelta=delta_val*1./params.Omega_m
+  	odelta=delta_val*1./params.Omega_m;
   }
   
   logmass = log10(halomass);
@@ -482,6 +482,7 @@ double ccl_halo_bias(ccl_cosmology *cosmo, double halomass, double a, char *delt
   }
   
   int i;
+  double odelta;
   double delta_val=0;
   char   *m_or_c;
   
@@ -501,11 +502,11 @@ double ccl_halo_bias(ccl_cosmology *cosmo, double halomass, double a, char *delt
   }
   
   if(strcmp(m_or_c,"m")==0){
-  	odelta=delta_val
+  	odelta=delta_val;
   }
   
   if(strcmp(m_or_c,"c")==0){
-  	odelta=delta_val*1./params.Omega_m
+  	odelta=delta_val*1./params.Omega_m;
   }
   
 
