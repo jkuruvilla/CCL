@@ -431,7 +431,7 @@ double ccl_massfunc(ccl_cosmology *cosmo, double halomass, double a, char *delta
     ccl_check_status(cosmo, status);
   }
 
-  double f,deriv,rho_m,logmass;
+  double f,deriv,rho_m,logmass,odelta;
   int i;
   double delta_val=0,odelta;
   char   *m_or_c;
@@ -481,7 +481,8 @@ double ccl_halo_bias(ccl_cosmology *cosmo, double halomass, double a, char *delt
   }
   
   int i;
-  double delta_val=0,odelta;
+  double odelta;
+  double delta_val=0;
   char   *m_or_c;
   
   i=0;
