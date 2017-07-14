@@ -424,7 +424,7 @@ INPUT: ccl_cosmology * cosmo, double halo mass in units of Msun, double scale fa
 TASK: returns halo mass function as dn / dlog10 m
 */
 
-double ccl_massfunc(ccl_cosmology *cosmo, double halomass, double a, char *delta_str, int * statusd)
+double ccl_massfunc(ccl_cosmology *cosmo, double halomass, double a, char *delta_str, int * status)
 {
   if (!cosmo->computed_sigma) {
     ccl_cosmology_compute_sigma(cosmo, status);
@@ -433,7 +433,7 @@ double ccl_massfunc(ccl_cosmology *cosmo, double halomass, double a, char *delta
 
   double f,deriv,rho_m,logmass;
   int i;
-  double delta_val=0;
+  double delta_val=0,odelta;
   char   *m_or_c;
   
   i=0;
@@ -444,7 +444,6 @@ double ccl_massfunc(ccl_cosmology *cosmo, double halomass, double a, char *delta
 	  
 	  if (i==3){
 		  m_or_c=delta_str;
-		  printf("%s\n",m_or_c);
 	  }
 	  
 	  delta_str++;
@@ -452,11 +451,11 @@ double ccl_massfunc(ccl_cosmology *cosmo, double halomass, double a, char *delta
   }
   
   if(strcmp(m_or_c,"m")==0){
-  	odelta=delta_val
+  	odelta=delta_val;
   }
   
   if(strcmp(m_or_c,"c")==0){
-  	odelta=delta_val*1./params.Omega_m
+  	odelta=delta_val*1./cosmo->params.Omega_m;
   }
   
   logmass = log10(halomass);
@@ -482,7 +481,7 @@ double ccl_halo_bias(ccl_cosmology *cosmo, double halomass, double a, char *delt
   }
   
   int i;
-  double delta_val=0;
+  double delta_val=0,odelta;
   char   *m_or_c;
   
   i=0;
@@ -493,7 +492,6 @@ double ccl_halo_bias(ccl_cosmology *cosmo, double halomass, double a, char *delt
 	  
 	  if (i==3){
 		  m_or_c=delta_str;
-		  printf("%s\n",m_or_c);
 	  }
 	  
 	  delta_str++;
@@ -501,11 +499,11 @@ double ccl_halo_bias(ccl_cosmology *cosmo, double halomass, double a, char *delt
   }
   
   if(strcmp(m_or_c,"m")==0){
-  	odelta=delta_val
+  	odelta=delta_val;
   }
   
   if(strcmp(m_or_c,"c")==0){
-  	odelta=delta_val*1./params.Omega_m
+  	odelta=delta_val*1./cosmo->params.Omega_m;
   }
   
 

@@ -30,7 +30,7 @@ void ccl_cosmology_compute_hmfparams(ccl_cosmology * cosmo, int * status);
  * For specific cases see documentation for ccl_error.
  * @return massfunc, the value of the mass function at the specified parameters
  */
-double ccl_massfunc(ccl_cosmology *cosmo, double halomass, double a, char *delta_str, int * statusd);
+double ccl_massfunc(ccl_cosmology *cosmo, double halomass, double a, char *delta_str, int * status);
 
 //TODO status flag unused here
 /**
@@ -42,7 +42,7 @@ double ccl_massfunc(ccl_cosmology *cosmo, double halomass, double a, char *delta
  * For specific cases see documentation for ccl_error.
  * @return hb, the halo bias at the specified parameters
  */
-double ccl_halo_bias(ccl_cosmology *cosmo, double halomass, double a, char *delta_str, int * status)
+double ccl_halo_bias(ccl_cosmology *cosmo, double halomass, double a, char *delta_str, int * status);
 /**
  * Convert smoothing halo mass in units of Msun to smoothing halo radius in units of Mpc.
  * @param cosmo Cosmological parameters
