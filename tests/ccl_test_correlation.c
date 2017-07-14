@@ -282,7 +282,7 @@ static void compare_corr(char *compare_type,int algorithm,struct corrs_data * da
   /* Proceed to the comparison between benchmarks and CCL.
    * If DEBUG flag is set, then produce an output file.
    */
-  
+
 #ifdef _DEBUG
   FILE *output = fopen("cc_test_corr_out.dat", "w");
 #endif //_DEBUG
@@ -295,7 +295,7 @@ static void compare_corr(char *compare_type,int algorithm,struct corrs_data * da
     else
       npoints++;
 
-    /*First time the tolerance is set. The tolerance is equal to the 
+    /*First time the tolerance is set. The tolerance is equal to the
      *expected error bar times CORR_ERR_FRACTION=0.5 (default) */
     tol=gsl_spline_eval(spl_sigwt_dd_11,theta_in[ii],NULL);
     if(fabs(wt_dd_11_h[ii]-wt_dd_11[ii])>tol*CORR_ERROR_FRACTION)
@@ -358,13 +358,13 @@ static void compare_corr(char *compare_type,int algorithm,struct corrs_data * da
 #ifdef _DEBUG
   fclose(output);
 #endif //_DEBUG
-  
+
   //Determine the fraction of points that failed the test
   fraction_failed/=6*npoints;
   printf("%lf %% ",fraction_failed*100);
   //Check is this fraction is larger than we allow
   ASSERT_TRUE((fraction_failed<CORR_FRACTION_PASS));
-  
+
   //Free splines, cosmology and arrays
   gsl_spline_free(spl_sigwt_dd_11);
   gsl_spline_free(spl_sigwt_dd_22);
@@ -382,7 +382,7 @@ static void compare_corr(char *compare_type,int algorithm,struct corrs_data * da
 }
 
 CTEST2(corrs,analytic_fftlog) {
-  compare_corr("analytic",CCL_CORR_FFTLOG,data);
+  compare_corr("analytic",CCL_CORR_FFTLOG_PROJECTED,data);
 }
 
 CTEST2(corrs,analytic_bessel) {

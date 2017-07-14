@@ -22,7 +22,7 @@ static double complex gamma_fftlog(double complex z) {
         9.984369578019570859563e-6,
         1.50563273514931155834e-7
     };
-    
+
     if(creal(z) < 0.5)
         return M_PI / (sin(M_PI*z)*gamma_fftlog(1. - z));
     z -= 1;
@@ -100,7 +100,7 @@ void fht(int N, const double r[], const double complex a[], double k[], double c
     if(u == NULL) {
         if(noring)
             kcrc = goodkr(N, mu, q, L, kcrc);
-        ulocal = malloc (sizeof(complex double)*N); 
+        ulocal = malloc (sizeof(complex double)*N);
         compute_u_coefficients(N, mu, q, L, kcrc, ulocal);
         u = ulocal;
     }
@@ -157,4 +157,3 @@ void xi2pk(int N, const double r[], const double xi[], double k[], double pk[]) 
     for(int j = 0; j < N; j++)
         pk[j] *= TwoPiCubed;
 }
-

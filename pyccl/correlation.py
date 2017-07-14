@@ -4,7 +4,9 @@ from pyutils import _cosmology_obj, check
 import numpy as np
 
 correlation_methods = {
-    'fftlog':   const.CCL_CORR_FFTLOG,
+    'fftlog_projected':   const.CCL_CORR_FFTLOG_PROJECTED,
+    'fftlog':   const.CCL_CORR_FFTLOG_PROJECTED, #default option for fftlog
+    'fftlog_3d':   const.CCL_CORR_FFTLOG_3D,
     'bessel':   const.CCL_CORR_BESSEL,
     'legendre': const.CCL_CORR_LGNDRE,
 }
@@ -43,18 +45,18 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg',corr_space='ang', metho
 
     cosmo = _cosmology_obj(cosmo)
     status = 0
-    
+
     # Convert to lower case
     corr_type = corr_type.lower()
     method = method.lower()
     corr_space=corr_space.lower()
-    
+
     if corr_type not in correlation_types.keys():
         raise KeyError("'%s' is not a valid correlation type." % corr_type)
 
     if method.lower() not in correlation_methods.keys():
         raise KeyError("'%s' is not a valid correlation method." % method)
-    
+
     if corr_space not in correlation_space.keys():
         raise KeyError("'%s' is not a valid correlation space." % corr_space)
     # Convert scalar input into an array
@@ -63,14 +65,13 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg',corr_space='ang', metho
         scalar = True
         theta = np.array([theta,])
 
-    # Call correlation function 
+    # Call correlation function
     print 'python calling lib.correlation_vec'
-    wth, status = lib.correlation_vec(cosmo, ell, C_ell, theta, 
+    wth, status = lib.correlation_vec(cosmo, ell, C_ell, theta,
                                       correlation_types[corr_type],
                                       correlation_space[corr_space],
-                                      correlation_methods[method], 
+                                      correlation_methods[method],
                                       len(theta), status)
     check(status)
     if scalar: return wth[0]
     return wth
-    

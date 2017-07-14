@@ -3,12 +3,14 @@
 #pragma once
 
 #define CCL_CORR_LGNDRE 1001
-#define CCL_CORR_FFTLOG 1002
+#define CCL_CORR_FFTLOG_PROJECTED 1002
 #define CCL_CORR_BESSEL 1003
+#define CCL_CORR_FFTLOG_3D 1004
 #define CCL_CORR_GG 2001
 #define CCL_CORR_GL 2002
 #define CCL_CORR_LP 2003
 #define CCL_CORR_LM 2004
+#define CCL_CORR_GG_QUAD 2005//quadrupole
 #define CCL_CORR_PHYS 3001
 #define CCL_CORR_ANG 3002
 

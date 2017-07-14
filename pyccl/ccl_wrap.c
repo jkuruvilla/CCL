@@ -12416,13 +12416,13 @@ SWIGINTERN PyObject *CCL_CORR_LGNDRE_swigconstant(PyObject *SWIGUNUSEDPARM(self)
 }
 
 
-SWIGINTERN PyObject *CCL_CORR_FFTLOG_swigconstant(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *CCL_CORR_FFTLOG_PROJECTED_swigconstant(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *module;
   PyObject *d;
   if (!PyArg_ParseTuple(args,(char*)"O:swigconstant", &module)) return NULL;
   d = PyModule_GetDict(module);
   if (!d) return NULL;
-  SWIG_Python_SetConstant(d, "CCL_CORR_FFTLOG",SWIG_From_int((int)(1002)));
+  SWIG_Python_SetConstant(d, "CCL_CORR_FFTLOG_PROJECTED",SWIG_From_int((int)(1002)));
   return SWIG_Py_Void();
 }
 
@@ -18386,7 +18386,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"nonlin_matter_power_vec", _wrap_nonlin_matter_power_vec, METH_VARARGS, (char *)"nonlin_matter_power_vec(cosmology cosmo, double a, double * k, double * output, int * status)"},
 	 { (char *)"sigmaR_vec", _wrap_sigmaR_vec, METH_VARARGS, (char *)"sigmaR_vec(cosmology cosmo, double * R, double * output, int * status)"},
 	 { (char *)"CCL_CORR_LGNDRE_swigconstant", CCL_CORR_LGNDRE_swigconstant, METH_VARARGS, NULL},
-	 { (char *)"CCL_CORR_FFTLOG_swigconstant", CCL_CORR_FFTLOG_swigconstant, METH_VARARGS, NULL},
+	 { (char *)"CCL_CORR_FFTLOG_PROJECTED_swigconstant", CCL_CORR_FFTLOG_PROJECTED_swigconstant, METH_VARARGS, NULL},
 	 { (char *)"CCL_CORR_BESSEL_swigconstant", CCL_CORR_BESSEL_swigconstant, METH_VARARGS, NULL},
 	 { (char *)"CCL_CORR_GG_swigconstant", CCL_CORR_GG_swigconstant, METH_VARARGS, NULL},
 	 { (char *)"CCL_CORR_GL_swigconstant", CCL_CORR_GL_swigconstant, METH_VARARGS, NULL},

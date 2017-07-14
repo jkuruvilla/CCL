@@ -623,8 +623,8 @@ def sigmaR_vec(cosmo, R, output, status):
 _ccllib.CCL_CORR_LGNDRE_swigconstant(_ccllib)
 CCL_CORR_LGNDRE = _ccllib.CCL_CORR_LGNDRE
 
-_ccllib.CCL_CORR_FFTLOG_swigconstant(_ccllib)
-CCL_CORR_FFTLOG = _ccllib.CCL_CORR_FFTLOG
+_ccllib.CCL_CORR_FFTLOG_PROJECTED_swigconstant(_ccllib)
+CCL_CORR_FFTLOG_PROJECTED = _ccllib.CCL_CORR_FFTLOG_PROJECTED
 
 _ccllib.CCL_CORR_BESSEL_swigconstant(_ccllib)
 CCL_CORR_BESSEL = _ccllib.CCL_CORR_BESSEL
