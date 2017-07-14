@@ -16,7 +16,17 @@ correlation_types = {
     'l-': const.CCL_CORR_LM,
 }
 
-def correlation(cosmo, ell, C_ell, theta, corr_type='gg', method='fftlog'):
+correlation_space = {
+    'ang': const.CCL_CORR_ANG,
+    'angular': const.CCL_CORR_ANG,
+    'l': const.CCL_CORR_ANG,
+    'ell': const.CCL_CORR_ANG,
+    'phys': const.CCL_CORR_PHYS,
+    'physical': const.CCL_CORR_PHYS,
+    'k': const.CCL_CORR_PHYS
+}
+
+def correlation(cosmo, ell, C_ell, theta, corr_type='gg',corr_space='ang', method='fftlog'):
     """
     Compute the angular correlation function.
 
@@ -37,6 +47,7 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg', method='fftlog'):
     # Convert to lower case
     corr_type = corr_type.lower()
     method = method.lower()
+    corr_space=corr_space.lower()
     
     if corr_type not in correlation_types.keys():
         raise KeyError("'%s' is not a valid correlation type." % corr_type)
@@ -44,15 +55,19 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg', method='fftlog'):
     if method.lower() not in correlation_methods.keys():
         raise KeyError("'%s' is not a valid correlation method." % method)
     
+    if corr_space not in correlation_space.keys():
+        raise KeyError("'%s' is not a valid correlation space." % corr_space)
     # Convert scalar input into an array
     scalar = False
     if isinstance(theta, float):
         scalar = True
         theta = np.array([theta,])
-    
+
     # Call correlation function 
+    print 'python calling lib.correlation_vec'
     wth, status = lib.correlation_vec(cosmo, ell, C_ell, theta, 
                                       correlation_types[corr_type],
+                                      correlation_space[corr_space],
                                       correlation_methods[method], 
                                       len(theta), status)
     check(status)

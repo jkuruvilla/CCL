@@ -51,17 +51,28 @@ INPUT: type of tracer, number of theta values to evaluate = NL, theta vector
  */
 #define ELL_MIN_FFTLOG 0.01
 #define ELL_MAX_FFTLOG 60000
-#define N_ELL_FFTLOG 5000
+#define k_MAX_FFTLOG 10 //when using power spectra p(k)
+#define k_MIN_FFTLOG 0.001
+#define N_ELL_FFTLOG 5000 //same for k-space
+
 static void ccl_tracer_corr_fftlog(ccl_cosmology *cosmo,
 				   int n_ell,double *ell,double *cls,
 				   int n_theta,double *theta,double *wtheta,
-				   int corr_type,int do_taper_cl,double *taper_cl_limits,
+				   int corr_type,int corr_space,
+				   int do_taper_cl,double *taper_cl_limits,
 				   int *status)
 {
   int i;
   double *l_arr,*cl_arr,*th_arr,*wth_arr;
-
-  l_arr=ccl_log_spacing(ELL_MIN_FFTLOG,ELL_MAX_FFTLOG,N_ELL_FFTLOG);
+  if (corr_space == CCL_CORR_PHYS)
+    {
+      l_arr=ccl_log_spacing(k_MIN_FFTLOG,k_MAX_FFTLOG,N_ELL_FFTLOG);
+    }
+  else if (corr_space == CCL_CORR_ANG)
+    {
+      l_arr=ccl_log_spacing(ELL_MIN_FFTLOG,ELL_MAX_FFTLOG,N_ELL_FFTLOG);
+    }
+  strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_fftlog doing something\n");
   if(l_arr==NULL) {
     *status=CCL_ERROR_LINSPACE;
     strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_fftlog ran out of memory\n");
@@ -433,14 +444,16 @@ INPUT: cosmology, number of theta values to evaluate = NL, theta vector,
 void ccl_correlation(ccl_cosmology *cosmo,
 		     int n_ell,double *ell,double *cls,
 		     int n_theta,double *theta,double *wtheta,
-		     int corr_type,int do_taper_cl,double *taper_cl_limits,int flag_method,
-		     int *status)
+		     int corr_type,int corr_space,int do_taper_cl,double *taper_cl_limits,
+		     int flag_method,int *status)
 {
+  //  int corr_space=CCL_CORR_ANG;
+  printf("ccl_correlation.c: ccl_tracer_corr doing something\n");
   if(flag_method==CCL_CORR_FFTLOG) {
-    ccl_tracer_corr_fftlog(cosmo,n_ell,ell,cls,n_theta,theta,wtheta,corr_type,
+    ccl_tracer_corr_fftlog(cosmo,n_ell,ell,cls,n_theta,theta,wtheta,corr_type,corr_space,
 			   do_taper_cl,taper_cl_limits,status);
   }
-  else if(flag_method==CCL_CORR_LGNDRE) {
+  else if(flag_method==CCL_CORR_LGNDRE) {//corr_space should be 'l' or 'ell'
     ccl_tracer_corr_legendre(cosmo,n_ell,ell,cls,n_theta,theta,wtheta,corr_type,
 			     do_taper_cl,taper_cl_limits,status);
   }

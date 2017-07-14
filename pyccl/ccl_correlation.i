@@ -26,14 +26,14 @@ void correlation_vec(ccl_cosmology *cosmo,
 		     int nlarr,double *larr,
 		     int nclarr,double *clarr,
 		     int nt,double *theta,
-		     int corr_type,int method,
+		     int corr_type,int corr_space,int method,
 		     double *output,int nout,
 		     int *status)
 {
   assert(nlarr==nclarr);
   assert(nt==nout);
 
-  ccl_correlation(cosmo,nlarr,larr,clarr,nt,theta,output,corr_type,0,NULL,method,status);
+  ccl_correlation(cosmo,nlarr,larr,clarr,nt,theta,output,corr_type,corr_space,0,NULL,method,status);
 }
 
 %}

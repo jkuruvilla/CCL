@@ -185,44 +185,44 @@ static void compare_corr(char *compare_type,int algorithm,struct corrs_data * da
   wt_dd_11_h=malloc(nofl*sizeof(double));
   for(il=0;il<ELL_MAX_CL;il++)
     clarr[il]=ccl_angular_cl(cosmo,il,tr_nc_1,tr_nc_1,&status);
-  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_dd_11_h,CCL_CORR_GG,
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_dd_11_h,CCL_CORR_GG,CCL_CORR_ANG,
 		  0,taper_cl_limits,algorithm,&status);
   wt_dd_12_h=malloc(nofl*sizeof(double));
   for(il=0;il<ELL_MAX_CL;il++)
     clarr[il]=ccl_angular_cl(cosmo,il,tr_nc_1,tr_nc_2,&status);
-  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_dd_12_h,CCL_CORR_GG,
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_dd_12_h,CCL_CORR_GG,CCL_CORR_ANG,
 		  0,taper_cl_limits,algorithm,&status);
   wt_dd_22_h=malloc(nofl*sizeof(double));
   for(il=0;il<ELL_MAX_CL;il++)
     clarr[il]=ccl_angular_cl(cosmo,il,tr_nc_2,tr_nc_2,&status);
-  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_dd_22_h,CCL_CORR_GG,
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_dd_22_h,CCL_CORR_GG,CCL_CORR_ANG,
 		  0,taper_cl_limits,algorithm,&status);
 
   wt_ll_11_h_mm=malloc(nofl*sizeof(double));
   wt_ll_11_h_pp=malloc(nofl*sizeof(double));
   for(il=0;il<ELL_MAX_CL;il++)
     clarr[il]=ccl_angular_cl(cosmo,il,tr_wl_1,tr_wl_1,&status);
-  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_11_h_pp,CCL_CORR_LP,
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_11_h_pp,CCL_CORR_LP,CCL_CORR_ANG,
 		  0,taper_cl_limits,algorithm,&status);
-  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_11_h_mm,CCL_CORR_LM,
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_11_h_mm,CCL_CORR_LM,CCL_CORR_ANG,
 		  0,taper_cl_limits,algorithm,&status);
 
   wt_ll_12_h_mm=malloc(nofl*sizeof(double));
   wt_ll_12_h_pp=malloc(nofl*sizeof(double));
   for(il=0;il<ELL_MAX_CL;il++)
     clarr[il]=ccl_angular_cl(cosmo,il,tr_wl_1,tr_wl_2,&status);
-  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_12_h_pp,CCL_CORR_LP,
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_12_h_pp,CCL_CORR_LP,CCL_CORR_ANG,
 		  0,taper_cl_limits,algorithm,&status);
-  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_12_h_mm,CCL_CORR_LM,
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_12_h_mm,CCL_CORR_LM,CCL_CORR_ANG,
 		  0,taper_cl_limits,algorithm,&status);
 
   wt_ll_22_h_mm=malloc(nofl*sizeof(double));
   wt_ll_22_h_pp=malloc(nofl*sizeof(double));
   for(il=0;il<ELL_MAX_CL;il++)
     clarr[il]=ccl_angular_cl(cosmo,il,tr_wl_2,tr_wl_2,&status);
-  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_22_h_pp,CCL_CORR_LP,
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_22_h_pp,CCL_CORR_LP,CCL_CORR_ANG,
 		  0,taper_cl_limits,algorithm,&status);
-  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_22_h_mm,CCL_CORR_LM,
+  ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_22_h_mm,CCL_CORR_LM,CCL_CORR_ANG,
 		  0,taper_cl_limits,algorithm,&status);
   free(clarr);
   free(larr);

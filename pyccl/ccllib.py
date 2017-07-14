@@ -641,13 +641,19 @@ CCL_CORR_LP = _ccllib.CCL_CORR_LP
 _ccllib.CCL_CORR_LM_swigconstant(_ccllib)
 CCL_CORR_LM = _ccllib.CCL_CORR_LM
 
-def correlation(cosmo, n_ell, ell, cls, n_theta, theta, wtheta, corr_type, do_taper_cl, taper_cl_limits, flag_method, status):
-    """correlation(cosmology cosmo, int n_ell, double * ell, double * cls, int n_theta, double * theta, double * wtheta, int corr_type, int do_taper_cl, double * taper_cl_limits, int flag_method, int * status)"""
-    return _ccllib.correlation(cosmo, n_ell, ell, cls, n_theta, theta, wtheta, corr_type, do_taper_cl, taper_cl_limits, flag_method, status)
+_ccllib.CCL_CORR_PHYS_swigconstant(_ccllib)
+CCL_CORR_PHYS = _ccllib.CCL_CORR_PHYS
 
-def correlation_vec(cosmo, nlarr, nclarr, nt, corr_type, method, output, status):
-    """correlation_vec(cosmology cosmo, int nlarr, int nclarr, int nt, int corr_type, int method, double * output, int * status)"""
-    return _ccllib.correlation_vec(cosmo, nlarr, nclarr, nt, corr_type, method, output, status)
+_ccllib.CCL_CORR_ANG_swigconstant(_ccllib)
+CCL_CORR_ANG = _ccllib.CCL_CORR_ANG
+
+def correlation(cosmo, n_ell, ell, cls, n_theta, theta, wtheta, corr_type, corr_space, do_taper_cl, taper_cl_limits, flag_method, status):
+    """correlation(cosmology cosmo, int n_ell, double * ell, double * cls, int n_theta, double * theta, double * wtheta, int corr_type, int corr_space, int do_taper_cl, double * taper_cl_limits, int flag_method, int * status)"""
+    return _ccllib.correlation(cosmo, n_ell, ell, cls, n_theta, theta, wtheta, corr_type, corr_space, do_taper_cl, taper_cl_limits, flag_method, status)
+
+def correlation_vec(cosmo, nlarr, nclarr, nt, corr_type, corr_space, method, output, status):
+    """correlation_vec(cosmology cosmo, int nlarr, int nclarr, int nt, int corr_type, int corr_space, int method, double * output, int * status)"""
+    return _ccllib.correlation_vec(cosmo, nlarr, nclarr, nt, corr_type, corr_space, method, output, status)
 
 def cosmology_compute_sigma(cosmo, status):
     """cosmology_compute_sigma(cosmology cosmo, int * status)"""
