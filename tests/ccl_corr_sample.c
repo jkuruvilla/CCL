@@ -23,7 +23,7 @@
 #define Z0_GC 0.50
 #define SZ_GC 0.05
 #define NL 512
-#define PS 0.1 
+#define PS 0.1
 #define NREL 3.046
 #define NMAS 0
 #define MNU 0.0
@@ -32,21 +32,13 @@
 
 int main(int argc,char **argv)
 {
-<<<<<<< HEAD
-  
-=======
->>>>>>> master
-  // Use the default configuration, plus the cosmological parameters that were 
+  // Use the default configuration, plus the cosmological parameters that were
   // defined above
   int status=0;
   ccl_configuration config = default_config;
-  ccl_parameters params = ccl_parameters_create(OC, OB, OK, NREL, NMAS, MNU, 
+  ccl_parameters params = ccl_parameters_create(OC, OB, OK, NREL, NMAS, MNU,
                                                 W0, WA, HH, NORMPS, NS,
-<<<<<<< HEAD
 					                            0, NULL, NULL, &status);
-=======
-						0, NULL, NULL, &status);
->>>>>>> master
   ccl_cosmology *cosmo = ccl_cosmology_create(params,config);
 
   // Create example number density and bias for tracer
@@ -58,18 +50,10 @@ int main(int argc,char **argv)
   }
 
   // Define a galaxy clustering tracer and calculate C_ell's
-<<<<<<< HEAD
-  CCL_ClTracer *ct_gc = ccl_cl_tracer_number_counts_simple_new(
-                                cosmo, 
-                                NZ, z_arr_gc, nz_arr_gc,
-							    NZ, z_arr_gc, bz_arr,
-							    &status);
-=======
-  CCL_ClTracer *ct_gc = ccl_cl_tracer_number_counts_simple_new(cosmo, 
+  CCL_ClTracer *ct_gc = ccl_cl_tracer_number_counts_simple_new(cosmo,
 							       NZ, z_arr_gc, nz_arr_gc,
 							       NZ, z_arr_gc, bz_arr,
 							       &status);
->>>>>>> master
   int il;
   double *clarr = malloc(ELL_MAX_CL*sizeof(double));
   double *larr = malloc(ELL_MAX_CL*sizeof(double));
@@ -78,31 +62,26 @@ int main(int argc,char **argv)
     larr[il] = il;
     clarr[il] = ccl_angular_cl(cosmo, il, ct_gc, ct_gc, &status);
   }
-  
-  // Define cosine tapering, to reduce ringing. The first two numbers are 
-  // [lmin, lmax] for the low-ell taper, and the last two are [lmin, lmax] for 
+
+  // Define cosine tapering, to reduce ringing. The first two numbers are
+  // [lmin, lmax] for the low-ell taper, and the last two are [lmin, lmax] for
   // the high-ell taper.
   double taper_cl_limits[4] = {1, 2, 10000, 15000};
-  
+
   double *clustering_corr, *theta;
   int ntheta = 15;
   theta = ccl_log_spacing(0.01, 5., ntheta); // New array with log spacing
   clustering_corr = malloc(ntheta*sizeof(double));
-  
+
   // Calculate correlation function from angular power spectrum
-  ccl_correlation(cosmo, ELL_MAX_CL, larr, clarr, 
-                  ntheta, theta, clustering_corr, 
-                  CCL_CORR_GG, 0, taper_cl_limits, 
+  ccl_correlation(cosmo, ELL_MAX_CL, larr, clarr,
+                  ntheta, theta, clustering_corr,
+                  CCL_CORR_GG, 0, taper_cl_limits,
                   CCL_CORR_FFTLOG, &status);
-  
+
   // Print results
   for(int it=0; it < ntheta; it++)
     printf("%le %le\n", theta[it], clustering_corr[it]);
-<<<<<<< HEAD
-
-=======
-  
->>>>>>> master
   // Free tracers and other allocated memory
   ccl_cl_tracer_free(ct_gc);
   ccl_cosmology_free(cosmo);

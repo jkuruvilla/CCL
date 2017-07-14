@@ -3,25 +3,21 @@
 #pragma once
 
 #define CCL_CORR_LGNDRE 1001
-<<<<<<< HEAD
 #define CCL_CORR_FFTLOG_PROJECTED 1002
 #define CCL_CORR_BESSEL 1003
 #define CCL_CORR_FFTLOG_3D 1004
-=======
+
 #define CCL_CORR_FFTLOG 1002
 #define CCL_CORR_BESSEL 1003
->>>>>>> master
+
 #define CCL_CORR_GG 2001
 #define CCL_CORR_GL 2002
 #define CCL_CORR_LP 2003
 #define CCL_CORR_LM 2004
-<<<<<<< HEAD
+
 #define CCL_CORR_GG_QUAD 2005//quadrupole
 #define CCL_CORR_PHYS 3001
 #define CCL_CORR_ANG 3002
-
-=======
->>>>>>> master
 
 /**
  * Computes the correlation function (wrapper)
@@ -47,10 +43,6 @@
 void ccl_correlation(ccl_cosmology *cosmo,
 		     int n_ell,double *ell,double *cls,
 		     int n_theta,double *theta,double *wtheta,
-<<<<<<< HEAD
 		     int corr_type,int corr_space,
 		     int do_taper_cl,double *taper_cl_limits,int flag_method,
-=======
-		     int corr_type,int do_taper_cl,double *taper_cl_limits,int flag_method,
->>>>>>> master
 		     int *status);

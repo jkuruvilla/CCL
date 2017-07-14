@@ -3,7 +3,7 @@
 
 /****************************************************************
 
-This is the famous FFTLog. 
+This is the famous FFTLog.
 
 First imlplemented by the living legend Andrew Hamilton:
 
@@ -35,13 +35,10 @@ void xi2pk(int N,  const double r[],  const double xi[], double k[], double pk[]
  * in this notation.  The input k-values must be logarithmically spaced.  The
  * resulting xi_l^m(r) will be evaluated at the dual r-values
  *   r[0] = 1/k[N-1], ..., r[N-1] = 1/k[0]. */
-<<<<<<< HEAD
-void fftlog_ComputeXiLM(double l, double m, int N, const double k[],  const double pk[], double r[], double xi[]);
-=======
+void fftlog_ComputeXiLM(double l, double m, int N, const double k[],  const double pk[],
+												double r[], double xi[]);
 void fftlog_ComputeXiLM(double l, double m, int N, const double k[],  const double pk[],
 			double r[], double xi[]);
->>>>>>> master
-
 
 #include <complex.h>
 
@@ -51,8 +48,8 @@ void fftlog_ComputeXiLM(double l, double m, int N, const double k[],  const doub
  * If u is NULL, the transform coefficients will be computed anew and discarded
  * afterwards.  If you plan on performing many consecutive transforms, it is
  * more efficient to pre-compute the u coefficients. */
-void fht(int N,  const double r[],  const double complex a[], double k[], double complex b[], double mu,
-         double q, double kcrc, int noring, double complex* u);
+void fht(int N,  const double r[],  const double complex a[], double k[], double complex b[],
+				double mu,double q, double kcrc, int noring, double complex* u);
 //         double q = 0, double kcrc = 1, bool noring = true, double complex* u = NULL);
 
 /* Pre-compute the coefficients that appear in the FFTLog implementation of

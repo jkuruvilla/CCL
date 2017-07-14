@@ -4,13 +4,10 @@ from pyutils import _cosmology_obj, check
 import numpy as np
 
 correlation_methods = {
-<<<<<<< HEAD
     'fftlog_projected':   const.CCL_CORR_FFTLOG_PROJECTED,
     'fftlog':   const.CCL_CORR_FFTLOG_PROJECTED, #default option for fftlog
     'fftlog_3d':   const.CCL_CORR_FFTLOG_3D,
-=======
     'fftlog':   const.CCL_CORR_FFTLOG,
->>>>>>> master
     'bessel':   const.CCL_CORR_BESSEL,
     'legendre': const.CCL_CORR_LGNDRE,
 }
@@ -22,7 +19,6 @@ correlation_types = {
     'l-': const.CCL_CORR_LM,
 }
 
-<<<<<<< HEAD
 correlation_space = {
     'ang': const.CCL_CORR_ANG,
     'angular': const.CCL_CORR_ANG,
@@ -34,9 +30,7 @@ correlation_space = {
 }
 
 def correlation(cosmo, ell, C_ell, theta, corr_type='gg',corr_space='ang', method='fftlog'):
-=======
 def correlation(cosmo, ell, C_ell, theta, corr_type='gg', method='fftlog'):
->>>>>>> master
     """
     Compute the angular correlation function.
 
@@ -53,38 +47,29 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg', method='fftlog'):
 
     cosmo = _cosmology_obj(cosmo)
     status = 0
-<<<<<<< HEAD
-
     # Convert to lower case
     corr_type = corr_type.lower()
     method = method.lower()
     corr_space=corr_space.lower()
 
-=======
-    
     # Convert to lower case
     corr_type = corr_type.lower()
     method = method.lower()
-    
->>>>>>> master
+
     if corr_type not in correlation_types.keys():
         raise KeyError("'%s' is not a valid correlation type." % corr_type)
 
     if method.lower() not in correlation_methods.keys():
         raise KeyError("'%s' is not a valid correlation method." % method)
-<<<<<<< HEAD
 
     if corr_space not in correlation_space.keys():
         raise KeyError("'%s' is not a valid correlation space." % corr_space)
-=======
-    
->>>>>>> master
+
     # Convert scalar input into an array
     scalar = False
     if isinstance(theta, float):
         scalar = True
         theta = np.array([theta,])
-<<<<<<< HEAD
 
     # Call correlation function
     print 'python calling lib.correlation_vec'
@@ -92,18 +77,12 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg', method='fftlog'):
                                       correlation_types[corr_type],
                                       correlation_space[corr_space],
                                       correlation_methods[method],
-=======
-    
-    # Call correlation function 
-    wth, status = lib.correlation_vec(cosmo, ell, C_ell, theta, 
+
+    # Call correlation function
+    wth, status = lib.correlation_vec(cosmo, ell, C_ell, theta,
                                       correlation_types[corr_type],
-                                      correlation_methods[method], 
->>>>>>> master
+                                      correlation_methods[method],
                                       len(theta), status)
     check(status)
     if scalar: return wth[0]
     return wth
-<<<<<<< HEAD
-=======
-    
->>>>>>> master

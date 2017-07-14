@@ -165,11 +165,7 @@ static CCL_ClTracer *cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,
 
   if((tracer_type==CL_TRACER_NC)||(tracer_type==CL_TRACER_WL)) {
     clt->chimax=ccl_comoving_radial_distance(cosmo,1./(1+z_n[nz_n-1]), status);
-<<<<<<< HEAD
     clt->spl_nz=ccl_spline_init(nz_n,z_n,n,0,0); //ERROR HERE?
-=======
-    clt->spl_nz=ccl_spline_init(nz_n,z_n,n,0,0);
->>>>>>> master
     if(clt->spl_nz==NULL) {
       free(clt);
       *status=CCL_ERROR_SPLINE;
@@ -350,7 +346,7 @@ static CCL_ClTracer *cl_tracer_new(ccl_cosmology *cosmo,int tracer_type,
 	return NULL;
       }
       free(x); free(y);
-      
+
       clt->has_intrinsic_alignment=has_intrinsic_alignment;
       if(clt->has_intrinsic_alignment) {
 	clt->spl_rf=ccl_spline_init(nz_rf,z_rf,rf,rf[0],rf[nz_rf-1]);
@@ -540,7 +536,7 @@ static double transfer_mag(int l,double k,ccl_cosmology *cosmo,CCL_ClTracer *clt
   if(chi<=clt->chimax) {
     double a=ccl_scale_factor_of_chi(cosmo,chi,status);
     double wM=ccl_spline_eval(chi,clt->spl_wM);
-    
+
     if(wM<=0)
       return 0;
     else
@@ -563,7 +559,7 @@ static double transfer_wl(int l,double k,ccl_cosmology *cosmo,CCL_ClTracer *clt,
   if(chi<=clt->chimax) {
     double a=ccl_scale_factor_of_chi(cosmo,chi, status);
     double wL=ccl_spline_eval(chi,clt->spl_wL);
-    
+
     if(wL<=0)
       return 0;
     else
@@ -689,7 +685,7 @@ static void get_k_interval(ccl_cosmology *cosmo,CCL_ClTracer *clt1,CCL_ClTracer 
   //TODO: Should we replace 2 and -4 by log10 of K_MIN_INT and K_MAX_INT
   //*lkmax = log10(K_MAX_INT); //=3, breaks Cl test
   *lkmax=fmin( 2,log10(2  *(l+0.5)/chimin));
-<<<<<<< HEAD
+//<<<<<<< HEAD
   //*lkmin=log10(K_MIN_INT); //=-4, breaks Cl test
   /*if(l<1e4){
       *lkmin=fmax(-4,log10(0.5*(l+0.5)/chimax)); //fiduc
@@ -697,8 +693,8 @@ static void get_k_interval(ccl_cosmology *cosmo,CCL_ClTracer *clt1,CCL_ClTracer 
       *lkmin=-4;
    }*/
   //Try other scalings
-=======
->>>>>>> master
+//=======
+//>>>>>>> master
   *lkmin=fmax(-4,log10(0.1*(l+0.5)/chimax));
 }
 
