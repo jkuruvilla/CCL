@@ -101,16 +101,14 @@ static void ccl_tracer_corr_fftlog_projected(ccl_cosmology *cosmo,
 {
   int i;
   double *l_arr,*cl_arr,*th_arr,*wth_arr;
-  if (corr_space == CCL_CORR_PHYS)
+  /*if (corr_space == CCL_CORR_PHYS)
     {
       l_arr=ccl_log_spacing(k_MIN_FFTLOG,k_MAX_FFTLOG,N_ELL_FFTLOG);
-    }
-  else if (corr_space == CCL_CORR_ANG)
-    {
+    }*/
+  //else if (corr_space == CCL_CORR_ANG){
       l_arr=ccl_log_spacing(ELL_MIN_FFTLOG,ELL_MAX_FFTLOG,N_ELL_FFTLOG);
-    }
+    //}
 
-  l_arr=ccl_log_spacing(ELL_MIN_FFTLOG,ELL_MAX_FFTLOG,N_ELL_FFTLOG);
   if(l_arr==NULL) {
     *status=CCL_ERROR_LINSPACE;
     strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_fftlog ran out of memory\n");
@@ -127,32 +125,6 @@ static void ccl_tracer_corr_fftlog_projected(ccl_cosmology *cosmo,
   //Interpolate input Cl into array needed for FFTLog
   interpolate_extrapolate_cl(cosmo,l_arr,cl_arr,ell,cls,n_ell,status);
 //exit if status is not good
-  SplPar *cl_spl=ccl_spline_init(n_ell,ell,cls,cls[0],0);
-  if(cl_spl==NULL) {
-    free(l_arr);
-    free(cl_arr);
-    *status=CCL_ERROR_MEMORY;
-    strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_fftlog ran out of memory\n");
-    return;
-  }
-
-  double cl_tilt,l_edge,cl_edge;
-  l_edge=ell[n_ell-1];
-  if((cls[n_ell-1]*cls[n_ell-2]<0) || (cls[n_ell-2]==0)) {
-    cl_tilt=0;
-    cl_edge=0;
-  }
-  else {
-    cl_tilt=log(cls[n_ell-1]/cls[n_ell-2])/log(ell[n_ell-1]/ell[n_ell-2]);
-    cl_edge=cls[n_ell-1];
-  }
-  for(i=0;i<N_ELL_FFTLOG;i++) {
-    if(l_arr[i]>=l_edge)
-      cl_arr[i]=cl_edge*pow(l_arr[i]/l_edge,cl_tilt);
-    else
-      cl_arr[i]=ccl_spline_eval(l_arr[i],cl_spl);
-  }
-  ccl_spline_free(cl_spl);
 
   if (do_taper_cl)
     taper_cl(N_ELL_FFTLOG,l_arr,cl_arr,taper_cl_limits);
@@ -190,6 +162,7 @@ static void ccl_tracer_corr_fftlog_projected(ccl_cosmology *cosmo,
   if(corr_type==CCL_CORR_GL) i_bessel=2;
   if(corr_type==CCL_CORR_LP) i_bessel=0;
   if(corr_type==CCL_CORR_LM) i_bessel=4;
+
   fftlog_ComputeXiLM(i_bessel-0.5,1.5,N_ELL_FFTLOG,l_arr,cl_arr,th_arr,wth_arr);
   for(i=0;i<N_ELL_FFTLOG;i++)
     wth_arr[i]*=sqrt(th_arr[i]*2.0*M_PI);

@@ -66,7 +66,6 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg',corr_space='ang', metho
         theta = np.array([theta,])
 
     # Call correlation function
-    print 'python calling lib.correlation_vec'
     wth, status = lib.correlation_vec(cosmo, ell, C_ell, theta,
                                       correlation_types[corr_type],
                                       correlation_space[corr_space],

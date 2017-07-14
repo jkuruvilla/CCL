@@ -4045,7 +4045,7 @@ void correlation_vec(ccl_cosmology *cosmo,
   assert(nlarr==nclarr);
   assert(nt==nout);
 
-  ccl_correlation(cosmo,nlarr,larr,clarr,nt,theta,output,corr_type,corr_space,0,NULL,method,status);
+  
 }
 
 
