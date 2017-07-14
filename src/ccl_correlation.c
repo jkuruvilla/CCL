@@ -17,6 +17,13 @@
 #include "fftlog.h"
 
 
+#define ELL_MIN_FFTLOG 0.01
+#define ELL_MAX_FFTLOG 60000
+#define k_MAX_FFTLOG 10 //when using power spectra p(k)
+#define k_MIN_FFTLOG 0.001
+#define N_ELL_FFTLOG 5000 //same for k-space
+
+
 /*--------ROUTINE: taper_cl ------
 TASK:n Apply cosine tapering to Cls to reduce aliasing
 INPUT: number of ell bins for Cl, ell vector, C_ell vector, limits for tapering
@@ -32,10 +39,10 @@ static int taper_cl(int n_ell,double *ell,double *cl, double *ell_limits)
     }
     if(ell[i]>=ell_limits[1] && ell[i]<=ell_limits[2])
       continue;//ell within good ell range
-    
+
     if(ell[i]<ell_limits[1])//tapering low ell
       cl[i]*=cos((ell[i]-ell_limits[1])/(ell_limits[1]-ell_limits[0])*M_PI/2.);
-    
+
     if(ell[i]>ell_limits[2])//tapering high ell
       cl[i]*=cos((ell[i]-ell_limits[2])/(ell_limits[3]-ell_limits[2])*M_PI/2.);
   }
@@ -43,18 +50,49 @@ static int taper_cl(int n_ell,double *ell,double *cl, double *ell_limits)
   return 0;
 }
 
+
+static void interpolate_extrapolate_cl(ccl_cosmology *cosmo,double *l_arr, double *cl_arr,
+                                        double *ell_inp, double *cl_inp, int n_ell_inp, int *status)
+{
+  int i;
+  SplPar *cl_spl=ccl_spline_init(n_ell_inp,ell_inp,cl_inp,cl_inp[0],0);
+  if(cl_spl==NULL) {
+    //free(l_arr);
+    //free(cl_arr);
+    *status=CCL_ERROR_MEMORY;
+    strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_fftlog ran out of memory\n");
+    return;
+  }
+
+  double cl_tilt,l_edge,cl_edge;
+  l_edge=ell_inp[n_ell_inp-1];
+  if((cl_inp[n_ell_inp-1]*cl_inp[n_ell_inp-2]<0) || (cl_inp[n_ell_inp-2]==0)) {
+    cl_tilt=0;
+    cl_edge=0;
+  }
+  else {
+    cl_tilt=log(cl_inp[n_ell_inp-1]/cl_inp[n_ell_inp-2])/log(ell_inp[n_ell_inp-1]/ell_inp[n_ell_inp-2]);
+    cl_edge=cl_inp[n_ell_inp-1];
+  }
+  for(i=0;i<N_ELL_FFTLOG;i++) {
+    if(l_arr[i]>=l_edge)
+      cl_arr[i]=cl_edge*pow(l_arr[i]/l_edge,cl_tilt);
+    else
+      cl_arr[i]=ccl_spline_eval(l_arr[i],cl_spl);
+  }
+  ccl_spline_free(cl_spl);
+
+return;
+}
+
+
+
 /*--------ROUTINE: ccl_tracer_corr_fftlog ------
 TASK: For a given tracer, get the correlation function
       Following function takes a function to calculate angular cl as well.
       By default above function will call it using ccl_angular_cl
 INPUT: type of tracer, number of theta values to evaluate = NL, theta vector
  */
-#define ELL_MIN_FFTLOG 0.01
-#define ELL_MAX_FFTLOG 60000
-#define k_MAX_FFTLOG 10 //when using power spectra p(k)
-#define k_MIN_FFTLOG 0.001
-#define N_ELL_FFTLOG 5000 //same for k-space
-
 static void ccl_tracer_corr_fftlog(ccl_cosmology *cosmo,
 				   int n_ell,double *ell,double *cls,
 				   int n_theta,double *theta,double *wtheta,
@@ -87,32 +125,8 @@ static void ccl_tracer_corr_fftlog(ccl_cosmology *cosmo,
   }
 
   //Interpolate input Cl into array needed for FFTLog
-  SplPar *cl_spl=ccl_spline_init(n_ell,ell,cls,cls[0],0);
-  if(cl_spl==NULL) {
-    free(l_arr);
-    free(cl_arr);
-    *status=CCL_ERROR_MEMORY;
-    strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_fftlog ran out of memory\n");
-    return;
-  }
-
-  double cl_tilt,l_edge,cl_edge;
-  l_edge=ell[n_ell-1];
-  if((cls[n_ell-1]*cls[n_ell-2]<0) || (cls[n_ell-2]==0)) {
-    cl_tilt=0;
-    cl_edge=0;
-  }
-  else {
-    cl_tilt=log(cls[n_ell-1]/cls[n_ell-2])/log(ell[n_ell-1]/ell[n_ell-2]);
-    cl_edge=cls[n_ell-1];
-  }
-  for(i=0;i<N_ELL_FFTLOG;i++) {
-    if(l_arr[i]>=l_edge)
-      cl_arr[i]=cl_edge*pow(l_arr[i]/l_edge,cl_tilt);
-    else
-      cl_arr[i]=ccl_spline_eval(l_arr[i],cl_spl);
-  }
-  ccl_spline_free(cl_spl);
+  interpolate_extrapolate_cl(cosmo,l_arr,cl_arr,ell,cls,n_ell,status);
+//exit if status is not good
 
   if (do_taper_cl)
     taper_cl(N_ELL_FFTLOG,l_arr,cl_arr,taper_cl_limits);
@@ -317,7 +331,7 @@ static void ccl_compute_legendre_polynomial(int corr_type,int n_theta,double *th
 	  Pl_theta[i][j]=0;
 	  continue;
 	}
-	if (j<4) { 
+	if (j<4) {
 	  Pl_theta[i][j]=0;
 	  continue;
 	}
@@ -361,35 +375,8 @@ static void ccl_tracer_corr_legendre(ccl_cosmology *cosmo,
   if(corr_type==CCL_CORR_LM)
     printf("WARNING: legendre sum for xi- is still not correctly implemented.\n");
 
-  //Interpolate input Cl into 
-  SplPar *cl_spl=ccl_spline_init(n_ell,ell,cls,cls[0],0);
-  if(cl_spl==NULL) {
-    free(cl_arr);
-    free(l_arr);
-    *status=CCL_ERROR_MEMORY;
-    strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_legendre ran out of memory\n");
-    return;
-  }
-
-  double cl_tilt,l_edge,cl_edge;
-  l_edge=ell[n_ell-1];
-  if((cls[n_ell-1]*cls[n_ell-2]<0) || (cls[n_ell-2]==0)) {
-    cl_tilt=0;
-    cl_edge=0;
-  }
-  else {
-    cl_tilt=log(cls[n_ell-1]/cls[n_ell-2])/log(ell[n_ell-1]/ell[n_ell-2]);
-    cl_edge=cls[n_ell-1];
-  }
-  for(i=0;i<=ELL_MAX_FFTLOG;i++){
-    double l=(double)i;
-    l_arr[i]=l;
-    if(l>=l_edge)
-      cl_arr[i]=cl_edge*pow(l/l_edge,cl_tilt);
-    else
-      cl_arr[i]=ccl_spline_eval(l,cl_spl);
-  }
-  ccl_spline_free(cl_spl);
+  //Interpolate input Cl into
+  interpolate_extrapolate_cl(cosmo,l_arr,cl_arr,ell,cls,n_ell,status);
 
   if (do_taper_cl)
     *status=taper_cl(ELL_MAX_FFTLOG+1,l_arr,cl_arr,taper_cl_limits);
