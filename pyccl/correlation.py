@@ -45,7 +45,6 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg',corr_space='ang', metho
 
     cosmo = _cosmology_obj(cosmo)
     status = 0
-
     # Convert to lower case
     corr_type = corr_type.lower()
     method = method.lower()
@@ -59,6 +58,7 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg',corr_space='ang', metho
 
     if corr_space not in correlation_space.keys():
         raise KeyError("'%s' is not a valid correlation space." % corr_space)
+
     # Convert scalar input into an array
     scalar = False
     if isinstance(theta, float):
@@ -66,7 +66,6 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg',corr_space='ang', metho
         theta = np.array([theta,])
 
     # Call correlation function
-    print 'python calling lib.correlation_vec'
     wth, status = lib.correlation_vec(cosmo, ell, C_ell, theta,
                                       correlation_types[corr_type],
                                       correlation_space[corr_space],

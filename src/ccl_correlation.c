@@ -16,7 +16,6 @@
 #include "ccl.h"
 #include "fftlog.h"
 
-
 #define ELL_MIN_FFTLOG 0.01
 #define ELL_MAX_FFTLOG 60000
 #define k_MAX_FFTLOG 10 //when using power spectra p(k)
@@ -43,13 +42,15 @@ static int taper_cl(int n_ell,double *ell,double *cl, double *ell_limits)
     if(ell[i]<ell_limits[1])//tapering low ell
       cl[i]*=cos((ell[i]-ell_limits[1])/(ell_limits[1]-ell_limits[0])*M_PI/2.);
 
+    if(ell[i]<ell_limits[1])//tapering low ell
+      cl[i]*=cos((ell[i]-ell_limits[1])/(ell_limits[1]-ell_limits[0])*M_PI/2.);
+
     if(ell[i]>ell_limits[2])//tapering high ell
       cl[i]*=cos((ell[i]-ell_limits[2])/(ell_limits[3]-ell_limits[2])*M_PI/2.);
   }
 
   return 0;
 }
-
 
 static void interpolate_extrapolate_cl(ccl_cosmology *cosmo,double *l_arr, double *cl_arr,
                                         double *ell_inp, double *cl_inp, int n_ell_inp, int *status)
@@ -85,8 +86,6 @@ static void interpolate_extrapolate_cl(ccl_cosmology *cosmo,double *l_arr, doubl
 return;
 }
 
-
-
 /*--------ROUTINE: ccl_tracer_corr_fftlog ------
 TASK: For a given tracer, get the correlation function
       Following function takes a function to calculate angular cl as well.
@@ -102,14 +101,13 @@ static void ccl_tracer_corr_fftlog_projected(ccl_cosmology *cosmo,
 {
   int i;
   double *l_arr,*cl_arr,*th_arr,*wth_arr;
-  if (corr_space == CCL_CORR_PHYS)
+  /*if (corr_space == CCL_CORR_PHYS)
     {
       l_arr=ccl_log_spacing(k_MIN_FFTLOG,k_MAX_FFTLOG,N_ELL_FFTLOG);
-    }
-  else if (corr_space == CCL_CORR_ANG)
-    {
+    }*/
+  //else if (corr_space == CCL_CORR_ANG){
       l_arr=ccl_log_spacing(ELL_MIN_FFTLOG,ELL_MAX_FFTLOG,N_ELL_FFTLOG);
-    }
+    //}
 
   if(l_arr==NULL) {
     *status=CCL_ERROR_LINSPACE;
@@ -160,7 +158,11 @@ static void ccl_tracer_corr_fftlog_projected(ccl_cosmology *cosmo,
   //if(corr_type==CCL_CORR_GG) i_bessel=0;
   if(corr_type==CCL_CORR_GL) i_bessel=2;
   //if(corr_type==CCL_CORR_LP) i_bessel=0;
+  if(corr_type==CCL_CORR_GG) i_bessel=0;
+  if(corr_type==CCL_CORR_GL) i_bessel=2;
+  if(corr_type==CCL_CORR_LP) i_bessel=0;
   if(corr_type==CCL_CORR_LM) i_bessel=4;
+
   fftlog_ComputeXiLM(i_bessel-0.5,1.5,N_ELL_FFTLOG,l_arr,cl_arr,th_arr,wth_arr);
   for(i=0;i<N_ELL_FFTLOG;i++)
     wth_arr[i]*=sqrt(th_arr[i]*2.0*M_PI);
@@ -176,7 +178,6 @@ static void ccl_tracer_corr_fftlog_projected(ccl_cosmology *cosmo,
 
   return;
 }
-
 
 static void ccl_tracer_corr_fftlog_3D(ccl_cosmology *cosmo,
 				   int n_k,double *k,double *pk,
@@ -396,10 +397,11 @@ static void ccl_compute_legendre_polynomial(int corr_type,int n_theta,double *th
     for (int i=0;i<n_theta;i++){
       gsl_sf_legendre_Pl_array(ell_max,cos(theta[i]*M_PI/180),Pl_theta[i]);
       for (int j=0;j<=ell_max;j++){
-	Pl_theta[i][j]*=(2*j+1);
+	        Pl_theta[i][j]*=(2*j+1);
       }
     }
   }
+
   else if(corr_type==CCL_CORR_LM) {
     for (int i=0;i<n_theta;i++) {
       for (int j=0;j<=ell_max;j++) {
@@ -453,6 +455,35 @@ static void ccl_tracer_corr_legendre(ccl_cosmology *cosmo,
 
   //Interpolate input Cl into
   interpolate_extrapolate_cl(cosmo,l_arr,cl_arr,ell,cls,n_ell,status);
+  //Interpolate input Cl into
+  SplPar *cl_spl=ccl_spline_init(n_ell,ell,cls,cls[0],0);
+  if(cl_spl==NULL) {
+    free(cl_arr);
+    free(l_arr);
+    *status=CCL_ERROR_MEMORY;
+    strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_legendre ran out of memory\n");
+    return;
+  }
+
+  double cl_tilt,l_edge,cl_edge;
+  l_edge=ell[n_ell-1];
+  if((cls[n_ell-1]*cls[n_ell-2]<0) || (cls[n_ell-2]==0)) {
+    cl_tilt=0;
+    cl_edge=0;
+  }
+  else {
+    cl_tilt=log(cls[n_ell-1]/cls[n_ell-2])/log(ell[n_ell-1]/ell[n_ell-2]);
+    cl_edge=cls[n_ell-1];
+  }
+  for(i=0;i<=ELL_MAX_FFTLOG;i++) {
+    double l=(double)i;
+    l_arr[i]=l;
+    if(l>=l_edge)
+      cl_arr[i]=cl_edge*pow(l/l_edge,cl_tilt);
+    else
+      cl_arr[i]=ccl_spline_eval(l,cl_spl);
+  }
+  ccl_spline_free(cl_spl);
 
   if (do_taper_cl)
     *status=taper_cl(ELL_MAX_FFTLOG+1,l_arr,cl_arr,taper_cl_limits);
@@ -473,7 +504,7 @@ static void ccl_tracer_corr_legendre(ccl_cosmology *cosmo,
       free(cl_arr);
       free(l_arr);
       for(j=0;j<i;j++)
-	free(Pl_theta[j]);
+	     free(Pl_theta[j]);
       free(Pl_theta);
       *status=CCL_ERROR_MEMORY;
       strcpy(cosmo->status_message,"ccl_correlation.c: ccl_tracer_corr_legendre ran out of memory\n");
@@ -482,7 +513,7 @@ static void ccl_tracer_corr_legendre(ccl_cosmology *cosmo,
   }
   ccl_compute_legendre_polynomial(corr_type,n_theta,theta,ELL_MAX_FFTLOG,Pl_theta);
 
-  for (int i=0;i<n_theta;i++){
+  for (int i=0;i<n_theta;i++) {
     wtheta[i]=0;
     for(int i_L=1;i_L<ELL_MAX_FFTLOG;i_L+=1)
       wtheta[i]+=cl_arr[i_L]*Pl_theta[i][i_L];

@@ -40,7 +40,6 @@ static int linecount(FILE *f)
 
 static void compare_corr(char *compare_type,int algorithm,struct corrs_data * data)
 {
-
   int ii,status=0;
 
   /* Set up the CCL configuration for comparing to benchmarks
@@ -157,7 +156,6 @@ static void compare_corr(char *compare_type,int algorithm,struct corrs_data * da
   double *wt_ll_11_h_pp,*wt_ll_12_h_pp,*wt_ll_22_h_pp;
   double theta_in[nofl];
 
-
   for(ii=0;ii<nofl;ii++) {
     int stat;
     double dum;
@@ -202,6 +200,7 @@ static void compare_corr(char *compare_type,int algorithm,struct corrs_data * da
   wt_ll_11_h_pp=malloc(nofl*sizeof(double));
   for(il=0;il<ELL_MAX_CL;il++)
     clarr[il]=ccl_angular_cl(cosmo,il,tr_wl_1,tr_wl_1,&status);
+
   ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_11_h_pp,CCL_CORR_LP,CCL_CORR_ANG,
 		  0,taper_cl_limits,algorithm,&status);
   ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_11_h_mm,CCL_CORR_LM,CCL_CORR_ANG,
@@ -220,6 +219,7 @@ static void compare_corr(char *compare_type,int algorithm,struct corrs_data * da
   wt_ll_22_h_pp=malloc(nofl*sizeof(double));
   for(il=0;il<ELL_MAX_CL;il++)
     clarr[il]=ccl_angular_cl(cosmo,il,tr_wl_2,tr_wl_2,&status);
+
   ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_22_h_pp,CCL_CORR_LP,CCL_CORR_ANG,
 		  0,taper_cl_limits,algorithm,&status);
   ccl_correlation(cosmo,ELL_MAX_CL,larr,clarr,nofl,theta_in,wt_ll_22_h_mm,CCL_CORR_LM,CCL_CORR_ANG,
@@ -282,14 +282,12 @@ static void compare_corr(char *compare_type,int algorithm,struct corrs_data * da
   /* Proceed to the comparison between benchmarks and CCL.
    * If DEBUG flag is set, then produce an output file.
    */
-
 #ifdef _DEBUG
   FILE *output = fopen("cc_test_corr_out.dat", "w");
 #endif //_DEBUG
   int npoints=0;
   for(ii=0;ii<nofl;ii++) {
     double tol;
-
     if((theta_in[ii]<sig_theta_in[0]) ||(theta_in[ii]>sig_theta_in[nsig-1]))
       continue;
     else
