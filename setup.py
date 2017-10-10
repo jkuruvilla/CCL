@@ -2,14 +2,18 @@
 
 import os
 import sys
+try:
+    from setuptools import setup, Extension, Command
+    from setuptools.command.install import install as DistutilsInstall
+except ImportError:
+    from distutils.core import setup
+    from distutils.cmd import Command
+    from disutils.extension import Extension
+    from distutils.command.install import install as DistutilsInstall    
 from distutils import log, ccompiler
-from distutils.cmd import Command
-from distutils.core import setup
 from distutils.errors import CompileError, LinkError
-from distutils.extension import Extension
 from distutils.sysconfig import customize_compiler, get_config_var, get_config_vars
 from distutils.util import get_platform
-from distutils.command.install import install as DistutilsInstall
 from distutils.command.build_clib import build_clib as BuildCLib
 from distutils.dir_util import mkpath
 import platform
@@ -252,25 +256,28 @@ def _check_extensions():
     return ret_val
 
 # CCL setup script
-
+libdir=[]
 if "--user" in sys.argv:
-    libdir=os.path.realpath(os.path.join(site.USER_BASE,'lib'))
+    libdir.append(os.path.realpath(os.path.join(site.USER_BASE,'lib')))
 elif "--prefix" in sys.argv:
     ii = np.where(np.array(sys.argv)=="--prefix")
-    libdir=os.path.realpath(os.path.join(sys.argv[ii+1],'lib'))
+    libdir.append(os.path.realpath(os.path.join(sys.argv[ii+1],'lib')))
 else:
-    libdir=os.path.realpath(os.path.join(sys.prefix,'lib'))
+    libdir.append(os.path.realpath(os.path.join(sys.prefix,'lib')))
+    libdir.append(os.path.realpath(os.path.join(site.USER_BASE,'lib')))
 setup(name="pyccl",
     description="Library of validated cosmological functions.",
     author="LSST DESC",
-    version="0.1",
+    version="0.2.4",
+    url = 'https://github.com/LSSTDESC/CCL',
+    download_url = 'https://github.com/LSSTDESC/CCL/archive/0.2.4.tar.gz',
     packages=['pyccl'],
     ext_modules=[
         Extension("_ccllib",["pyccl/ccl_wrap.c"],
             libraries=['m', 'gsl', 'gslcblas', 'ccl'],
             include_dirs=[numpy_include, "include/", "class/include"],
-            library_dirs=[libdir],
-            runtime_library_dirs=[libdir],
+            library_dirs=libdir,
+            runtime_library_dirs=libdir,
             extra_compile_args=['-O4', '-std=c99'],
             swig_opts=['-threads'], 
             )
