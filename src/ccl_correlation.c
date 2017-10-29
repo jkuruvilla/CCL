@@ -389,7 +389,7 @@ static void ccl_compute_legendre_polynomial(int corr_type,int n_theta,double *th
     for (i=0;i<n_theta;i++) {//https://arxiv.org/pdf/1007.4809.pdf
       for (j=2;j<=ell_max;j++) {
 	Pl_theta[i][j]=gsl_sf_legendre_Plm(j,2,cos(theta[i]*M_PI/180));
-	Pl_theta[i][j]*=(2*j+1.)/((j+0.)*(j+1.));
+	Pl_theta[i][j]*=(2*j+1.)/((j+0.)*(j+1.));// this assuming input is convergence power spectrum
       }
     }
   }
@@ -415,6 +415,7 @@ static void ccl_compute_legendre_polynomial(int corr_type,int n_theta,double *th
 	}
 	Pl_theta[i][j]=gsl_sf_legendre_Plm(j,4,cos(theta[i]*M_PI/180));
 	Pl_theta[i][j]*=(2*j+1)*pow(j,4);//approximate.. Using relation between bessel and legendre functions from Steibbens96.
+	//this again works only for matter correlation function
 	for (k=-3;k<=4;k++)
 	  Pl_theta[i][j]/=(j+k);
       }
