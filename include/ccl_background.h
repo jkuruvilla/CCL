@@ -143,7 +143,7 @@ double ccl_distance_modulus(ccl_cosmology * cosmo, double a, int * status);
 * @param na Number of scale factors in a
  * @param a array of scale factors
  * @param output array of length na to store the results of the calculation. The entry at index i stores the
- * distance for a[i].
+ * distance modulus for a[i].
  * @param status Status flag. 0 if there are no errors, nonzero otherwise.
  * For specific cases see documentation for ccl_error.
  * @return void
