@@ -15,6 +15,7 @@
 #include "ccl_power.h"
 #include "ccl.h"
 #include "fftlog.h"
+#include "jacobi.h"
 
 #define ELL_MIN_FFTLOG 0.01
 #define ELL_MAX_FFTLOG 60000
@@ -361,6 +362,56 @@ static void ccl_tracer_corr_bessel(ccl_cosmology *cosmo,
   free(cp);
 }
 
+
+/*--------ROUTINE: ccl_compute_wigner_d_matrix ------
+ */
+
+static void ccl_compute_wigner_d_matrix(int corr_type,int n_theta,double *theta,
+                                            int ell_max,double **Pl_theta)
+{
+  int i,j;
+  double mF=0;
+  int m1=2,m2=2;
+  int a=0,b=0,k_m=0,lambda=0,k=0;
+  double *sin_theta2=malloc((n_theta)*sizeof(double));
+  double *cos_theta2=malloc((n_theta)*sizeof(double));
+  double *cos_theta=malloc((n_theta)*sizeof(double));
+  //Initialize Pl_theta
+  for (i=0;i<n_theta;i++) {
+    sin_theta2[i]=sin(theta[i]/2.);
+    cos_theta2[i]=cos(theta[i]/2.);
+    cos_theta[i]=cos(theta[i]);
+    for (j=0;j<ell_max;j++)
+      Pl_theta[i][j]=0.;
+  }
+  //  gsl_sf_choose (unsigned int n, unsigned int m);
+  //double jac_jacobi (double x, int n, double a, double b);
+
+  if (m1>m2)
+    {
+      a=m1-m2;
+      lambda=a;
+    }
+  else
+    a=m2-m1;
+
+  if (absolute(m1)>absolute(m2))
+    k_m=absolute(m1);
+  else
+    k_m=absolute(m2);
+  b=2*k_m-a;
+
+  for (j=0;j<ell_max;j++)
+    {
+      k=j-k_m;
+      mF=sqrt(gsl_sf_choose (2*j-k,k+a)/gsl_sf_choose (k+b,b));
+      mF*=pow(-1,lambda);
+      for (i=0;i<n_theta;i++) {
+	Pl_theta[i][j]=mF*pow(sin_theta2[i],a)*pow(cos_theta2[i],b)*jac_jacobi (cos_theta[i], j,a, b);
+      }
+    }
+
+}
 
 /*--------ROUTINE: ccl_compute_legendre_polynomial ------
 TASK: Compute input factor for ccl_tracer_corr_legendre
