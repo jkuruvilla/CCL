@@ -174,6 +174,18 @@ class parameters(_object):
     __swig_getmethods__["T_CMB"] = _ccllib.parameters_T_CMB_get
     if _newclass:
         T_CMB = _swig_property(_ccllib.parameters_T_CMB_get, _ccllib.parameters_T_CMB_set)
+    __swig_setmethods__["bcm_log10Mc"] = _ccllib.parameters_bcm_log10Mc_set
+    __swig_getmethods__["bcm_log10Mc"] = _ccllib.parameters_bcm_log10Mc_get
+    if _newclass:
+        bcm_log10Mc = _swig_property(_ccllib.parameters_bcm_log10Mc_get, _ccllib.parameters_bcm_log10Mc_set)
+    __swig_setmethods__["bcm_etab"] = _ccllib.parameters_bcm_etab_set
+    __swig_getmethods__["bcm_etab"] = _ccllib.parameters_bcm_etab_get
+    if _newclass:
+        bcm_etab = _swig_property(_ccllib.parameters_bcm_etab_get, _ccllib.parameters_bcm_etab_set)
+    __swig_setmethods__["bcm_ks"] = _ccllib.parameters_bcm_ks_set
+    __swig_getmethods__["bcm_ks"] = _ccllib.parameters_bcm_ks_get
+    if _newclass:
+        bcm_ks = _swig_property(_ccllib.parameters_bcm_ks_get, _ccllib.parameters_bcm_ks_set)
     __swig_setmethods__["sigma_8"] = _ccllib.parameters_sigma_8_set
     __swig_getmethods__["sigma_8"] = _ccllib.parameters_sigma_8_get
     if _newclass:
@@ -390,21 +402,25 @@ def cosmology_create(params, config):
     """cosmology_create(parameters params, configuration config) -> cosmology"""
     return _ccllib.cosmology_create(params, config)
 
-def cosmology_create_with_params(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, mnu, w0, wa, h, norm_pk, n_s, nz_mgrowth, zarr_mgrowth, dfarr_mgrowth, config, status):
-    """cosmology_create_with_params(double Omega_c, double Omega_b, double Omega_k, double N_nu_rel, double N_nu_mass, double mnu, double w0, double wa, double h, double norm_pk, double n_s, int nz_mgrowth, double * zarr_mgrowth, double * dfarr_mgrowth, configuration config, int * status) -> cosmology"""
-    return _ccllib.cosmology_create_with_params(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, mnu, w0, wa, h, norm_pk, n_s, nz_mgrowth, zarr_mgrowth, dfarr_mgrowth, config, status)
+def cosmology_create_with_params(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, mnu, w0, wa, h, norm_pk, n_s, bcm_log10Mc, bcm_etab, bcm_ks, nz_mgrowth, zarr_mgrowth, dfarr_mgrowth, config, status):
+    """cosmology_create_with_params(double Omega_c, double Omega_b, double Omega_k, double N_nu_rel, double N_nu_mass, double mnu, double w0, double wa, double h, double norm_pk, double n_s, double bcm_log10Mc, double bcm_etab, double bcm_ks, int nz_mgrowth, double * zarr_mgrowth, double * dfarr_mgrowth, configuration config, int * status) -> cosmology"""
+    return _ccllib.cosmology_create_with_params(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, mnu, w0, wa, h, norm_pk, n_s, bcm_log10Mc, bcm_etab, bcm_ks, nz_mgrowth, zarr_mgrowth, dfarr_mgrowth, config, status)
 
 def cosmology_create_with_lcdm_params(Omega_c, Omega_b, Omega_k, h, norm_pk, n_s, config, status):
     """cosmology_create_with_lcdm_params(double Omega_c, double Omega_b, double Omega_k, double h, double norm_pk, double n_s, configuration config, int * status) -> cosmology"""
     return _ccllib.cosmology_create_with_lcdm_params(Omega_c, Omega_b, Omega_k, h, norm_pk, n_s, config, status)
 
-def parameters_create(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, mnu, w0, wa, h, norm_pk, n_s, nz_mgrowth, zarr_mgrowth, dfarr_mgrowth, status):
-    """parameters_create(double Omega_c, double Omega_b, double Omega_k, double N_nu_rel, double N_nu_mass, double mnu, double w0, double wa, double h, double norm_pk, double n_s, int nz_mgrowth, double * zarr_mgrowth, double * dfarr_mgrowth, int * status) -> parameters"""
-    return _ccllib.parameters_create(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, mnu, w0, wa, h, norm_pk, n_s, nz_mgrowth, zarr_mgrowth, dfarr_mgrowth, status)
+def parameters_create(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, mnu, w0, wa, h, norm_pk, n_s, bcm_log10Mc, bcm_etab, bcm_ks, nz_mgrowth, zarr_mgrowth, dfarr_mgrowth, status):
+    """parameters_create(double Omega_c, double Omega_b, double Omega_k, double N_nu_rel, double N_nu_mass, double mnu, double w0, double wa, double h, double norm_pk, double n_s, double bcm_log10Mc, double bcm_etab, double bcm_ks, int nz_mgrowth, double * zarr_mgrowth, double * dfarr_mgrowth, int * status) -> parameters"""
+    return _ccllib.parameters_create(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, mnu, w0, wa, h, norm_pk, n_s, bcm_log10Mc, bcm_etab, bcm_ks, nz_mgrowth, zarr_mgrowth, dfarr_mgrowth, status)
 
 def parameters_create_flat_lcdm(Omega_c, Omega_b, h, norm_pk, n_s, status):
     """parameters_create_flat_lcdm(double Omega_c, double Omega_b, double h, double norm_pk, double n_s, int * status) -> parameters"""
     return _ccllib.parameters_create_flat_lcdm(Omega_c, Omega_b, h, norm_pk, n_s, status)
+
+def parameters_create_flat_lcdm_bar(Omega_c, Omega_b, h, norm_pk, n_s, bcm_log10Mc, bcm_etab, bcm_ks, status):
+    """parameters_create_flat_lcdm_bar(double Omega_c, double Omega_b, double h, double norm_pk, double n_s, double bcm_log10Mc, double bcm_etab, double bcm_ks, int * status) -> parameters"""
+    return _ccllib.parameters_create_flat_lcdm_bar(Omega_c, Omega_b, h, norm_pk, n_s, bcm_log10Mc, bcm_etab, bcm_ks, status)
 
 def parameters_create_flat_wcdm(Omega_c, Omega_b, w0, h, norm_pk, n_s, status):
     """parameters_create_flat_wcdm(double Omega_c, double Omega_b, double w0, double h, double norm_pk, double n_s, int * status) -> parameters"""
@@ -450,9 +466,15 @@ def cosmology_compute_power(cosmo, status):
     """cosmology_compute_power(cosmology cosmo, int * status)"""
     return _ccllib.cosmology_compute_power(cosmo, status)
 
-def parameters_create_vec(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, M_nu, w0, wa, h, norm_pk, n_s, zarr, dfarr, status):
-    """parameters_create_vec(double Omega_c, double Omega_b, double Omega_k, double N_nu_rel, double N_nu_mass, double M_nu, double w0, double wa, double h, double norm_pk, double n_s, double * zarr, double * dfarr, int * status) -> parameters"""
-    return _ccllib.parameters_create_vec(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, M_nu, w0, wa, h, norm_pk, n_s, zarr, dfarr, status)
+#<<<<<<< HEAD
+#def parameters_create_vec(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, M_nu, w0, wa, h, norm_pk, n_s, zarr, dfarr, status):
+ #   """parameters_create_vec(double Omega_c, double Omega_b, double Omega_k, double N_nu_rel, double N_nu_mass, double M_nu, double w0, double wa, double h, double norm_pk, double n_s, double * zarr, double * dfarr, int * status) -> parameters"""
+  #  return _ccllib.parameters_create_vec(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, M_nu, w0, wa, h, norm_pk, n_s, zarr, dfarr, status)
+#=======
+def parameters_create_vec(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, M_nu, w0, wa, h, norm_pk, n_s, bcm_log10Mc, bcm_etab, bcm_ks, zarr, dfarr, status):
+    """parameters_create_vec(double Omega_c, double Omega_b, double Omega_k, double N_nu_rel, double N_nu_mass, double M_nu, double w0, double wa, double h, double norm_pk, double n_s, double bcm_log10Mc, double bcm_etab, double bcm_ks, double * zarr, double * dfarr, int * status) -> parameters"""
+    return _ccllib.parameters_create_vec(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, M_nu, w0, wa, h, norm_pk, n_s, bcm_log10Mc, bcm_etab, bcm_ks, zarr, dfarr, status)
+#>>>>>>> master
 
 _ccllib.omega_m_label_swigconstant(_ccllib)
 omega_m_label = _ccllib.omega_m_label
@@ -477,7 +499,7 @@ def h_over_h0(cosmo, a, status):
     return _ccllib.h_over_h0(cosmo, a, status)
 
 def h_over_h0s(cosmo, na, a, output, status):
-    """h_over_h0s(cosmology cosmo, int na, double [na] a, double [na] output, int * status)"""
+    """h_over_h0s(cosmology cosmo, int na, double [] a, double [] output, int * status)"""
     return _ccllib.h_over_h0s(cosmo, na, a, output, status)
 
 def comoving_radial_distance(cosmo, a, status):
@@ -485,7 +507,7 @@ def comoving_radial_distance(cosmo, a, status):
     return _ccllib.comoving_radial_distance(cosmo, a, status)
 
 def comoving_radial_distances(cosmo, na, a, output, status):
-    """comoving_radial_distances(cosmology cosmo, int na, double [na] a, double [na] output, int * status)"""
+    """comoving_radial_distances(cosmology cosmo, int na, double [] a, double [] output, int * status)"""
     return _ccllib.comoving_radial_distances(cosmo, na, a, output, status)
 
 def sinn(cosmo, chi, status):
@@ -497,7 +519,7 @@ def comoving_angular_distance(cosmo, a, status):
     return _ccllib.comoving_angular_distance(cosmo, a, status)
 
 def comoving_angular_distances(cosmo, na, a, output, status):
-    """comoving_angular_distances(cosmology cosmo, int na, double [na] a, double [na] output, int * status)"""
+    """comoving_angular_distances(cosmology cosmo, int na, double [] a, double [] output, int * status)"""
     return _ccllib.comoving_angular_distances(cosmo, na, a, output, status)
 
 def luminosity_distance(cosmo, a, status):
@@ -505,7 +527,7 @@ def luminosity_distance(cosmo, a, status):
     return _ccllib.luminosity_distance(cosmo, a, status)
 
 def luminosity_distances(cosmo, na, a, output, status):
-    """luminosity_distances(cosmology cosmo, int na, double [na] a, double [na] output, int * status)"""
+    """luminosity_distances(cosmology cosmo, int na, double [] a, double [] output, int * status)"""
     return _ccllib.luminosity_distances(cosmo, na, a, output, status)
 
 def distance_modulus(cosmo, a, status):
@@ -513,7 +535,7 @@ def distance_modulus(cosmo, a, status):
     return _ccllib.distance_modulus(cosmo, a, status)
 
 def distance_moduli(cosmo, na, a, output, status):
-    """distance_moduli(cosmology cosmo, int na, double [na] a, double [na] output, int * status)"""
+    """distance_moduli(cosmology cosmo, int na, double [] a, double [] output, int * status)"""
     return _ccllib.distance_moduli(cosmo, na, a, output, status)
 
 def growth_factor(cosmo, a, status):
@@ -521,7 +543,7 @@ def growth_factor(cosmo, a, status):
     return _ccllib.growth_factor(cosmo, a, status)
 
 def growth_factors(cosmo, na, a, output, status):
-    """growth_factors(cosmology cosmo, int na, double [na] a, double [na] output, int * status)"""
+    """growth_factors(cosmology cosmo, int na, double [] a, double [] output, int * status)"""
     return _ccllib.growth_factors(cosmo, na, a, output, status)
 
 def growth_factor_unnorm(cosmo, a, status):
@@ -529,7 +551,7 @@ def growth_factor_unnorm(cosmo, a, status):
     return _ccllib.growth_factor_unnorm(cosmo, a, status)
 
 def growth_factors_unnorm(cosmo, na, a, output, status):
-    """growth_factors_unnorm(cosmology cosmo, int na, double [na] a, double [na] output, int * status)"""
+    """growth_factors_unnorm(cosmology cosmo, int na, double [] a, double [] output, int * status)"""
     return _ccllib.growth_factors_unnorm(cosmo, na, a, output, status)
 
 def growth_rate(cosmo, a, status):
@@ -537,7 +559,7 @@ def growth_rate(cosmo, a, status):
     return _ccllib.growth_rate(cosmo, a, status)
 
 def growth_rates(cosmo, na, a, output, status):
-    """growth_rates(cosmology cosmo, int na, double [na] a, double [na] output, int * status)"""
+    """growth_rates(cosmology cosmo, int na, double [] a, double [] output, int * status)"""
     return _ccllib.growth_rates(cosmo, na, a, output, status)
 
 def scale_factor_of_chi(cosmo, chi, status):
@@ -545,7 +567,7 @@ def scale_factor_of_chi(cosmo, chi, status):
     return _ccllib.scale_factor_of_chi(cosmo, chi, status)
 
 def scale_factor_of_chis(cosmo, nchi, chi, output, status):
-    """scale_factor_of_chis(cosmology cosmo, int nchi, double [nchi] chi, double [nchi] output, int * status)"""
+    """scale_factor_of_chis(cosmology cosmo, int nchi, double [] chi, double [] output, int * status)"""
     return _ccllib.scale_factor_of_chis(cosmo, nchi, chi, output, status)
 
 def omega_x(cosmo, a, label, status):
@@ -592,6 +614,10 @@ def omega_x_vec(cosmo, label, a, output, status):
     """omega_x_vec(cosmology cosmo, int label, double * a, double * output, int * status)"""
     return _ccllib.omega_x_vec(cosmo, label, a, output, status)
 
+def bcm_model_fkz(cosmo, k, a, status):
+    """bcm_model_fkz(cosmology cosmo, double k, double a, int * status) -> double"""
+    return _ccllib.bcm_model_fkz(cosmo, k, a, status)
+
 def linear_matter_power(cosmo, k, a, status):
     """linear_matter_power(cosmology cosmo, double k, double a, int * status) -> double"""
     return _ccllib.linear_matter_power(cosmo, k, a, status)
@@ -623,18 +649,26 @@ def sigmaR_vec(cosmo, R, output, status):
 _ccllib.CCL_CORR_LGNDRE_swigconstant(_ccllib)
 CCL_CORR_LGNDRE = _ccllib.CCL_CORR_LGNDRE
 
-_ccllib.CCL_CORR_FFTLOG_PROJECTED_swigconstant(_ccllib)
-CCL_CORR_FFTLOG_PROJECTED = _ccllib.CCL_CORR_FFTLOG_PROJECTED
+#<<<<<<< HEAD
+#_ccllib.CCL_CORR_FFTLOG_PROJECTED_swigconstant(_ccllib)
+#CCL_CORR_FFTLOG_PROJECTED = _ccllib.CCL_CORR_FFTLOG_PROJECTED
+#=======
+_ccllib.CCL_CORR_FFTLOG_swigconstant(_ccllib)
+CCL_CORR_FFTLOG = _ccllib.CCL_CORR_FFTLOG
+#>>>>>>> master
 
 _ccllib.CCL_CORR_BESSEL_swigconstant(_ccllib)
 CCL_CORR_BESSEL = _ccllib.CCL_CORR_BESSEL
 
-_ccllib.CCL_CORR_FFTLOG_3D_swigconstant(_ccllib)
-CCL_CORR_FFTLOG_3D = _ccllib.CCL_CORR_FFTLOG_3D
+#<<<<<<< HEAD
+#_ccllib.CCL_CORR_FFTLOG_3D_swigconstant(_ccllib)
+#CCL_CORR_FFTLOG_3D = _ccllib.CCL_CORR_FFTLOG_3D
 
-_ccllib.CCL_CORR_FFTLOG_swigconstant(_ccllib)
-CCL_CORR_FFTLOG = _ccllib.CCL_CORR_FFTLOG
+#_ccllib.CCL_CORR_FFTLOG_swigconstant(_ccllib)
+#CCL_CORR_FFTLOG = _ccllib.CCL_CORR_FFTLOG
 
+#=======
+#>>>>>>> master
 _ccllib.CCL_CORR_GG_swigconstant(_ccllib)
 CCL_CORR_GG = _ccllib.CCL_CORR_GG
 
@@ -709,6 +743,9 @@ CL_TRACER_NC = _ccllib.CL_TRACER_NC
 
 _ccllib.CL_TRACER_WL_swigconstant(_ccllib)
 CL_TRACER_WL = _ccllib.CL_TRACER_WL
+
+_ccllib.CL_TRACER_CL_swigconstant(_ccllib)
+CL_TRACER_CL = _ccllib.CL_TRACER_CL
 class CCL_ClTracer(_object):
     """Proxy of C CCL_ClTracer struct."""
 
@@ -733,6 +770,10 @@ class CCL_ClTracer(_object):
     __swig_getmethods__["chimin"] = _ccllib.CCL_ClTracer_chimin_get
     if _newclass:
         chimin = _swig_property(_ccllib.CCL_ClTracer_chimin_get, _ccllib.CCL_ClTracer_chimin_set)
+    __swig_setmethods__["chi_source"] = _ccllib.CCL_ClTracer_chi_source_set
+    __swig_getmethods__["chi_source"] = _ccllib.CCL_ClTracer_chi_source_get
+    if _newclass:
+        chi_source = _swig_property(_ccllib.CCL_ClTracer_chi_source_get, _ccllib.CCL_ClTracer_chi_source_set)
     __swig_setmethods__["has_rsd"] = _ccllib.CCL_ClTracer_has_rsd_set
     __swig_getmethods__["has_rsd"] = _ccllib.CCL_ClTracer_has_rsd_get
     if _newclass:
@@ -787,9 +828,9 @@ CCL_ClTracer_swigregister = _ccllib.CCL_ClTracer_swigregister
 CCL_ClTracer_swigregister(CCL_ClTracer)
 
 
-def cl_tracer_new(cosmo, tracer_type, has_rsd, has_magnification, has_intrinsic_alignment, nz_n, z_n, n, nz_b, z_b, b, nz_s, z_s, s, nz_ba, z_ba, ba, nz_rf, z_rf, rf, status):
-    """cl_tracer_new(cosmology cosmo, int tracer_type, int has_rsd, int has_magnification, int has_intrinsic_alignment, int nz_n, double * z_n, double * n, int nz_b, double * z_b, double * b, int nz_s, double * z_s, double * s, int nz_ba, double * z_ba, double * ba, int nz_rf, double * z_rf, double * rf, int * status) -> CCL_ClTracer"""
-    return _ccllib.cl_tracer_new(cosmo, tracer_type, has_rsd, has_magnification, has_intrinsic_alignment, nz_n, z_n, n, nz_b, z_b, b, nz_s, z_s, s, nz_ba, z_ba, ba, nz_rf, z_rf, rf, status)
+def cl_tracer_new(cosmo, tracer_type, has_rsd, has_magnification, has_intrinsic_alignment, nz_n, z_n, n, nz_b, z_b, b, nz_s, z_s, s, nz_ba, z_ba, ba, nz_rf, z_rf, rf, z_source, status):
+    """cl_tracer_new(cosmology cosmo, int tracer_type, int has_rsd, int has_magnification, int has_intrinsic_alignment, int nz_n, double * z_n, double * n, int nz_b, double * z_b, double * b, int nz_s, double * z_s, double * s, int nz_ba, double * z_ba, double * ba, int nz_rf, double * z_rf, double * rf, double z_source, int * status) -> CCL_ClTracer"""
+    return _ccllib.cl_tracer_new(cosmo, tracer_type, has_rsd, has_magnification, has_intrinsic_alignment, nz_n, z_n, n, nz_b, z_b, b, nz_s, z_s, s, nz_ba, z_ba, ba, nz_rf, z_rf, rf, z_source, status)
 
 def cl_tracer_number_counts_new(cosmo, has_rsd, has_magnification, nz_n, z_n, n, nz_b, z_b, b, nz_s, z_s, s, status):
     """cl_tracer_number_counts_new(cosmology cosmo, int has_rsd, int has_magnification, int nz_n, double * z_n, double * n, int nz_b, double * z_b, double * b, int nz_s, double * z_s, double * s, int * status) -> CCL_ClTracer"""
@@ -807,6 +848,10 @@ def cl_tracer_lensing_simple_new(cosmo, nz_n, z_n, n, status):
     """cl_tracer_lensing_simple_new(cosmology cosmo, int nz_n, double * z_n, double * n, int * status) -> CCL_ClTracer"""
     return _ccllib.cl_tracer_lensing_simple_new(cosmo, nz_n, z_n, n, status)
 
+def cl_tracer_cmblens_new(cosmo, z_source, status):
+    """cl_tracer_cmblens_new(cosmology cosmo, double z_source, int * status) -> CCL_ClTracer"""
+    return _ccllib.cl_tracer_cmblens_new(cosmo, z_source, status)
+
 def cl_tracer_free(clt):
     """cl_tracer_free(CCL_ClTracer clt)"""
     return _ccllib.cl_tracer_free(clt)
@@ -815,19 +860,322 @@ def angular_cl(cosmo, l, clt1, clt2, status):
     """angular_cl(cosmology cosmo, int l, CCL_ClTracer clt1, CCL_ClTracer clt2, int * status) -> double"""
     return _ccllib.angular_cl(cosmo, l, clt1, clt2, status)
 
-def cl_tracer_new_wrapper(cosmo, tracer_type, has_rsd, has_magnification, has_intrinsic_alignment, nz_n, nn, nz_b, nb, nz_s, ns, nz_ba, nba, nz_rf, nrf, status):
-    """cl_tracer_new_wrapper(cosmology cosmo, int tracer_type, int has_rsd, int has_magnification, int has_intrinsic_alignment, int nz_n, int nn, int nz_b, int nb, int nz_s, int ns, int nz_ba, int nba, int nz_rf, int nrf, int * status) -> CCL_ClTracer"""
-    return _ccllib.cl_tracer_new_wrapper(cosmo, tracer_type, has_rsd, has_magnification, has_intrinsic_alignment, nz_n, nn, nz_b, nb, nz_s, ns, nz_ba, nba, nz_rf, nrf, status)
+def cl_tracer_new_wrapper(cosmo, tracer_type, has_rsd, has_magnification, has_intrinsic_alignment, nz_n, nn, nz_b, nb, nz_s, ns, nz_ba, nba, nz_rf, nrf, z_source, status):
+    """cl_tracer_new_wrapper(cosmology cosmo, int tracer_type, int has_rsd, int has_magnification, int has_intrinsic_alignment, int nz_n, int nn, int nz_b, int nb, int nz_s, int ns, int nz_ba, int nba, int nz_rf, int nrf, double z_source, int * status) -> CCL_ClTracer"""
+    return _ccllib.cl_tracer_new_wrapper(cosmo, tracer_type, has_rsd, has_magnification, has_intrinsic_alignment, nz_n, nn, nz_b, nb, nz_s, ns, nz_ba, nba, nz_rf, nrf, z_source, status)
 
 def angular_cl_vec(cosmo, clt1, clt2, ell, output, status):
     """angular_cl_vec(cosmology cosmo, CCL_ClTracer clt1, CCL_ClTracer clt2, double * ell, double * output, int * status)"""
     return _ccllib.angular_cl_vec(cosmo, clt1, clt2, ell, output, status)
 
+# _ccllib.GSL_CONST_MKSA_SPEED_OF_LIGHT_swigconstant(_ccllib)
+GSL_CONST_MKSA_SPEED_OF_LIGHT = _ccllib.GSL_CONST_MKSA_SPEED_OF_LIGHT
+
+_ccllib.GSL_CONST_MKSA_GRAVITATIONAL_CONSTANT_swigconstant(_ccllib)
+GSL_CONST_MKSA_GRAVITATIONAL_CONSTANT = _ccllib.GSL_CONST_MKSA_GRAVITATIONAL_CONSTANT
+
+_ccllib.GSL_CONST_MKSA_PLANCKS_CONSTANT_H_swigconstant(_ccllib)
+GSL_CONST_MKSA_PLANCKS_CONSTANT_H = _ccllib.GSL_CONST_MKSA_PLANCKS_CONSTANT_H
+
+_ccllib.GSL_CONST_MKSA_PLANCKS_CONSTANT_HBAR_swigconstant(_ccllib)
+GSL_CONST_MKSA_PLANCKS_CONSTANT_HBAR = _ccllib.GSL_CONST_MKSA_PLANCKS_CONSTANT_HBAR
+
+_ccllib.GSL_CONST_MKSA_ASTRONOMICAL_UNIT_swigconstant(_ccllib)
+GSL_CONST_MKSA_ASTRONOMICAL_UNIT = _ccllib.GSL_CONST_MKSA_ASTRONOMICAL_UNIT
+
+_ccllib.GSL_CONST_MKSA_LIGHT_YEAR_swigconstant(_ccllib)
+GSL_CONST_MKSA_LIGHT_YEAR = _ccllib.GSL_CONST_MKSA_LIGHT_YEAR
+
+_ccllib.GSL_CONST_MKSA_PARSEC_swigconstant(_ccllib)
+GSL_CONST_MKSA_PARSEC = _ccllib.GSL_CONST_MKSA_PARSEC
+
+_ccllib.GSL_CONST_MKSA_GRAV_ACCEL_swigconstant(_ccllib)
+GSL_CONST_MKSA_GRAV_ACCEL = _ccllib.GSL_CONST_MKSA_GRAV_ACCEL
+
+_ccllib.GSL_CONST_MKSA_ELECTRON_VOLT_swigconstant(_ccllib)
+GSL_CONST_MKSA_ELECTRON_VOLT = _ccllib.GSL_CONST_MKSA_ELECTRON_VOLT
+
+_ccllib.GSL_CONST_MKSA_MASS_ELECTRON_swigconstant(_ccllib)
+GSL_CONST_MKSA_MASS_ELECTRON = _ccllib.GSL_CONST_MKSA_MASS_ELECTRON
+
+_ccllib.GSL_CONST_MKSA_MASS_MUON_swigconstant(_ccllib)
+GSL_CONST_MKSA_MASS_MUON = _ccllib.GSL_CONST_MKSA_MASS_MUON
+
+_ccllib.GSL_CONST_MKSA_MASS_PROTON_swigconstant(_ccllib)
+GSL_CONST_MKSA_MASS_PROTON = _ccllib.GSL_CONST_MKSA_MASS_PROTON
+
+_ccllib.GSL_CONST_MKSA_MASS_NEUTRON_swigconstant(_ccllib)
+GSL_CONST_MKSA_MASS_NEUTRON = _ccllib.GSL_CONST_MKSA_MASS_NEUTRON
+
+_ccllib.GSL_CONST_MKSA_RYDBERG_swigconstant(_ccllib)
+GSL_CONST_MKSA_RYDBERG = _ccllib.GSL_CONST_MKSA_RYDBERG
+
+_ccllib.GSL_CONST_MKSA_BOLTZMANN_swigconstant(_ccllib)
+GSL_CONST_MKSA_BOLTZMANN = _ccllib.GSL_CONST_MKSA_BOLTZMANN
+
+_ccllib.GSL_CONST_MKSA_MOLAR_GAS_swigconstant(_ccllib)
+GSL_CONST_MKSA_MOLAR_GAS = _ccllib.GSL_CONST_MKSA_MOLAR_GAS
+
+_ccllib.GSL_CONST_MKSA_STANDARD_GAS_VOLUME_swigconstant(_ccllib)
+GSL_CONST_MKSA_STANDARD_GAS_VOLUME = _ccllib.GSL_CONST_MKSA_STANDARD_GAS_VOLUME
+
+_ccllib.GSL_CONST_MKSA_MINUTE_swigconstant(_ccllib)
+GSL_CONST_MKSA_MINUTE = _ccllib.GSL_CONST_MKSA_MINUTE
+
+_ccllib.GSL_CONST_MKSA_HOUR_swigconstant(_ccllib)
+GSL_CONST_MKSA_HOUR = _ccllib.GSL_CONST_MKSA_HOUR
+
+_ccllib.GSL_CONST_MKSA_DAY_swigconstant(_ccllib)
+GSL_CONST_MKSA_DAY = _ccllib.GSL_CONST_MKSA_DAY
+
+_ccllib.GSL_CONST_MKSA_WEEK_swigconstant(_ccllib)
+GSL_CONST_MKSA_WEEK = _ccllib.GSL_CONST_MKSA_WEEK
+
+_ccllib.GSL_CONST_MKSA_INCH_swigconstant(_ccllib)
+GSL_CONST_MKSA_INCH = _ccllib.GSL_CONST_MKSA_INCH
+
+_ccllib.GSL_CONST_MKSA_FOOT_swigconstant(_ccllib)
+GSL_CONST_MKSA_FOOT = _ccllib.GSL_CONST_MKSA_FOOT
+
+_ccllib.GSL_CONST_MKSA_YARD_swigconstant(_ccllib)
+GSL_CONST_MKSA_YARD = _ccllib.GSL_CONST_MKSA_YARD
+
+_ccllib.GSL_CONST_MKSA_MILE_swigconstant(_ccllib)
+GSL_CONST_MKSA_MILE = _ccllib.GSL_CONST_MKSA_MILE
+
+_ccllib.GSL_CONST_MKSA_NAUTICAL_MILE_swigconstant(_ccllib)
+GSL_CONST_MKSA_NAUTICAL_MILE = _ccllib.GSL_CONST_MKSA_NAUTICAL_MILE
+
+_ccllib.GSL_CONST_MKSA_FATHOM_swigconstant(_ccllib)
+GSL_CONST_MKSA_FATHOM = _ccllib.GSL_CONST_MKSA_FATHOM
+
+_ccllib.GSL_CONST_MKSA_MIL_swigconstant(_ccllib)
+GSL_CONST_MKSA_MIL = _ccllib.GSL_CONST_MKSA_MIL
+
+_ccllib.GSL_CONST_MKSA_POINT_swigconstant(_ccllib)
+GSL_CONST_MKSA_POINT = _ccllib.GSL_CONST_MKSA_POINT
+
+_ccllib.GSL_CONST_MKSA_TEXPOINT_swigconstant(_ccllib)
+GSL_CONST_MKSA_TEXPOINT = _ccllib.GSL_CONST_MKSA_TEXPOINT
+
+_ccllib.GSL_CONST_MKSA_MICRON_swigconstant(_ccllib)
+GSL_CONST_MKSA_MICRON = _ccllib.GSL_CONST_MKSA_MICRON
+
+_ccllib.GSL_CONST_MKSA_ANGSTROM_swigconstant(_ccllib)
+GSL_CONST_MKSA_ANGSTROM = _ccllib.GSL_CONST_MKSA_ANGSTROM
+
+_ccllib.GSL_CONST_MKSA_HECTARE_swigconstant(_ccllib)
+GSL_CONST_MKSA_HECTARE = _ccllib.GSL_CONST_MKSA_HECTARE
+
+_ccllib.GSL_CONST_MKSA_ACRE_swigconstant(_ccllib)
+GSL_CONST_MKSA_ACRE = _ccllib.GSL_CONST_MKSA_ACRE
+
+_ccllib.GSL_CONST_MKSA_BARN_swigconstant(_ccllib)
+GSL_CONST_MKSA_BARN = _ccllib.GSL_CONST_MKSA_BARN
+
+_ccllib.GSL_CONST_MKSA_LITER_swigconstant(_ccllib)
+GSL_CONST_MKSA_LITER = _ccllib.GSL_CONST_MKSA_LITER
+
+_ccllib.GSL_CONST_MKSA_US_GALLON_swigconstant(_ccllib)
+GSL_CONST_MKSA_US_GALLON = _ccllib.GSL_CONST_MKSA_US_GALLON
+
+_ccllib.GSL_CONST_MKSA_QUART_swigconstant(_ccllib)
+GSL_CONST_MKSA_QUART = _ccllib.GSL_CONST_MKSA_QUART
+
+_ccllib.GSL_CONST_MKSA_PINT_swigconstant(_ccllib)
+GSL_CONST_MKSA_PINT = _ccllib.GSL_CONST_MKSA_PINT
+
+_ccllib.GSL_CONST_MKSA_CUP_swigconstant(_ccllib)
+GSL_CONST_MKSA_CUP = _ccllib.GSL_CONST_MKSA_CUP
+
+_ccllib.GSL_CONST_MKSA_FLUID_OUNCE_swigconstant(_ccllib)
+GSL_CONST_MKSA_FLUID_OUNCE = _ccllib.GSL_CONST_MKSA_FLUID_OUNCE
+
+_ccllib.GSL_CONST_MKSA_TABLESPOON_swigconstant(_ccllib)
+GSL_CONST_MKSA_TABLESPOON = _ccllib.GSL_CONST_MKSA_TABLESPOON
+
+_ccllib.GSL_CONST_MKSA_TEASPOON_swigconstant(_ccllib)
+GSL_CONST_MKSA_TEASPOON = _ccllib.GSL_CONST_MKSA_TEASPOON
+
+_ccllib.GSL_CONST_MKSA_CANADIAN_GALLON_swigconstant(_ccllib)
+GSL_CONST_MKSA_CANADIAN_GALLON = _ccllib.GSL_CONST_MKSA_CANADIAN_GALLON
+
+_ccllib.GSL_CONST_MKSA_UK_GALLON_swigconstant(_ccllib)
+GSL_CONST_MKSA_UK_GALLON = _ccllib.GSL_CONST_MKSA_UK_GALLON
+
+_ccllib.GSL_CONST_MKSA_MILES_PER_HOUR_swigconstant(_ccllib)
+GSL_CONST_MKSA_MILES_PER_HOUR = _ccllib.GSL_CONST_MKSA_MILES_PER_HOUR
+
+_ccllib.GSL_CONST_MKSA_KILOMETERS_PER_HOUR_swigconstant(_ccllib)
+GSL_CONST_MKSA_KILOMETERS_PER_HOUR = _ccllib.GSL_CONST_MKSA_KILOMETERS_PER_HOUR
+
+_ccllib.GSL_CONST_MKSA_KNOT_swigconstant(_ccllib)
+GSL_CONST_MKSA_KNOT = _ccllib.GSL_CONST_MKSA_KNOT
+
+_ccllib.GSL_CONST_MKSA_POUND_MASS_swigconstant(_ccllib)
+GSL_CONST_MKSA_POUND_MASS = _ccllib.GSL_CONST_MKSA_POUND_MASS
+
+_ccllib.GSL_CONST_MKSA_OUNCE_MASS_swigconstant(_ccllib)
+GSL_CONST_MKSA_OUNCE_MASS = _ccllib.GSL_CONST_MKSA_OUNCE_MASS
+
+_ccllib.GSL_CONST_MKSA_TON_swigconstant(_ccllib)
+GSL_CONST_MKSA_TON = _ccllib.GSL_CONST_MKSA_TON
+
+_ccllib.GSL_CONST_MKSA_METRIC_TON_swigconstant(_ccllib)
+GSL_CONST_MKSA_METRIC_TON = _ccllib.GSL_CONST_MKSA_METRIC_TON
+
+_ccllib.GSL_CONST_MKSA_UK_TON_swigconstant(_ccllib)
+GSL_CONST_MKSA_UK_TON = _ccllib.GSL_CONST_MKSA_UK_TON
+
+_ccllib.GSL_CONST_MKSA_TROY_OUNCE_swigconstant(_ccllib)
+GSL_CONST_MKSA_TROY_OUNCE = _ccllib.GSL_CONST_MKSA_TROY_OUNCE
+
+_ccllib.GSL_CONST_MKSA_CARAT_swigconstant(_ccllib)
+GSL_CONST_MKSA_CARAT = _ccllib.GSL_CONST_MKSA_CARAT
+
+_ccllib.GSL_CONST_MKSA_UNIFIED_ATOMIC_MASS_swigconstant(_ccllib)
+GSL_CONST_MKSA_UNIFIED_ATOMIC_MASS = _ccllib.GSL_CONST_MKSA_UNIFIED_ATOMIC_MASS
+
+_ccllib.GSL_CONST_MKSA_GRAM_FORCE_swigconstant(_ccllib)
+GSL_CONST_MKSA_GRAM_FORCE = _ccllib.GSL_CONST_MKSA_GRAM_FORCE
+
+_ccllib.GSL_CONST_MKSA_POUND_FORCE_swigconstant(_ccllib)
+GSL_CONST_MKSA_POUND_FORCE = _ccllib.GSL_CONST_MKSA_POUND_FORCE
+
+_ccllib.GSL_CONST_MKSA_KILOPOUND_FORCE_swigconstant(_ccllib)
+GSL_CONST_MKSA_KILOPOUND_FORCE = _ccllib.GSL_CONST_MKSA_KILOPOUND_FORCE
+
+_ccllib.GSL_CONST_MKSA_POUNDAL_swigconstant(_ccllib)
+GSL_CONST_MKSA_POUNDAL = _ccllib.GSL_CONST_MKSA_POUNDAL
+
+_ccllib.GSL_CONST_MKSA_CALORIE_swigconstant(_ccllib)
+GSL_CONST_MKSA_CALORIE = _ccllib.GSL_CONST_MKSA_CALORIE
+
+_ccllib.GSL_CONST_MKSA_BTU_swigconstant(_ccllib)
+GSL_CONST_MKSA_BTU = _ccllib.GSL_CONST_MKSA_BTU
+
+_ccllib.GSL_CONST_MKSA_THERM_swigconstant(_ccllib)
+GSL_CONST_MKSA_THERM = _ccllib.GSL_CONST_MKSA_THERM
+
+_ccllib.GSL_CONST_MKSA_HORSEPOWER_swigconstant(_ccllib)
+GSL_CONST_MKSA_HORSEPOWER = _ccllib.GSL_CONST_MKSA_HORSEPOWER
+
+_ccllib.GSL_CONST_MKSA_BAR_swigconstant(_ccllib)
+GSL_CONST_MKSA_BAR = _ccllib.GSL_CONST_MKSA_BAR
+
+_ccllib.GSL_CONST_MKSA_STD_ATMOSPHERE_swigconstant(_ccllib)
+GSL_CONST_MKSA_STD_ATMOSPHERE = _ccllib.GSL_CONST_MKSA_STD_ATMOSPHERE
+
+_ccllib.GSL_CONST_MKSA_TORR_swigconstant(_ccllib)
+GSL_CONST_MKSA_TORR = _ccllib.GSL_CONST_MKSA_TORR
+
+_ccllib.GSL_CONST_MKSA_METER_OF_MERCURY_swigconstant(_ccllib)
+GSL_CONST_MKSA_METER_OF_MERCURY = _ccllib.GSL_CONST_MKSA_METER_OF_MERCURY
+
+_ccllib.GSL_CONST_MKSA_INCH_OF_MERCURY_swigconstant(_ccllib)
+GSL_CONST_MKSA_INCH_OF_MERCURY = _ccllib.GSL_CONST_MKSA_INCH_OF_MERCURY
+
+_ccllib.GSL_CONST_MKSA_INCH_OF_WATER_swigconstant(_ccllib)
+GSL_CONST_MKSA_INCH_OF_WATER = _ccllib.GSL_CONST_MKSA_INCH_OF_WATER
+
+_ccllib.GSL_CONST_MKSA_PSI_swigconstant(_ccllib)
+GSL_CONST_MKSA_PSI = _ccllib.GSL_CONST_MKSA_PSI
+
+_ccllib.GSL_CONST_MKSA_POISE_swigconstant(_ccllib)
+GSL_CONST_MKSA_POISE = _ccllib.GSL_CONST_MKSA_POISE
+
+_ccllib.GSL_CONST_MKSA_STOKES_swigconstant(_ccllib)
+GSL_CONST_MKSA_STOKES = _ccllib.GSL_CONST_MKSA_STOKES
+
+_ccllib.GSL_CONST_MKSA_STILB_swigconstant(_ccllib)
+GSL_CONST_MKSA_STILB = _ccllib.GSL_CONST_MKSA_STILB
+
+_ccllib.GSL_CONST_MKSA_LUMEN_swigconstant(_ccllib)
+GSL_CONST_MKSA_LUMEN = _ccllib.GSL_CONST_MKSA_LUMEN
+
+_ccllib.GSL_CONST_MKSA_LUX_swigconstant(_ccllib)
+GSL_CONST_MKSA_LUX = _ccllib.GSL_CONST_MKSA_LUX
+
+_ccllib.GSL_CONST_MKSA_PHOT_swigconstant(_ccllib)
+GSL_CONST_MKSA_PHOT = _ccllib.GSL_CONST_MKSA_PHOT
+
+_ccllib.GSL_CONST_MKSA_FOOTCANDLE_swigconstant(_ccllib)
+GSL_CONST_MKSA_FOOTCANDLE = _ccllib.GSL_CONST_MKSA_FOOTCANDLE
+
+_ccllib.GSL_CONST_MKSA_LAMBERT_swigconstant(_ccllib)
+GSL_CONST_MKSA_LAMBERT = _ccllib.GSL_CONST_MKSA_LAMBERT
+
+_ccllib.GSL_CONST_MKSA_FOOTLAMBERT_swigconstant(_ccllib)
+GSL_CONST_MKSA_FOOTLAMBERT = _ccllib.GSL_CONST_MKSA_FOOTLAMBERT
+
+_ccllib.GSL_CONST_MKSA_CURIE_swigconstant(_ccllib)
+GSL_CONST_MKSA_CURIE = _ccllib.GSL_CONST_MKSA_CURIE
+
+_ccllib.GSL_CONST_MKSA_ROENTGEN_swigconstant(_ccllib)
+GSL_CONST_MKSA_ROENTGEN = _ccllib.GSL_CONST_MKSA_ROENTGEN
+
+_ccllib.GSL_CONST_MKSA_RAD_swigconstant(_ccllib)
+GSL_CONST_MKSA_RAD = _ccllib.GSL_CONST_MKSA_RAD
+
+_ccllib.GSL_CONST_MKSA_SOLAR_MASS_swigconstant(_ccllib)
+GSL_CONST_MKSA_SOLAR_MASS = _ccllib.GSL_CONST_MKSA_SOLAR_MASS
+
+_ccllib.GSL_CONST_MKSA_BOHR_RADIUS_swigconstant(_ccllib)
+GSL_CONST_MKSA_BOHR_RADIUS = _ccllib.GSL_CONST_MKSA_BOHR_RADIUS
+
+_ccllib.GSL_CONST_MKSA_NEWTON_swigconstant(_ccllib)
+GSL_CONST_MKSA_NEWTON = _ccllib.GSL_CONST_MKSA_NEWTON
+
+_ccllib.GSL_CONST_MKSA_DYNE_swigconstant(_ccllib)
+GSL_CONST_MKSA_DYNE = _ccllib.GSL_CONST_MKSA_DYNE
+
+_ccllib.GSL_CONST_MKSA_JOULE_swigconstant(_ccllib)
+GSL_CONST_MKSA_JOULE = _ccllib.GSL_CONST_MKSA_JOULE
+
+_ccllib.GSL_CONST_MKSA_ERG_swigconstant(_ccllib)
+GSL_CONST_MKSA_ERG = _ccllib.GSL_CONST_MKSA_ERG
+
+_ccllib.GSL_CONST_MKSA_STEFAN_BOLTZMANN_CONSTANT_swigconstant(_ccllib)
+GSL_CONST_MKSA_STEFAN_BOLTZMANN_CONSTANT = _ccllib.GSL_CONST_MKSA_STEFAN_BOLTZMANN_CONSTANT
+
+_ccllib.GSL_CONST_MKSA_THOMSON_CROSS_SECTION_swigconstant(_ccllib)
+GSL_CONST_MKSA_THOMSON_CROSS_SECTION = _ccllib.GSL_CONST_MKSA_THOMSON_CROSS_SECTION
+
+_ccllib.GSL_CONST_MKSA_BOHR_MAGNETON_swigconstant(_ccllib)
+GSL_CONST_MKSA_BOHR_MAGNETON = _ccllib.GSL_CONST_MKSA_BOHR_MAGNETON
+
+_ccllib.GSL_CONST_MKSA_NUCLEAR_MAGNETON_swigconstant(_ccllib)
+GSL_CONST_MKSA_NUCLEAR_MAGNETON = _ccllib.GSL_CONST_MKSA_NUCLEAR_MAGNETON
+
+_ccllib.GSL_CONST_MKSA_ELECTRON_MAGNETIC_MOMENT_swigconstant(_ccllib)
+GSL_CONST_MKSA_ELECTRON_MAGNETIC_MOMENT = _ccllib.GSL_CONST_MKSA_ELECTRON_MAGNETIC_MOMENT
+
+_ccllib.GSL_CONST_MKSA_PROTON_MAGNETIC_MOMENT_swigconstant(_ccllib)
+GSL_CONST_MKSA_PROTON_MAGNETIC_MOMENT = _ccllib.GSL_CONST_MKSA_PROTON_MAGNETIC_MOMENT
+
+_ccllib.GSL_CONST_MKSA_FARADAY_swigconstant(_ccllib)
+GSL_CONST_MKSA_FARADAY = _ccllib.GSL_CONST_MKSA_FARADAY
+
+_ccllib.GSL_CONST_MKSA_ELECTRON_CHARGE_swigconstant(_ccllib)
+GSL_CONST_MKSA_ELECTRON_CHARGE = _ccllib.GSL_CONST_MKSA_ELECTRON_CHARGE
+
+_ccllib.GSL_CONST_MKSA_VACUUM_PERMITTIVITY_swigconstant(_ccllib)
+GSL_CONST_MKSA_VACUUM_PERMITTIVITY = _ccllib.GSL_CONST_MKSA_VACUUM_PERMITTIVITY
+
+_ccllib.GSL_CONST_MKSA_VACUUM_PERMEABILITY_swigconstant(_ccllib)
+GSL_CONST_MKSA_VACUUM_PERMEABILITY = _ccllib.GSL_CONST_MKSA_VACUUM_PERMEABILITY
+
+_ccllib.GSL_CONST_MKSA_DEBYE_swigconstant(_ccllib)
+GSL_CONST_MKSA_DEBYE = _ccllib.GSL_CONST_MKSA_DEBYE
+
+_ccllib.GSL_CONST_MKSA_GAUSS_swigconstant(_ccllib)
+GSL_CONST_MKSA_GAUSS = _ccllib.GSL_CONST_MKSA_GAUSS
+
+_ccllib.M_PI_swigconstant(_ccllib)
+M_PI = _ccllib.M_PI
+
 _ccllib.K_PIVOT_swigconstant(_ccllib)
 K_PIVOT = _ccllib.K_PIVOT
-
-_ccllib.RHO_CRITICAL_swigconstant(_ccllib)
-RHO_CRITICAL = _ccllib.RHO_CRITICAL
 
 _ccllib.CLIGHT_HMPC_swigconstant(_ccllib)
 CLIGHT_HMPC = _ccllib.CLIGHT_HMPC
@@ -843,6 +1191,24 @@ MPC_TO_METER = _ccllib.MPC_TO_METER
 
 _ccllib.PC_TO_METER_swigconstant(_ccllib)
 PC_TO_METER = _ccllib.PC_TO_METER
+
+_ccllib.RHO_CRITICAL_swigconstant(_ccllib)
+RHO_CRITICAL = _ccllib.RHO_CRITICAL
+
+_ccllib.KBOLTZ_swigconstant(_ccllib)
+KBOLTZ = _ccllib.KBOLTZ
+
+_ccllib.STBOLTZ_swigconstant(_ccllib)
+STBOLTZ = _ccllib.STBOLTZ
+
+_ccllib.HPLANCK_swigconstant(_ccllib)
+HPLANCK = _ccllib.HPLANCK
+
+_ccllib.CLIGHT_swigconstant(_ccllib)
+CLIGHT = _ccllib.CLIGHT
+
+_ccllib.EV_IN_J_swigconstant(_ccllib)
+EV_IN_J = _ccllib.EV_IN_J
 
 _ccllib.TNCDM_swigconstant(_ccllib)
 TNCDM = _ccllib.TNCDM
@@ -912,9 +1278,17 @@ def specs_create_photoz_info(user_params, user_pz_func):
     """specs_create_photoz_info(void * user_params, double (*)(double,double,void *,int *) user_pz_func) -> user_pz_info"""
     return _ccllib.specs_create_photoz_info(user_params, user_pz_func)
 
+def specs_create_gaussian_photoz_info(sigma_z0):
+    """specs_create_gaussian_photoz_info(double sigma_z0) -> user_pz_info"""
+    return _ccllib.specs_create_gaussian_photoz_info(sigma_z0)
+
 def specs_free_photoz_info(my_photoz_info):
     """specs_free_photoz_info(user_pz_info my_photoz_info)"""
     return _ccllib.specs_free_photoz_info(my_photoz_info)
+
+def specs_free_photoz_info_gaussian(my_photoz_info):
+    """specs_free_photoz_info_gaussian(user_pz_info my_photoz_info)"""
+    return _ccllib.specs_free_photoz_info_gaussian(my_photoz_info)
 
 def specs_sigmaz_clustering(z):
     """specs_sigmaz_clustering(double z) -> double"""
@@ -993,6 +1367,12 @@ halofit = _ccllib.halofit
 _ccllib.halo_model_swigconstant(_ccllib)
 halo_model = _ccllib.halo_model
 
+_ccllib.nobaryons_swigconstant(_ccllib)
+nobaryons = _ccllib.nobaryons
+
+_ccllib.bcm_swigconstant(_ccllib)
+bcm = _ccllib.bcm
+
 _ccllib.tinker_swigconstant(_ccllib)
 tinker = _ccllib.tinker
 
@@ -1020,6 +1400,10 @@ class configuration(_object):
     __swig_getmethods__["matter_power_spectrum_method"] = _ccllib.configuration_matter_power_spectrum_method_get
     if _newclass:
         matter_power_spectrum_method = _swig_property(_ccllib.configuration_matter_power_spectrum_method_get, _ccllib.configuration_matter_power_spectrum_method_set)
+    __swig_setmethods__["baryons_power_spectrum_method"] = _ccllib.configuration_baryons_power_spectrum_method_set
+    __swig_getmethods__["baryons_power_spectrum_method"] = _ccllib.configuration_baryons_power_spectrum_method_get
+    if _newclass:
+        baryons_power_spectrum_method = _swig_property(_ccllib.configuration_baryons_power_spectrum_method_get, _ccllib.configuration_baryons_power_spectrum_method_set)
     __swig_setmethods__["mass_function_method"] = _ccllib.configuration_mass_function_method_set
     __swig_getmethods__["mass_function_method"] = _ccllib.configuration_mass_function_method_get
     if _newclass:
@@ -1166,5 +1550,3 @@ def spline_free(spl):
     """spline_free(SplPar spl)"""
     return _ccllib.spline_free(spl)
 # This file is compatible with both classic and new-style classes.
-
-

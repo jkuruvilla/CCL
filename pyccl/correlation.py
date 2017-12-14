@@ -1,6 +1,6 @@
-import ccllib as lib
-import constants as const
-from pyutils import _cosmology_obj, check
+from pyccl import ccllib as lib
+import pyccl.constants as const
+from pyccl.pyutils import _cosmology_obj, check
 import numpy as np
 
 correlation_methods = {
@@ -42,13 +42,20 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg',corr_space='ang', metho
     Returns:
         Value(s) of the correlation function at the input angular separation(s).
     """
-
+    cosmo_in = cosmo
     cosmo = _cosmology_obj(cosmo)
     status = 0
+ #<<<<<<< HEAD
+    # Convert to lower case
+   # corr_type = corr_type.lower()
+  #  method = method.lower()
+ #   corr_space=corr_space.lower()
+#=======
+#
     # Convert to lower case
     corr_type = corr_type.lower()
     method = method.lower()
-    corr_space=corr_space.lower()
+#>>>>>>> master
 
     if corr_type not in correlation_types.keys():
         raise KeyError("'%s' is not a valid correlation type." % corr_type)
@@ -56,9 +63,12 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg',corr_space='ang', metho
     if method.lower() not in correlation_methods.keys():
         raise KeyError("'%s' is not a valid correlation method." % method)
 
-    if corr_space not in correlation_space.keys():
-        raise KeyError("'%s' is not a valid correlation space." % corr_space)
+#<<<<<<< HEAD
+ #   if corr_space not in correlation_space.keys():
+  #      raise KeyError("'%s' is not a valid correlation space." % corr_space)
 
+#=======
+#>>>>>>> master
     # Convert scalar input into an array
     scalar = False
     if isinstance(theta, float):
@@ -68,9 +78,15 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg',corr_space='ang', metho
     # Call correlation function
     wth, status = lib.correlation_vec(cosmo, ell, C_ell, theta,
                                       correlation_types[corr_type],
-                                      correlation_space[corr_space],
+#<<<<<<< HEAD
+ #                                     correlation_space[corr_space],
+  #                                    correlation_methods[method],
+   #                                   len(theta),status)
+    #check(status)
+#=======
                                       correlation_methods[method],
-                                      len(theta),status)
-    check(status)
+                                      len(theta), status)
+    check(status, cosmo_in)
+#>>>>>>> master
     if scalar: return wth[0]
     return wth
