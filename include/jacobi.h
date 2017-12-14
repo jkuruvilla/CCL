@@ -49,9 +49,9 @@
 #ifndef __JACOBI_H__
 #define __JACOBI_H__
 
-#ifdef __cplusplus
+//#ifdef __cplusplus
 //extern "C"{
-#endif
+//#endif
 
 #include <gsl/gsl_sf_result.h>
 
@@ -67,7 +67,7 @@ enum jac_quad_type{
   JAC_GLJ,  ///< Gauss-Lobatto-Jacobi quadrature
   JAC_GRJM, ///< Gauss-Radau-Jacobi quadrature including the node -1
   JAC_GRJP  ///< Gauss-Radau-Jacobi quadrature including the node +1
-};
+  };
 
 
 /** \brief Struct used to store information and memory on the quadrature
@@ -205,8 +205,8 @@ void jac_interpmat_free(jac_quadrature *quad);
 
 
 
-#ifdef __cplusplus
+//#ifdef __cplusplus
   //}
-#endif
+//#endif
 
 #endif /* __JACOBI_H__ */
