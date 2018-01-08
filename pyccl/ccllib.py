@@ -307,18 +307,46 @@ class data(_object):
     __swig_getmethods__["etahmf"] = _ccllib.data_etahmf_get
     if _newclass:
         etahmf = _swig_property(_ccllib.data_etahmf_get, _ccllib.data_etahmf_set)
+    __swig_setmethods__["a_min_pk_lin"] = _ccllib.data_a_min_pk_lin_set
+    __swig_getmethods__["a_min_pk_lin"] = _ccllib.data_a_min_pk_lin_get
+    if _newclass:
+        a_min_pk_lin = _swig_property(_ccllib.data_a_min_pk_lin_get, _ccllib.data_a_min_pk_lin_set)
+    __swig_setmethods__["a_min_pk_nlin"] = _ccllib.data_a_min_pk_nlin_set
+    __swig_getmethods__["a_min_pk_nlin"] = _ccllib.data_a_min_pk_nlin_get
+    if _newclass:
+        a_min_pk_nlin = _swig_property(_ccllib.data_a_min_pk_nlin_get, _ccllib.data_a_min_pk_nlin_set)
+    __swig_setmethods__["a_max_pk_lin"] = _ccllib.data_a_max_pk_lin_set
+    __swig_getmethods__["a_max_pk_lin"] = _ccllib.data_a_max_pk_lin_get
+    if _newclass:
+        a_max_pk_lin = _swig_property(_ccllib.data_a_max_pk_lin_get, _ccllib.data_a_max_pk_lin_set)
+    __swig_setmethods__["a_max_pk_nlin"] = _ccllib.data_a_max_pk_nlin_set
+    __swig_getmethods__["a_max_pk_nlin"] = _ccllib.data_a_max_pk_nlin_get
+    if _newclass:
+        a_max_pk_nlin = _swig_property(_ccllib.data_a_max_pk_nlin_get, _ccllib.data_a_max_pk_nlin_set)
+    __swig_setmethods__["k_min_pk_lin"] = _ccllib.data_k_min_pk_lin_set
+    __swig_getmethods__["k_min_pk_lin"] = _ccllib.data_k_min_pk_lin_get
+    if _newclass:
+        k_min_pk_lin = _swig_property(_ccllib.data_k_min_pk_lin_get, _ccllib.data_k_min_pk_lin_set)
+    __swig_setmethods__["k_min_pk_nlin"] = _ccllib.data_k_min_pk_nlin_set
+    __swig_getmethods__["k_min_pk_nlin"] = _ccllib.data_k_min_pk_nlin_get
+    if _newclass:
+        k_min_pk_nlin = _swig_property(_ccllib.data_k_min_pk_nlin_get, _ccllib.data_k_min_pk_nlin_set)
+    __swig_setmethods__["k_max_pk_lin"] = _ccllib.data_k_max_pk_lin_set
+    __swig_getmethods__["k_max_pk_lin"] = _ccllib.data_k_max_pk_lin_get
+    if _newclass:
+        k_max_pk_lin = _swig_property(_ccllib.data_k_max_pk_lin_get, _ccllib.data_k_max_pk_lin_set)
+    __swig_setmethods__["k_max_pk_nlin"] = _ccllib.data_k_max_pk_nlin_set
+    __swig_getmethods__["k_max_pk_nlin"] = _ccllib.data_k_max_pk_nlin_get
+    if _newclass:
+        k_max_pk_nlin = _swig_property(_ccllib.data_k_max_pk_nlin_get, _ccllib.data_k_max_pk_nlin_set)
     __swig_setmethods__["p_lin"] = _ccllib.data_p_lin_set
     __swig_getmethods__["p_lin"] = _ccllib.data_p_lin_get
     if _newclass:
         p_lin = _swig_property(_ccllib.data_p_lin_get, _ccllib.data_p_lin_set)
-    __swig_setmethods__["p_nl"] = _ccllib.data_p_nl_set
-    __swig_getmethods__["p_nl"] = _ccllib.data_p_nl_get
+    __swig_setmethods__["p_nlin"] = _ccllib.data_p_nlin_set
+    __swig_getmethods__["p_nlin"] = _ccllib.data_p_nlin_get
     if _newclass:
-        p_nl = _swig_property(_ccllib.data_p_nl_get, _ccllib.data_p_nl_set)
-    __swig_setmethods__["k_min"] = _ccllib.data_k_min_set
-    __swig_getmethods__["k_min"] = _ccllib.data_k_min_get
-    if _newclass:
-        k_min = _swig_property(_ccllib.data_k_min_get, _ccllib.data_k_min_set)
+        p_nlin = _swig_property(_ccllib.data_p_nlin_get, _ccllib.data_p_nlin_set)
 
     def __init__(self):
         """__init__(ccl_data self) -> data"""
@@ -461,6 +489,10 @@ def cosmology_compute_distances(cosmo, status):
 def cosmology_compute_growth(cosmo, status):
     """cosmology_compute_growth(cosmology cosmo, int * status)"""
     return _ccllib.cosmology_compute_growth(cosmo, status)
+
+def cosmology_update_power(cosmo, is_linear, nk, karr, na, aarr, pkarr, status):
+    """cosmology_update_power(cosmology cosmo, int is_linear, int nk, double * karr, int na, double * aarr, double * pkarr, int * status)"""
+    return _ccllib.cosmology_update_power(cosmo, is_linear, nk, karr, na, aarr, pkarr, status)
 
 def cosmology_compute_power(cosmo, status):
     """cosmology_compute_power(cosmology cosmo, int * status)"""
@@ -627,6 +659,10 @@ def sigmaR(cosmo, R, status):
 def sigma8(cosmo, status):
     """sigma8(cosmology cosmo, int * status) -> double"""
     return _ccllib.sigma8(cosmo, status)
+
+def update_power(cosmo, is_linear, k, a, pk, status):
+    """update_power(cosmology cosmo, int is_linear, double * k, double * a, double * pk, int * status)"""
+    return _ccllib.update_power(cosmo, is_linear, k, a, pk, status)
 
 def linear_matter_power_vec(cosmo, a, k, output, status):
     """linear_matter_power_vec(cosmology cosmo, double a, double * k, double * output, int * status)"""

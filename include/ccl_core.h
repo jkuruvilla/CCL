@@ -111,9 +111,16 @@ typedef struct ccl_data{
   gsl_spline * etahmf;
 
   // These are all functions of the wavenumber k and the scale factor a.
+  double a_min_pk_lin;
+  double a_min_pk_nlin;
+  double a_max_pk_lin;
+  double a_max_pk_nlin;
+  double k_min_pk_lin;
+  double k_min_pk_nlin;
+  double k_max_pk_lin;
+  double k_max_pk_nlin;
   gsl_spline2d * p_lin;
-  gsl_spline2d * p_nl;
-  double k_min; //k_min  [1/Mpc] <- minimum wavenumber that the power spectrum has been computed to 
+  gsl_spline2d * p_nlin;
 
 } ccl_data;
 
@@ -293,6 +300,23 @@ void ccl_cosmology_compute_distances(ccl_cosmology * cosmo,int *status);
  */
 void ccl_cosmology_compute_growth(ccl_cosmology * cosmo, int * status);
 
+/**
+ * Update internal power spectrum spline with new arrays.
+ * @param cosmo cosmological parameters
+ * @param status Status flag. 0 if there are no errors, nonzero otherwise.
+ * @param is_linear : 0-> non_linear, 1-> linear
+ * @param nk : number of k values at which the new power spectrum is sampled
+ * @param karr : array of k values (in h/Mpc)
+ * @param na : number of values of the scale factor
+ * @param aarr : array of scale factor values
+ * @param pkarr : 2D array containing p[a*nk+k]
+ * For specific cases see documentation for ccl_error.c
+ * @return void
+ */
+void ccl_cosmology_update_power(ccl_cosmology *cosmo,int is_linear,
+				int nk, double *karr,int na, double *aarr,
+				double *pkarr,int *status);
+  
 /**
  * Compute the power spectrum and create a 2d spline P(k,z) to be stored
  * in the cosmology structure.

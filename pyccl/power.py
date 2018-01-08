@@ -1,6 +1,19 @@
 
 from pyccl import ccllib as lib
-from pyccl.pyutils import _vectorize_fn, _vectorize_fn2
+from pyccl.pyutils import _vectorize_fn, _vectorize_fn2, _cosmology_obj, check
+
+def update_matter_power(cosmo, k_s, a_s, pk_s, is_linear=False):
+    """Update internal power spectrum
+
+    Args:
+        cosmo (:obj:`ccl.cosmology`): Cosmological parameters.
+        k_s (array_like): Array of wavenumbers; Mpc^-1.
+        a_s (array_like): Array of scale factors.
+    """
+    status=0
+    cosmo_obj=_cosmology_obj(cosmo)
+    lib.update_power(cosmo_obj,is_linear,k_s,a_s,pk_s,status)
+    check(status)
 
 def linear_matter_power(cosmo, k, a):
     """The linear matter power spectrum; Mpc^3.

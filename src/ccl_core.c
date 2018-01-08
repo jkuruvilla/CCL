@@ -135,7 +135,7 @@ ccl_cosmology * ccl_cosmology_create(ccl_parameters params, ccl_configuration co
   cosmo->data.etahmf = NULL;
 
   cosmo->data.p_lin = NULL;
-  cosmo->data.p_nl = NULL;
+  cosmo->data.p_nlin = NULL;
   //cosmo->data.nu_pspace_int = NULL;
   cosmo->computed_distances = false;
   cosmo->computed_growth = false;
@@ -551,8 +551,8 @@ void ccl_data_free(ccl_data * data)
     gsl_spline_free(data->dlnsigma_dlogm);
   if(data->p_lin!=NULL)
     gsl_spline2d_free(data->p_lin);
-  if(data->p_nl!=NULL)
-    gsl_spline2d_free(data->p_nl);
+  if(data->p_nlin!=NULL)
+    gsl_spline2d_free(data->p_nlin);
   if(data->alphahmf!=NULL)
     gsl_spline_free(data->alphahmf);
   if(data->betahmf!=NULL)
