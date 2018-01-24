@@ -264,7 +264,7 @@ else:
 setup(name="pyccl",
     description="Library of validated cosmological functions.",
     author="LSST DESC",
-    version="0.2.5",
+    version="0.2.7",
     packages=['pyccl'],
     ext_modules=[
         Extension("_ccllib",["pyccl/ccl_wrap.c"],

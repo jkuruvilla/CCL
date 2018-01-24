@@ -14,7 +14,7 @@ before_install:
 #  - sudo apt-get install latexmk
   - pip install numpy
   - ./install-gsl.sh
-  - python class_install.py
+#  - python class_install.py
 #addons:
 #    apt:
 #        packages:
@@ -23,7 +23,8 @@ before_install:
 #            - texlive-fonts-recommended
 #            - texlive-fonts-extra
 #            - dvipng
-install: python setup.py install
+#install: python setup.py install
+install: pip install . --egg
 script:
     - python tests/run_tests.py --debug --detailed-errors --verbose --process-restartworker
     - make check-cpp
