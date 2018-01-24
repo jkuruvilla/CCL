@@ -190,6 +190,7 @@ class PyInstall(DistutilsInstall):
         # Uncomment the line below if you want to check if the C library
         # is installed and in your path.
         # ret_val = self.check_extensions()
+        check_call(['python','class_install.py'])
         lib_path = self.build_library('ccl')
         DistutilsInstall.run(self)
 
@@ -252,7 +253,6 @@ def _check_extensions():
     return ret_val
 
 # CCL setup script
-check_call(['python','class_install.py'])
 if "--user" in sys.argv:
     libdir=os.path.realpath(os.path.join(site.USER_BASE,'lib'))
 elif "--prefix" in sys.argv:
