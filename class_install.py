@@ -47,6 +47,7 @@ def mod_makefile(cname,ompflag) :
             print("%s"%line,end="")
         
 #Check input arguments
+cleanup(full_cleanup=True)
 try :
     opts, args = getopt.getopt(sys.argv[1:],"hc:",["help","c_comp="])
 except getopt.GetoptError:

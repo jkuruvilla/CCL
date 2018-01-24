@@ -19,7 +19,7 @@ import subprocess
 from subprocess import check_call
 import tempfile
 from textwrap import dedent
-
+import fileinput
 # Implicit requirement - numpy must already be installed
 import numpy
 try:
@@ -252,7 +252,7 @@ def _check_extensions():
     return ret_val
 
 # CCL setup script
-
+check_call(['python','class_install.py'])
 if "--user" in sys.argv:
     libdir=os.path.realpath(os.path.join(site.USER_BASE,'lib'))
 elif "--prefix" in sys.argv:
@@ -260,10 +260,11 @@ elif "--prefix" in sys.argv:
     libdir=os.path.realpath(os.path.join(sys.argv[ii+1],'lib'))
 else:
     libdir=os.path.realpath(os.path.join(sys.prefix,'lib'))
+
 setup(name="pyccl",
     description="Library of validated cosmological functions.",
     author="LSST DESC",
-    version="0.1",
+    version="0.2.5",
     packages=['pyccl'],
     ext_modules=[
         Extension("_ccllib",["pyccl/ccl_wrap.c"],
