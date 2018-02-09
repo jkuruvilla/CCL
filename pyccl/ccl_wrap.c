@@ -4298,6 +4298,30 @@ user_pz_info* specs_create_photoz_info_from_py(PyObject *pyfunc)
 
 
 
+#define SWIG_FILE_WITH_INIT
+#include "../include/fftlog.h"
+
+
+
+
+void pk2xi_(double *inx, int nx, double *iny, int ny, 
+	    double* outx, int onx, double* outy, int ony,
+	    int* status) {
+  assert (nx==ny);
+  pk2xi(nx,inx,iny,outx,outy);
+  status=0;
+  }
+
+void xi2pk_(double *inx, int nx, double *iny, int ny, 
+	    double* outx, int onx, double* outy, int ony,
+	    int* status) {
+  assert (nx==ny);
+  xi2pk(nx,inx,iny,outx,outy);
+  status=0;
+  }
+ 
+
+
 
 
 #ifdef __cplusplus
@@ -19307,6 +19331,286 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_pk2xi_(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  double *arg1 = (double *) 0 ;
+  int arg2 ;
+  double *arg3 = (double *) 0 ;
+  int arg4 ;
+  double *arg5 = (double *) 0 ;
+  int arg6 ;
+  double *arg7 = (double *) 0 ;
+  int arg8 ;
+  int *arg9 = (int *) 0 ;
+  PyArrayObject *array1 = NULL ;
+  int is_new_object1 = 0 ;
+  PyArrayObject *array3 = NULL ;
+  int is_new_object3 = 0 ;
+  PyObject *array5 = NULL ;
+  PyObject *array7 = NULL ;
+  int temp9 ;
+  int res9 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:pk2xi_",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  {
+    npy_intp size[1] = {
+      -1 
+    };
+    array1 = obj_to_array_contiguous_allow_conversion(obj0,
+      NPY_DOUBLE,
+      &is_new_object1);
+    if (!array1 || !require_dimensions(array1, 1) ||
+      !require_size(array1, size, 1)) SWIG_fail;
+    arg1 = (double*) array_data(array1);
+    arg2 = (int) array_size(array1,0);
+  }
+  {
+    npy_intp size[1] = {
+      -1 
+    };
+    array3 = obj_to_array_contiguous_allow_conversion(obj1,
+      NPY_DOUBLE,
+      &is_new_object3);
+    if (!array3 || !require_dimensions(array3, 1) ||
+      !require_size(array3, size, 1)) SWIG_fail;
+    arg3 = (double*) array_data(array3);
+    arg4 = (int) array_size(array3,0);
+  }
+  {
+    npy_intp dims[1];
+    if (!PyInt_Check(obj2))
+    {
+      const char* typestring = pytype_string(obj2);
+      PyErr_Format(PyExc_TypeError,
+        "Int dimension expected.  '%s' given.",
+        typestring);
+      SWIG_fail;
+    }
+    arg6 = (int) PyInt_AsLong(obj2);
+    dims[0] = (npy_intp) arg6;
+    array5 = PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    if (!array5) SWIG_fail;
+    arg5 = (double*) array_data(array5);
+  }
+  {
+    npy_intp dims[1];
+    if (!PyInt_Check(obj3))
+    {
+      const char* typestring = pytype_string(obj3);
+      PyErr_Format(PyExc_TypeError,
+        "Int dimension expected.  '%s' given.",
+        typestring);
+      SWIG_fail;
+    }
+    arg8 = (int) PyInt_AsLong(obj3);
+    dims[0] = (npy_intp) arg8;
+    array7 = PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    if (!array7) SWIG_fail;
+    arg7 = (double*) array_data(array7);
+  }
+  if (!(SWIG_IsOK((res9 = SWIG_ConvertPtr(obj4,SWIG_as_voidptrptr(&arg9),SWIGTYPE_p_int,0))))) {
+    int val; 
+    int ecode = SWIG_AsVal_int(obj4, &val);
+    if (!SWIG_IsOK(ecode)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode), "in method '" "pk2xi_" "', argument " "9"" of type '" "int""'");
+    }
+    temp9 = (int)(val);
+    arg9 = &temp9;
+    res9 = SWIG_AddTmpMask(ecode);
+  }
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    pk2xi_(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
+  resultobj = SWIG_Py_Void();
+  {
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array5);
+  }
+  {
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array7);
+  }
+  if (SWIG_IsTmpObj(res9)) {
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_int((*arg9)));
+  } else {
+    int new_flags = SWIG_IsNewObj(res9) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg9), SWIGTYPE_p_int, new_flags));
+  }
+  {
+    if (is_new_object1 && array1)
+    {
+      Py_DECREF(array1); 
+    }
+  }
+  {
+    if (is_new_object3 && array3)
+    {
+      Py_DECREF(array3); 
+    }
+  }
+  return resultobj;
+fail:
+  {
+    if (is_new_object1 && array1)
+    {
+      Py_DECREF(array1); 
+    }
+  }
+  {
+    if (is_new_object3 && array3)
+    {
+      Py_DECREF(array3); 
+    }
+  }
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_xi2pk_(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  double *arg1 = (double *) 0 ;
+  int arg2 ;
+  double *arg3 = (double *) 0 ;
+  int arg4 ;
+  double *arg5 = (double *) 0 ;
+  int arg6 ;
+  double *arg7 = (double *) 0 ;
+  int arg8 ;
+  int *arg9 = (int *) 0 ;
+  PyArrayObject *array1 = NULL ;
+  int is_new_object1 = 0 ;
+  PyArrayObject *array3 = NULL ;
+  int is_new_object3 = 0 ;
+  PyObject *array5 = NULL ;
+  PyObject *array7 = NULL ;
+  int temp9 ;
+  int res9 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:xi2pk_",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  {
+    npy_intp size[1] = {
+      -1 
+    };
+    array1 = obj_to_array_contiguous_allow_conversion(obj0,
+      NPY_DOUBLE,
+      &is_new_object1);
+    if (!array1 || !require_dimensions(array1, 1) ||
+      !require_size(array1, size, 1)) SWIG_fail;
+    arg1 = (double*) array_data(array1);
+    arg2 = (int) array_size(array1,0);
+  }
+  {
+    npy_intp size[1] = {
+      -1 
+    };
+    array3 = obj_to_array_contiguous_allow_conversion(obj1,
+      NPY_DOUBLE,
+      &is_new_object3);
+    if (!array3 || !require_dimensions(array3, 1) ||
+      !require_size(array3, size, 1)) SWIG_fail;
+    arg3 = (double*) array_data(array3);
+    arg4 = (int) array_size(array3,0);
+  }
+  {
+    npy_intp dims[1];
+    if (!PyInt_Check(obj2))
+    {
+      const char* typestring = pytype_string(obj2);
+      PyErr_Format(PyExc_TypeError,
+        "Int dimension expected.  '%s' given.",
+        typestring);
+      SWIG_fail;
+    }
+    arg6 = (int) PyInt_AsLong(obj2);
+    dims[0] = (npy_intp) arg6;
+    array5 = PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    if (!array5) SWIG_fail;
+    arg5 = (double*) array_data(array5);
+  }
+  {
+    npy_intp dims[1];
+    if (!PyInt_Check(obj3))
+    {
+      const char* typestring = pytype_string(obj3);
+      PyErr_Format(PyExc_TypeError,
+        "Int dimension expected.  '%s' given.",
+        typestring);
+      SWIG_fail;
+    }
+    arg8 = (int) PyInt_AsLong(obj3);
+    dims[0] = (npy_intp) arg8;
+    array7 = PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    if (!array7) SWIG_fail;
+    arg7 = (double*) array_data(array7);
+  }
+  if (!(SWIG_IsOK((res9 = SWIG_ConvertPtr(obj4,SWIG_as_voidptrptr(&arg9),SWIGTYPE_p_int,0))))) {
+    int val; 
+    int ecode = SWIG_AsVal_int(obj4, &val);
+    if (!SWIG_IsOK(ecode)) {
+      SWIG_exception_fail(SWIG_ArgError(ecode), "in method '" "xi2pk_" "', argument " "9"" of type '" "int""'");
+    }
+    temp9 = (int)(val);
+    arg9 = &temp9;
+    res9 = SWIG_AddTmpMask(ecode);
+  }
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    xi2pk_(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
+  resultobj = SWIG_Py_Void();
+  {
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array5);
+  }
+  {
+    resultobj = SWIG_Python_AppendOutput(resultobj,(PyObject*)array7);
+  }
+  if (SWIG_IsTmpObj(res9)) {
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_From_int((*arg9)));
+  } else {
+    int new_flags = SWIG_IsNewObj(res9) ? (SWIG_POINTER_OWN |  0 ) :  0 ;
+    resultobj = SWIG_Python_AppendOutput(resultobj, SWIG_NewPointerObj((void*)(arg9), SWIGTYPE_p_int, new_flags));
+  }
+  {
+    if (is_new_object1 && array1)
+    {
+      Py_DECREF(array1); 
+    }
+  }
+  {
+    if (is_new_object3 && array3)
+    {
+      Py_DECREF(array3); 
+    }
+  }
+  return resultobj;
+fail:
+  {
+    if (is_new_object1 && array1)
+    {
+      Py_DECREF(array1); 
+    }
+  }
+  {
+    if (is_new_object3 && array3)
+    {
+      Py_DECREF(array3); 
+    }
+  }
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *emulator_swigconstant(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *module;
   PyObject *d;
@@ -21158,6 +21462,8 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"specs_dNdz_tomog_vec", _wrap_specs_dNdz_tomog_vec, METH_VARARGS, (char *)"specs_dNdz_tomog_vec(int dNdz_type, double bin_zmin, double bin_zmax, user_pz_info user_info, double * z, double * output, int * status)"},
 	 { (char *)"call_py_photoz_fn", _wrap_call_py_photoz_fn, METH_VARARGS, (char *)"call_py_photoz_fn(double z_ph, double z_s, void * py_func_obj, int * status) -> double"},
 	 { (char *)"specs_create_photoz_info_from_py", _wrap_specs_create_photoz_info_from_py, METH_VARARGS, (char *)"specs_create_photoz_info_from_py(PyObject * pyfunc) -> user_pz_info"},
+	 { (char *)"pk2xi_", _wrap_pk2xi_, METH_VARARGS, (char *)"pk2xi_(double * inx, double * iny, double * outx, double * outy, int * status)"},
+	 { (char *)"xi2pk_", _wrap_xi2pk_, METH_VARARGS, (char *)"xi2pk_(double * inx, double * iny, double * outx, double * outy, int * status)"},
 	 { (char *)"emulator_swigconstant", emulator_swigconstant, METH_VARARGS, NULL},
 	 { (char *)"none_swigconstant", none_swigconstant, METH_VARARGS, NULL},
 	 { (char *)"fitting_function_swigconstant", fitting_function_swigconstant, METH_VARARGS, NULL},

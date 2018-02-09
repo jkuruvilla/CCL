@@ -1341,6 +1341,14 @@ def specs_create_photoz_info_from_py(pyfunc):
     """specs_create_photoz_info_from_py(PyObject * pyfunc) -> user_pz_info"""
     return _ccllib.specs_create_photoz_info_from_py(pyfunc)
 
+def pk2xi_(inx, iny, outx, outy, status):
+    """pk2xi_(double * inx, double * iny, double * outx, double * outy, int * status)"""
+    return _ccllib.pk2xi_(inx, iny, outx, outy, status)
+
+def xi2pk_(inx, iny, outx, outy, status):
+    """xi2pk_(double * inx, double * iny, double * outx, double * outy, int * status)"""
+    return _ccllib.xi2pk_(inx, iny, outx, outy, status)
+
 _ccllib.emulator_swigconstant(_ccllib)
 emulator = _ccllib.emulator
 

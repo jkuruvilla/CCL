@@ -31,3 +31,5 @@ from pyccl.constants import CLIGHT_HMPC, MPC_TO_METER, PC_TO_METER, \
                       GNEWT, RHO_CRITICAL, SOLAR_MASS
 
 from pyccl.correlation import correlation
+
+import pyccl.utils as utils
