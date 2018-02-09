@@ -12,17 +12,10 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
-#include "ccl_power.h"
+//#include "ccl_power.h"
 #include "ccl.h"
 #include "fftlog.h"
 #include "jacobi.h"
-
-#define ELL_MIN_FFTLOG 0.01
-#define ELL_MAX_FFTLOG 60000
-#define k_MAX_FFTLOG 10 //when using power spectra p(k)
-#define k_MIN_FFTLOG 0.001
-#define N_ELL_FFTLOG 5000 //same for k-space
-
 
 /*--------ROUTINE: taper_cl ------
 TASK:n Apply cosine tapering to Cls to reduce aliasing
@@ -363,15 +356,87 @@ static void ccl_tracer_corr_bessel(ccl_cosmology *cosmo,
 }
 
 
+
+/*--------ROUTINE: ccl_compute_legendre_polynomial ------
+TASK: Compute input factor for ccl_tracer_corr_legendre
+INPUT: tracer 1, tracer 2, i_bessel, theta array, n_theta, L_max, output Pl_theta
+XXX Use only for GG or GL.
+ */
+static void ccl_compute_legendre_polynomial(int corr_type,int n_theta,double *theta,
+					    int ell_max,double **Pl_theta)
+{
+  int i,j;
+  double k=0;
+
+  //Initialize Pl_theta
+  for (i=0;i<n_theta;i++) {
+    for (j=0;j<ell_max;j++)
+      Pl_theta[i][j]=0.;
+  }
+
+  if(corr_type==CCL_CORR_GG) {
+    for (i=0;i<n_theta;i++) {
+      gsl_sf_legendre_Pl_array(ell_max,cos(theta[i]*M_PI/180),Pl_theta[i]);
+      for (j=0;j<=ell_max;j++)
+	Pl_theta[i][j]*=(2*j+1);
+    }
+  }
+  else if(corr_type==CCL_CORR_GL) {
+    for (i=0;i<n_theta;i++) {//https://arxiv.org/pdf/1007.4809.pdf
+      for (j=2;j<=ell_max;j++) {
+	Pl_theta[i][j]=gsl_sf_legendre_Plm(j,2,cos(theta[i]*M_PI/180));
+	Pl_theta[i][j]*=(2*j+1.)/((j+0.)*(j+1.));// this assuming input is convergence power spectrum
+      }
+    }
+  }
+  // else if(corr_type==CCL_CORR_LP) {
+  //   for (int i=0;i<n_theta;i++){
+  //     gsl_sf_legendre_Pl_array(ell_max,cos(theta[i]*M_PI/180),Pl_theta[i]);
+  //     for (int j=0;j<=ell_max;j++){
+	//         Pl_theta[i][j]*=(2*j+1);
+  //     }
+  //   }
+  // }
+  //
+  // else if(corr_type==CCL_CORR_LM) {
+  //   for (int i=0;i<n_theta;i++) {
+  //     for (int j=0;j<=ell_max;j++) {
+	// if(j>1e4) {///////////Some theta points thrown away for speed
+	//   Pl_theta[i][j]=0;
+	//   continue;
+	// }
+	// if (j<4) {
+	//   Pl_theta[i][j]=0;
+	//   continue;
+	// }
+	// Pl_theta[i][j]=gsl_sf_legendre_Plm(j,4,cos(theta[i]*M_PI/180));
+	// Pl_theta[i][j]*=(2*j+1)*pow(j,4);//approximate.. Using relation between bessel and legendre functions from Steibbens96.
+	// //this again works only for matter correlation function
+	// for (k=-3;k<=4;k++)
+	//   Pl_theta[i][j]/=(j+k);
+  //     }
+  //   }
+  // }
+}
+
+
 /*--------ROUTINE: ccl_compute_wigner_d_matrix ------
+https://en.wikipedia.org/wiki/Wigner_D-matrix (small-d matrix)
  */
 
-static void ccl_compute_wigner_d_matrix(int corr_type,int n_theta,double *theta,
+static void ccl_compute_wigner_3d_matrix(int corr_type,int n_theta,double *theta,
                                             int ell_max,double **Pl_theta)
 {
   int i,j;
   double mF=0;
   int m1=2,m2=2;
+
+  if(corr_type==CCL_CORR_LM)
+    m2=-2;//FIXME check this
+  if(corr_type==CCL_CORR_GG||corr_type==CCL_CORR_GL)//FIXME can also set m2. Check for speed.
+    ccl_compute_legendre_polynomial(corr_type, n_theta,theta,
+                ell_max,Pl_theta);
+
   int a=0,b=0,k_m=0,lambda=0,k=0;
   double *sin_theta2=malloc((n_theta)*sizeof(double));
   double *cos_theta2=malloc((n_theta)*sizeof(double));
@@ -407,72 +472,12 @@ static void ccl_compute_wigner_d_matrix(int corr_type,int n_theta,double *theta,
       mF=sqrt(gsl_sf_choose (2*j-k,k+a)/gsl_sf_choose (k+b,b));
       mF*=pow(-1,lambda);
       for (i=0;i<n_theta;i++) {
-	Pl_theta[i][j]=mF*pow(sin_theta2[i],a)*pow(cos_theta2[i],b)*jac_jacobi (cos_theta[i], j,a, b);
+	       Pl_theta[i][j]=mF*pow(sin_theta2[i],a)*pow(cos_theta2[i],b)*jac_jacobi(cos_theta[i], j,
+                                                                                  a, b);
       }
     }
-
 }
 
-/*--------ROUTINE: ccl_compute_legendre_polynomial ------
-TASK: Compute input factor for ccl_tracer_corr_legendre
-INPUT: tracer 1, tracer 2, i_bessel, theta array, n_theta, L_max, output Pl_theta
- */
-static void ccl_compute_legendre_polynomial(int corr_type,int n_theta,double *theta,
-					    int ell_max,double **Pl_theta)
-{
-  int i,j;
-  double k=0;
-
-  //Initialize Pl_theta
-  for (i=0;i<n_theta;i++) {
-    for (j=0;j<ell_max;j++)
-      Pl_theta[i][j]=0.;
-  }
-
-  if(corr_type==CCL_CORR_GG) {
-    for (i=0;i<n_theta;i++) {
-      gsl_sf_legendre_Pl_array(ell_max,cos(theta[i]*M_PI/180),Pl_theta[i]);
-      for (j=0;j<=ell_max;j++)
-	Pl_theta[i][j]*=(2*j+1);
-    }
-  }
-  else if(corr_type==CCL_CORR_GL) {
-    for (i=0;i<n_theta;i++) {//https://arxiv.org/pdf/1007.4809.pdf
-      for (j=2;j<=ell_max;j++) {
-	Pl_theta[i][j]=gsl_sf_legendre_Plm(j,2,cos(theta[i]*M_PI/180));
-	Pl_theta[i][j]*=(2*j+1.)/((j+0.)*(j+1.));// this assuming input is convergence power spectrum
-      }
-    }
-  }
-  else if(corr_type==CCL_CORR_LP) {
-    for (int i=0;i<n_theta;i++){
-      gsl_sf_legendre_Pl_array(ell_max,cos(theta[i]*M_PI/180),Pl_theta[i]);
-      for (int j=0;j<=ell_max;j++){
-	        Pl_theta[i][j]*=(2*j+1);
-      }
-    }
-  }
-
-  else if(corr_type==CCL_CORR_LM) {
-    for (int i=0;i<n_theta;i++) {
-      for (int j=0;j<=ell_max;j++) {
-	if(j>1e4) {///////////Some theta points thrown away for speed
-	  Pl_theta[i][j]=0;
-	  continue;
-	}
-	if (j<4) {
-	  Pl_theta[i][j]=0;
-	  continue;
-	}
-	Pl_theta[i][j]=gsl_sf_legendre_Plm(j,4,cos(theta[i]*M_PI/180));
-	Pl_theta[i][j]*=(2*j+1)*pow(j,4);//approximate.. Using relation between bessel and legendre functions from Steibbens96.
-	//this again works only for matter correlation function
-	for (k=-3;k<=4;k++)
-	  Pl_theta[i][j]/=(j+k);
-      }
-    }
-  }
-}
 
 /*--------ROUTINE: ccl_tracer_corr_legendre ------
 TASK: Compute correlation function via Legendre polynomials
@@ -563,7 +568,7 @@ static void ccl_tracer_corr_legendre(ccl_cosmology *cosmo,
       return;
     }
   }
-  ccl_compute_legendre_polynomial(corr_type,n_theta,theta,ELL_MAX_FFTLOG,Pl_theta);
+  ccl_compute_wigner_3d_matrix(corr_type,n_theta,theta,ELL_MAX_FFTLOG,Pl_theta);
 
   for (int i=0;i<n_theta;i++) {
     wtheta[i]=0;

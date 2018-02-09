@@ -22,6 +22,12 @@ extern "C" {
 #define CCL_CORR_PHYS 3001
 #define CCL_CORR_ANG 3002
 
+#define ELL_MIN_FFTLOG 0.01
+#define ELL_MAX_FFTLOG 60000
+#define k_MAX_FFTLOG 10 //when using power spectra p(k)
+#define k_MIN_FFTLOG 0.001
+#define N_ELL_FFTLOG 5000 //same for k-space
+
 /**
  * Computes the correlation function (wrapper)
  * @param cosmo :Cosmological parameters
