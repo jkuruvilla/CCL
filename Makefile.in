@@ -143,7 +143,7 @@ am_libccl_la_OBJECTS = src/libccl_la-ccl_background.lo \
 	src/libccl_la-ccl_utils.lo src/libccl_la-ccl_cls.lo \
 	src/libccl_la-ccl_massfunc.lo src/libccl_la-ccl_neutrinos.lo \
 	src/libccl_la-ccl_correlation.lo src/libccl_la-fftlog.lo \
-	src/libccl_la-ccl_correlation.lo src/libccl_la-jacobi.lo
+	src/libccl_la-jacobi.lo
 libccl_la_OBJECTS = $(am_libccl_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -427,7 +427,6 @@ pdfdir = @pdfdir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
-runstatedir = @runstatedir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
@@ -445,6 +444,7 @@ lib_LTLIBRARIES = libccl.la
 libccl_la_SOURCES = src/ccl_background.c src/ccl_core.c src/ccl_error.c src/ccl_lsst_specs.c src/ccl_placeholder.c src/ccl_power.c src/ccl_utils.c src/ccl_cls.c src/ccl_massfunc.c src/ccl_neutrinos.c src/ccl_correlation.c src/fftlog.c src/jacobi.c
 @LOCALCLASS_TRUE@libccl_la_LIBADD = class/libclass.la
 libccl_la_CPPFLAGS = -I./include/ -I$(CLASSDIR)/include -D__CCL_DATA_DIR__=$(datadir)/ccl
+#TESTS = tests/check_ccl
 tests_check_ccl_SOURCES = tests/ccl_test.c tests/ccl_test_utils.c tests/ccl_test_params.c tests/ccl_test_cosmology.c tests/ccl_test_distances.c tests/ccl_test_growth.c tests/ccl_test_bbks.c tests/ccl_test_eh.c tests/ccl_test_cls.c tests/ccl_test_cmblens.c tests/ccl_test_sigmaM.c tests/ccl_test_massfunc.c tests/ccl_test_correlation.c tests/ccl_test_bcm.c
 tests_check_ccl_CPPFLAGS = -I./tests/ -I./include/
 tests_check_ccl_LDFLAGS = -L./ -lccl -lgsl -lgslcblas -lfftw3 $(CLASS_LIB)
@@ -769,7 +769,7 @@ src/libccl_la-jacobi.lo: src/jacobi.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) src/$(DEPDIR)/libccl_la-jacobi.Tpo src/$(DEPDIR)/libccl_la-jacobi.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='src/jacobi.c' object='src/libccl_la-jacobi.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@   $(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libccl_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o src/libccl_la-jacobi.lo `test -f 'src/jacobi.c' || echo '$(srcdir)/'`src/jacobi.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libccl_la_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o src/libccl_la-jacobi.lo `test -f 'src/jacobi.c' || echo '$(srcdir)/'`src/jacobi.c
 
 tests/tests_check_ccl-ccl_test.o: tests/ccl_test.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(tests_check_ccl_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT tests/tests_check_ccl-ccl_test.o -MD -MP -MF tests/$(DEPDIR)/tests_check_ccl-ccl_test.Tpo -c -o tests/tests_check_ccl-ccl_test.o `test -f 'tests/ccl_test.c' || echo '$(srcdir)/'`tests/ccl_test.c

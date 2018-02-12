@@ -1,0 +1,35 @@
+\contentsline {abstract}{}{1}{section*.1}
+\tocdepth@munge 
+\tocdepth@restore 
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}
+\contentsline {section}{\numberline {2}Cosmological models and observables}{5}{section.2}
+\contentsline {subsection}{\numberline {2.1}Background cosmology}{6}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Growth of perturbations}{8}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Matter power spectrum}{8}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}2-point correlators}{11}{subsection.2.4}
+\contentsline {subsubsection}{\numberline {2.4.1}Angular power spectra}{11}{subsubsection.2.4.1}
+\contentsline {paragraph}{\bf Number counts.}{12}{section*.3}
+\contentsline {paragraph}{\bf Correlated galaxy shapes.}{13}{section*.4}
+\contentsline {paragraph}{\bf Lensing convergence.}{14}{section*.5}
+\contentsline {subsubsection}{\numberline {2.4.2}Correlation functions}{14}{subsubsection.2.4.2}
+\contentsline {subsection}{\numberline {2.5}Halo mass function}{15}{subsection.2.5}
+\contentsline {subsection}{\numberline {2.6}Halo bias}{17}{subsection.2.6}
+\contentsline {subsection}{\numberline {2.7}Massive neutrinos}{18}{subsection.2.7}
+\contentsline {section}{\numberline {3}Implementation of high-accuracy cosmological functions}{19}{section.3}
+\contentsline {subsection}{\numberline {3.1}Background functions \& growth of perturbations}{19}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Matter power spectrum}{20}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Angular power spectra}{23}{subsection.3.3}
+\contentsline {subsubsection}{\numberline {3.3.1}Limber approximation}{23}{subsubsection.3.3.1}
+\contentsline {subsubsection}{\numberline {3.3.2}Beyond Limber: \texttt {Angpow}}{24}{subsubsection.3.3.2}
+\contentsline {subsection}{\numberline {3.4}Correlation functions}{25}{subsection.3.4}
+\contentsline {paragraph}{Hankel Transform}{27}{section*.6}
+\contentsline {subsection}{\numberline {3.5}Halo mass function}{28}{subsection.3.5}
+\contentsline {subsection}{\numberline {3.6}Massive neutrinos}{29}{subsection.3.6}
+\contentsline {subsection}{\numberline {3.7}Implementation of photometric redshifts}{29}{subsection.3.7}
+\contentsline {section}{\numberline {4}Validation over the $\Lambda $CDM parameter space}{30}{section.4}
+\contentsline {subsection}{\numberline {4.1}Accuracy criteria}{30}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Validation tests on fiducial parameter sets}{30}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Validation of the power spectrum over parameter space}{33}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Validation of the Cosmic Emulator}{35}{subsection.4.4}
+\contentsline {section}{\numberline {5}Usage}{35}{section.5}
+\contentsline {section}{\numberline {6}Outlook}{36}{section.6}

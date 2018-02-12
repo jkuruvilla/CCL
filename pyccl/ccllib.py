@@ -466,15 +466,9 @@ def cosmology_compute_power(cosmo, status):
     """cosmology_compute_power(cosmology cosmo, int * status)"""
     return _ccllib.cosmology_compute_power(cosmo, status)
 
-#<<<<<<< HEAD
-#def parameters_create_vec(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, M_nu, w0, wa, h, norm_pk, n_s, zarr, dfarr, status):
- #   """parameters_create_vec(double Omega_c, double Omega_b, double Omega_k, double N_nu_rel, double N_nu_mass, double M_nu, double w0, double wa, double h, double norm_pk, double n_s, double * zarr, double * dfarr, int * status) -> parameters"""
-  #  return _ccllib.parameters_create_vec(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, M_nu, w0, wa, h, norm_pk, n_s, zarr, dfarr, status)
-#=======
 def parameters_create_vec(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, M_nu, w0, wa, h, norm_pk, n_s, bcm_log10Mc, bcm_etab, bcm_ks, zarr, dfarr, status):
     """parameters_create_vec(double Omega_c, double Omega_b, double Omega_k, double N_nu_rel, double N_nu_mass, double M_nu, double w0, double wa, double h, double norm_pk, double n_s, double bcm_log10Mc, double bcm_etab, double bcm_ks, double * zarr, double * dfarr, int * status) -> parameters"""
     return _ccllib.parameters_create_vec(Omega_c, Omega_b, Omega_k, N_nu_rel, N_nu_mass, M_nu, w0, wa, h, norm_pk, n_s, bcm_log10Mc, bcm_etab, bcm_ks, zarr, dfarr, status)
-#>>>>>>> master
 
 _ccllib.omega_m_label_swigconstant(_ccllib)
 omega_m_label = _ccllib.omega_m_label
@@ -649,26 +643,18 @@ def sigmaR_vec(cosmo, R, output, status):
 _ccllib.CCL_CORR_LGNDRE_swigconstant(_ccllib)
 CCL_CORR_LGNDRE = _ccllib.CCL_CORR_LGNDRE
 
-#<<<<<<< HEAD
-#_ccllib.CCL_CORR_FFTLOG_PROJECTED_swigconstant(_ccllib)
-#CCL_CORR_FFTLOG_PROJECTED = _ccllib.CCL_CORR_FFTLOG_PROJECTED
-#=======
-_ccllib.CCL_CORR_FFTLOG_swigconstant(_ccllib)
-CCL_CORR_FFTLOG = _ccllib.CCL_CORR_FFTLOG
-#>>>>>>> master
+_ccllib.CCL_CORR_FFTLOG_PROJECTED_swigconstant(_ccllib)
+CCL_CORR_FFTLOG_PROJECTED = _ccllib.CCL_CORR_FFTLOG_PROJECTED
 
 _ccllib.CCL_CORR_BESSEL_swigconstant(_ccllib)
 CCL_CORR_BESSEL = _ccllib.CCL_CORR_BESSEL
 
-#<<<<<<< HEAD
-#_ccllib.CCL_CORR_FFTLOG_3D_swigconstant(_ccllib)
-#CCL_CORR_FFTLOG_3D = _ccllib.CCL_CORR_FFTLOG_3D
+_ccllib.CCL_CORR_FFTLOG_3D_swigconstant(_ccllib)
+CCL_CORR_FFTLOG_3D = _ccllib.CCL_CORR_FFTLOG_3D
 
-#_ccllib.CCL_CORR_FFTLOG_swigconstant(_ccllib)
-#CCL_CORR_FFTLOG = _ccllib.CCL_CORR_FFTLOG
+_ccllib.CCL_CORR_FFTLOG_swigconstant(_ccllib)
+CCL_CORR_FFTLOG = _ccllib.CCL_CORR_FFTLOG
 
-#=======
-#>>>>>>> master
 _ccllib.CCL_CORR_GG_swigconstant(_ccllib)
 CCL_CORR_GG = _ccllib.CCL_CORR_GG
 
@@ -689,6 +675,21 @@ CCL_CORR_PHYS = _ccllib.CCL_CORR_PHYS
 
 _ccllib.CCL_CORR_ANG_swigconstant(_ccllib)
 CCL_CORR_ANG = _ccllib.CCL_CORR_ANG
+
+_ccllib.ELL_MIN_FFTLOG_swigconstant(_ccllib)
+ELL_MIN_FFTLOG = _ccllib.ELL_MIN_FFTLOG
+
+_ccllib.ELL_MAX_FFTLOG_swigconstant(_ccllib)
+ELL_MAX_FFTLOG = _ccllib.ELL_MAX_FFTLOG
+
+_ccllib.k_MAX_FFTLOG_swigconstant(_ccllib)
+k_MAX_FFTLOG = _ccllib.k_MAX_FFTLOG
+
+_ccllib.k_MIN_FFTLOG_swigconstant(_ccllib)
+k_MIN_FFTLOG = _ccllib.k_MIN_FFTLOG
+
+_ccllib.N_ELL_FFTLOG_swigconstant(_ccllib)
+N_ELL_FFTLOG = _ccllib.N_ELL_FFTLOG
 
 def correlation(cosmo, n_ell, ell, cls, n_theta, theta, wtheta, corr_type, corr_space, do_taper_cl, taper_cl_limits, flag_method, status):
     """correlation(cosmology cosmo, int n_ell, double * ell, double * cls, int n_theta, double * theta, double * wtheta, int corr_type, int corr_space, int do_taper_cl, double * taper_cl_limits, int flag_method, int * status)"""
@@ -868,7 +869,7 @@ def angular_cl_vec(cosmo, clt1, clt2, ell, output, status):
     """angular_cl_vec(cosmology cosmo, CCL_ClTracer clt1, CCL_ClTracer clt2, double * ell, double * output, int * status)"""
     return _ccllib.angular_cl_vec(cosmo, clt1, clt2, ell, output, status)
 
-# _ccllib.GSL_CONST_MKSA_SPEED_OF_LIGHT_swigconstant(_ccllib)
+_ccllib.GSL_CONST_MKSA_SPEED_OF_LIGHT_swigconstant(_ccllib)
 GSL_CONST_MKSA_SPEED_OF_LIGHT = _ccllib.GSL_CONST_MKSA_SPEED_OF_LIGHT
 
 _ccllib.GSL_CONST_MKSA_GRAVITATIONAL_CONSTANT_swigconstant(_ccllib)
@@ -1550,3 +1551,5 @@ def spline_free(spl):
     """spline_free(SplPar spl)"""
     return _ccllib.spline_free(spl)
 # This file is compatible with both classic and new-style classes.
+
+
