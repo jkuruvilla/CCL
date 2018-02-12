@@ -1,5 +1,7 @@
 # runs config and install scripts mostly with default options to install ccl in a path. default path is current directory.
 
+export CLASSDIR=../class/
+
 path=$(pwd)
 echo 'running confiure with path '$path
 

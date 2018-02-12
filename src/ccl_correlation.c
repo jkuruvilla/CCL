@@ -389,6 +389,7 @@ static void ccl_compute_legendre_polynomial(int corr_type,int n_theta,double *th
       }
     }
   }
+//<<<<<<< HEAD
   // else if(corr_type==CCL_CORR_LP) {
   //   for (int i=0;i<n_theta;i++){
   //     gsl_sf_legendre_Pl_array(ell_max,cos(theta[i]*M_PI/180),Pl_theta[i]);
@@ -476,6 +477,8 @@ static void ccl_compute_wigner_3d_matrix(int corr_type,int n_theta,double *theta
                                                                                   a, b);
       }
     }
+// =======
+// >>>>>>> master
 }
 
 
@@ -493,6 +496,11 @@ static void ccl_tracer_corr_legendre(ccl_cosmology *cosmo,
   int i;
   double *l_arr,*cl_arr;
 
+  if(corr_type==CCL_CORR_LM || corr_type==CCL_CORR_LP){
+    *status=CCL_ERROR_NOT_IMPLEMENTED;
+    strcpy(cosmo->status_message,"ccl_correlation.c: CCL does not support full-sky xi+- calcuations.\nhttps://arxiv.org/abs/1702.05301 indicates flat-sky to be sufficient.\n");
+    return;
+  }
   l_arr=malloc((ELL_MAX_FFTLOG+1)*sizeof(double));
   if(l_arr==NULL) {
     *status=CCL_ERROR_MEMORY;
@@ -507,8 +515,6 @@ static void ccl_tracer_corr_legendre(ccl_cosmology *cosmo,
     return;
   }
 
-  if(corr_type==CCL_CORR_LM)
-    printf("WARNING: legendre sum for xi- is still not correctly implemented.\n");
 
   //Interpolate input Cl into
   interpolate_extrapolate_cl(cosmo,l_arr,cl_arr,ell,cls,n_ell,status);
