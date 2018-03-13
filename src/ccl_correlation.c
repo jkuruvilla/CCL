@@ -461,10 +461,10 @@ static void ccl_compute_wigner_3d_matrix(int corr_type,int n_theta,double *theta
   else
     a=m2-m1;
 
-  if (absolute(m1)>absolute(m2))
-    k_m=absolute(m1);
+  if (abs(m1)>abs(m2))
+    k_m=abs(m1);
   else
-    k_m=absolute(m2);
+    k_m=abs(m2);
   b=2*k_m-a;
 
   for (j=0;j<ell_max;j++)
