@@ -78,15 +78,9 @@ def correlation(cosmo, ell, C_ell, theta, corr_type='gg',corr_space='ang', metho
     # Call correlation function
     wth, status = lib.correlation_vec(cosmo, ell, C_ell, theta,
                                       correlation_types[corr_type],
-#<<<<<<< HEAD
- #                                     correlation_space[corr_space],
-  #                                    correlation_methods[method],
-   #                                   len(theta),status)
-    #check(status)
-#=======
+                                     correlation_space[corr_space],
                                       correlation_methods[method],
                                       len(theta), status)
     check(status, cosmo_in)
-#>>>>>>> master
     if scalar: return wth[0]
     return wth

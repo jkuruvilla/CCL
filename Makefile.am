@@ -20,6 +20,7 @@ libccl_la_CPPFLAGS = -I./include/ -I./class/include -D__CCL_DATA_DIR__=$(datadir
 
 else
 
+libccl_la_LIBADD = $(CLASSDIR)/libclass.a
 libccl_la_CPPFLAGS = -I./include/ -I$(CLASSDIR)/include -D__CCL_DATA_DIR__=$(datadir)/ccl
 
 endif

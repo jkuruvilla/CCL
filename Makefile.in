@@ -134,6 +134,7 @@ am__uninstall_files_from_dir = { \
   }
 am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(ccldir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
+@LOCALCLASS_FALSE@libccl_la_DEPENDENCIES = $(CLASSDIR)/libclass.a
 @LOCALCLASS_TRUE@libccl_la_DEPENDENCIES = class/libclass.a
 am__dirstamp = $(am__leading_dot)dirstamp
 am_libccl_la_OBJECTS = src/libccl_la-ccl_background.lo \
@@ -431,7 +432,6 @@ pdfdir = @pdfdir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
-runstatedir = @runstatedir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
@@ -447,6 +447,7 @@ ccldir = $(datadir)/ccl
 ccl_DATA = include/ccl_params.ini
 lib_LTLIBRARIES = libccl.la
 libccl_la_SOURCES = src/ccl_background.c src/ccl_core.c src/ccl_error.c src/ccl_lsst_specs.c src/ccl_placeholder.c src/ccl_power.c src/ccl_utils.c src/ccl_cls.c src/ccl_massfunc.c src/ccl_neutrinos.c src/ccl_emu17.c src/ccl_correlation.c src/fftlog.c src/jacobi.c
+@LOCALCLASS_FALSE@libccl_la_LIBADD = $(CLASSDIR)/libclass.a
 @LOCALCLASS_TRUE@libccl_la_LIBADD = class/libclass.a
 @LOCALCLASS_FALSE@libccl_la_CPPFLAGS = -I./include/ -I$(CLASSDIR)/include -D__CCL_DATA_DIR__=$(datadir)/ccl
 @LOCALCLASS_TRUE@libccl_la_CPPFLAGS = -I./include/ -I./class/include -D__CCL_DATA_DIR__=$(datadir)/ccl
