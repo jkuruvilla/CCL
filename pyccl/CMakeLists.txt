@@ -24,6 +24,8 @@ else()
   swig_add_library(ccllib TYPE SHARED LANGUAGE python SOURCES ccl.i)
 endif()
 swig_link_libraries(ccllib ccl_static)
+set_property(TARGET ccllib PROPERTY SWIG_DEPENDS ccl_static)
+
 add_dependencies(ccllib ccl_static)
 
 if(APPLE)
@@ -36,6 +38,5 @@ set_target_properties(${SWIG_MODULE_ccllib_REAL_NAME} PROPERTIES SUFFIX .so)
 
 # Forces build of swig executable if not found
 if(NOT SWIG_FOUND)
-  add_dependencies(ccllib SWIG)
-  add_dependencies(${SWIG_MODULE_ccllib_REAL_NAME} SWIG)
+  set_property(TARGET ccllib PROPERTY SWIG_DEPENDS SWIG)
 endif()
