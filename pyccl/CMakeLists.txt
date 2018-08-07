@@ -18,7 +18,7 @@ add_dependencies(ccl_static ccl)
 # will be built first if need, same goes for GSL (through ccl_static)
 set(SWIG_MODULE_ccllib_EXTRA_DEPS ccl_static)
 if(NOT SWIG_FOUND)
-  set(SWIG_MODULE_ccllib_EXTRA_DEPS ${SWIG_MODULE_ccllib_REAL_NAME} SWIG)
+  set(SWIG_MODULE_ccllib_EXTRA_DEPS ${SWIG_MODULE_ccllib_EXTRA_DEPS} SWIG)
 endif()
 
 # Builds swig python module in place
