@@ -10,7 +10,6 @@ if test -e $HOME/miniconda/bin; then
     echo "miniconda already installed.";
 else
     echo "Installing miniconda.";
-    rm -rf $HOME/miniconda
     if [ "${TOXENV}" = py27 ]; then
         wget https://repo.continuum.io/miniconda/Miniconda2-latest-$OS-x86_64.sh -O $HOME/miniconda.sh;
     else

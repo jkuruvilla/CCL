@@ -29,11 +29,11 @@ install:
 - source $HOME/miniconda/bin/activate
 - hash -r
 - source activate test-environment
-- export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
-- export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 - cmake --version
 - python --version
 script:
+- export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:$HOME/miniconda/envs/test-environment/lib
+- export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig:$HOME/miniconda/envs/test-environment/pkgconfig
 - flake8 pyccl
 - python setup.py build
 - nosetests tests/run_tests.py --all --debug --detailed-errors --verbose --process-restartworker
