@@ -1,9 +1,9 @@
 #!/bin/bash
 
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
-    $OS="MacOSX";
+    OS="MacOSX";
 else
-    $OS="Linux";
+    OS="Linux";
 fi;
 
 if test -e $HOME/miniconda/bin; then
