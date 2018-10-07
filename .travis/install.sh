@@ -34,5 +34,5 @@ case "${TOXENV}" in
 esac;
 
 source activate test-environment
-conda install --yes numpy nose coveralls flake8 swig gsl
+conda install --yes numpy nose coveralls flake8 swig gsl fftw
 
