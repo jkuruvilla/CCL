@@ -30,9 +30,9 @@ install:
 - cmake --version
 - python --version
 script:
-- export LD_LIBRARY_PATH=$HOME/miniconda/envs/test-environment/lib:$TRAVIS_BUILD_DIR/build/extern/include:/usr/local/lib:$LD_LIBRARY_PATH
-- export CPATH=$HOME/miniconda/envs/test-environment/include:$TRAVIS_BUILD_DIR/build/extern/include:$CPATH
-- export PKG_CONFIG_PATH=$HOME/miniconda/envs/test-environment/lib/pkgconfig:/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+- export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:$TRAVIS_BUILD_DIR/build/extern/include:$HOME/miniconda/envs/test-environment/lib
+- export CPATH=$CPATH:$TRAVIS_BUILD_DIR/build/extern/include:$HOME/miniconda/envs/test-environment/include
+- export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig:$HOME/miniconda/envs/test-environment/lib/pkgconfig
 - flake8 pyccl
 - python setup.py build
 - nosetests tests/run_tests.py --all --debug --detailed-errors --verbose --process-restartworker
