@@ -1,4 +1,7 @@
 language: python
+env:
+  global:
+    - COVERALLS_PARALLEL=true 
 cache:
   directories:
   - "$TRAVIS_BUILD_DIR/build/GSL/src"
@@ -50,6 +53,9 @@ after_success:
   -e examples/* \
   -e include/* \
   -e src/*
+notifications:
+  email: false
+  webhooks: https://coveralls.io/webhook
 deploy:
   provider: pypi
   user: desc-ccl
