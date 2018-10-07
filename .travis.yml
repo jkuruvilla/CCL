@@ -10,10 +10,10 @@ matrix:
   include:
   - os: linux
     python: 2.7
-    sudo: required
+    sudo: false
     env: TOXENV=py27
   - os: linux
-    sudo: required
+    sudo: false
     python: 3.6
     env: TOXENV=py36
   - os: osx
