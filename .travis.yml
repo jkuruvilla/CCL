@@ -31,6 +31,7 @@ install:
   fi
 - if ! [[ $TRAVIS_OS_NAME == "linux" ]]; then hash -r ; fi
 - if ! [[ $TRAVIS_OS_NAME == "linux" ]]; then source activate test-environment ; fi
+- pip install cpp-coveralls --user
 - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 - export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 - cmake --version
@@ -40,6 +41,7 @@ script:
 - python setup.py build
 - nosetests tests/run_tests.py --all --debug --detailed-errors --verbose --process-restartworker
   --with-coverage --cover-package=pyccl
+- cmake -DENABLE_COVERAGE=ON
 - make -Cbuild && sudo make -Cbuild install
 - check_ccl
 after_success:
