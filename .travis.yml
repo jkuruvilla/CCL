@@ -1,9 +1,7 @@
 language: python
 cache:
   directories:
-  - "$TRAVIS_BUILD_DIR/build/GSL/src"
   - "$TRAVIS_BUILD_DIR/build/FFTW/src"
-  - "$TRAVIS_BUILD_DIR/build/SWIG/src"
   - "$TRAVIS_BUILD_DIR/build/CLASS/src"
   - "$TRAVIS_BUILD_DIR/build/ANGPOW/src"
 matrix:
@@ -31,8 +29,8 @@ install:
 - cmake --version
 - python --version
 script:
-- export LD_LIBRARY_PATH=$HOME/miniconda/envs/test-environment/lib:/usr/local/lib:$LD_LIBRARY_PATH
-- export CPATH=$HOME/miniconda/envs/test-environment/include
+- export LD_LIBRARY_PATH=$HOME/miniconda/envs/test-environment/lib:$TRAVIS_BUILD_DIR/build/extern/include:/usr/local/lib:$LD_LIBRARY_PATH
+- export CPATH=$HOME/miniconda/envs/test-environment/include:$TRAVIS_BUILD_DIR/build/extern/include:$CPATH
 - export PKG_CONFIG_PATH=$HOME/miniconda/envs/test-environment/lib/pkgconfig:/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
 - flake8 pyccl
 - python setup.py build

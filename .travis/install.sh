@@ -6,7 +6,7 @@ else
     OS="Linux";
 fi;
 
-if test -e $HOME/miniconda/bin; then
+if [ -d "$HOME/miniconda/bin" ]; then
     echo "miniconda already installed.";
 else
     echo "Installing miniconda.";
