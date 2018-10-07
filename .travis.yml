@@ -4,6 +4,7 @@ cache:
   - "$TRAVIS_BUILD_DIR/build/FFTW/src"
   - "$TRAVIS_BUILD_DIR/build/CLASS/src"
   - "$TRAVIS_BUILD_DIR/build/ANGPOW/src"
+  - "$HOME/miniconda"
 matrix:
   include:
   - os: linux
