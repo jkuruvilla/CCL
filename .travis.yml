@@ -32,6 +32,7 @@ install:
 - python --version
 script:
 - export LD_LIBRARY_PATH=$HOME/miniconda/envs/test-environment/lib:/usr/local/lib:$LD_LIBRARY_PATH
+- export CPATH=$HOME/miniconda/envs/test-environment/include
 - export PKG_CONFIG_PATH=$HOME/miniconda/envs/test-environment/lib/pkgconfig:/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
 - flake8 pyccl
 - python setup.py build
