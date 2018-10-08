@@ -45,9 +45,9 @@ script:
   --with-coverage --cover-package=pyccl
 - cmake -DENABLE_COVERAGE=ON
 - make -Cbuild && sudo make -Cbuild install
-- check_ccl
+- check_ccl --coverage
 after_success:
-- coveralls -e build -e CMakeFiles -e examples -e include -e tests
+- coveralls -i src -i pyccl
 notifications:
   email: false
   webhooks: https://coveralls.io/webhook
