@@ -2,6 +2,10 @@
 
 if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
 
+    brew install --with-toolchain llvm
+    export PATH=/usr/local/opt/llvm/bin:$PATH
+    export LD_LIBRARY_PATH=/usr/local/opt/llvm/lib:$LD_LIBRARY_PATH
+
     # Install some custom requirements on OS X
     if test -e $HOME/miniconda/bin; then
       echo "miniconda already installed.";
