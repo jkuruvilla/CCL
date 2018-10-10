@@ -47,8 +47,11 @@ script:
 - if [ $TRAVIS_OS_NAME == "linux" ]; then pip install cpp-coveralls; fi
 - if [ $TRAVIS_OS_NAME == "linux" ]; then cmake -DENABLE_COVERAGE=ON; fi
 - make -Cbuild && sudo make -Cbuild install
-- ls *.gcno  
+- ls *.gcno 
+- lcov --zerocounters --directory . 
 - check_ccl
+- lcov --directory . --capture --output-file ccl.info 
+- genhtml ccl.info --output-directory code_coverage 
 after_success:
 - coveralls -i src -i pyccl
 notifications:
