@@ -43,7 +43,7 @@ script:
 - python setup.py build
 - nosetests tests/run_tests.py --all --debug --detailed-errors --verbose --process-restartworker
   --with-coverage --cover-package=pyccl
-- if [ $TRAVIS_OS_NAME == "linux" ]; then sudo apt-get -qq install gcov lcov; fi
+- if [ $TRAVIS_OS_NAME == "linux" ]; then sudo apt-get -qq install lcov; fi
 - if [ $TRAVIS_OS_NAME == "linux" ]; then pip install cpp-coveralls; fi
 - if [ $TRAVIS_OS_NAME == "linux" ]; then cmake -DENABLE_COVERAGE=ON; fi
 - make -Cbuild && sudo make -Cbuild install
