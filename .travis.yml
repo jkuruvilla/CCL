@@ -44,7 +44,7 @@ script:
 - if [ $TRAVIS_OS_NAME == "linux" ]; then pip install cpp-coveralls; fi
 - if [ $TRAVIS_OS_NAME == "linux" ]; then cmake -DENABLE_COVERAGE=ON; fi
 - make -Cbuild && sudo make -Cbuild install
-- ls
+- ls build/
 - if [ $TRAVIS_OS_NAME == "linux" ]; then lcov --zerocounters --directory .; fi
 - check_ccl
 - if [ $TRAVIS_OS_NAME == "linux" ]; then lcov --directory . --capture --output-file ccl.info; fi
