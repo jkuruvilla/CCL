@@ -1,7 +1,4 @@
 language: python
-env:
-  global:
-    - COVERALLS_PARALLEL=true 
 cache:
   directories:
   - "$TRAVIS_BUILD_DIR/build/GSL/src"
@@ -47,16 +44,13 @@ script:
 - if [ $TRAVIS_OS_NAME == "linux" ]; then pip install cpp-coveralls; fi
 - if [ $TRAVIS_OS_NAME == "linux" ]; then cmake -DENABLE_COVERAGE=ON; fi
 - make -Cbuild && sudo make -Cbuild install
-- ls *.gcno 
-- lcov --zerocounters --directory . 
+- ls
+- if [ $TRAVIS_OS_NAME == "linux" ]; then lcov --zerocounters --directory .; fi
 - check_ccl
-- lcov --directory . --capture --output-file ccl.info 
-- genhtml ccl.info --output-directory code_coverage 
+- if [ $TRAVIS_OS_NAME == "linux" ]; then lcov --directory . --capture --output-file ccl.info; fi
+- if [ $TRAVIS_OS_NAME == "linux" ]; then genhtml ccl.info --output-directory code_coverage; fi
 after_success:
 - coveralls -i src -i pyccl
-notifications:
-  email: false
-  webhooks: https://coveralls.io/webhook
 deploy:
   provider: pypi
   user: desc-ccl
